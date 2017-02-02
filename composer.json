@@ -7,7 +7,7 @@
     "authors": [],
     "minimum-stability": "dev",
     "autoload": {
-        "files": [ "command.php" ]
+        "files": [ "wp-cli-bbp.php" ]
     },
     "require": {
         "wp-cli/wp-cli": ">=0.23.0"

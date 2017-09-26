@@ -22,12 +22,13 @@ class BBPCLI_Repair extends BBPCLI_Component {
 	 * @since 1.0
 	 */
 	public function repair( $args, $assoc_args ) {
-
 		$type = $args['type'];
 
 		$repair = 'bbp_admin_repair_' . $type;
 		if ( function_exists( $repair ) ) {
-			WP_CLI::success( $repair() );
+			$result = $repair();
+
+			WP_CLI::success( $result[1] );
 		} else {
 			WP_CLI::error( 'There is no repair tool with that name.' );
 		}

@@ -1,8 +1,8 @@
 <?php
 /**
- * Repair Tools - bbPress.
+ * Tools Component - bbPress.
  */
-class BBPCLI_Repair extends BBPCLI_Component {
+class BBPCLI_Tools extends BBPCLI_Component {
 
 	/**
 	 * Repair.
@@ -22,9 +22,23 @@ class BBPCLI_Repair extends BBPCLI_Component {
 	 * @since 1.0
 	 */
 	public function repair( $args, $assoc_args ) {
-		$type = $args['type'];
+		$defaults = array(
+			'type' => '',
+		);
 
+		$r = wp_parse_args( $assoc_args, $defaults );
+
+		// If no type added, bail it.
+		if ( empty( $r['type'] ) ) {
+			WP_CLI::error( 'You need to add a name of the repair tool.' );
+		}
+
+		// Convert to underscore.
+		$type = str_replace( '-', '_', $r['type'] );
+
+		// Repair function.
 		$repair = 'bbp_admin_repair_' . $type;
+
 		if ( function_exists( $repair ) ) {
 			$result = $repair();
 
@@ -35,4 +49,4 @@ class BBPCLI_Repair extends BBPCLI_Component {
 	}
 }
 
-WP_CLI::add_command( 'bbp repair', 'BBPCLI_Repair' );
+WP_CLI::add_command( 'bbp tools', 'BBPCLI_Tools' );

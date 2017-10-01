@@ -14,8 +14,8 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    wp bbp repair --type=topic-reply-count
-	 *    wp bbp repair --type=topic-hidden-reply-count
+	 *    wp bbp tools repair --type=topic-reply-count
+	 *    wp bbp tools repair --type=topic-hidden-reply-count
 	 *
 	 * @synopsis [--type=<type>]
 	 *

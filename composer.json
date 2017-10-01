@@ -8,8 +8,6 @@
         "php": ">=5.3"
     },
     "license": "MIT",
-    "authors": [],
-    "minimum-stability": "dev",
     "autoload": {
         "files": [ "wp-cli-bbp.php" ]
     },

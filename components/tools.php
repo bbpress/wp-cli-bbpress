@@ -11,6 +11,11 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 * [--type=<type>]
 	 * : Name of the repair tool.
+	 * ---
+	 * options:
+	 *   - topic-reply-count
+	 *   - topic-hidden-reply-count
+	 * ---
 	 *
 	 * ## EXAMPLES
 	 *
@@ -22,22 +27,17 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 * @since 1.0
 	 */
 	public function repair( $args, $assoc_args ) {
-		$defaults = array(
+		$r = wp_parse_args( $assoc_args, array(
 			'type' => '',
-		);
-
-		$r = wp_parse_args( $assoc_args, $defaults );
+		) );
 
 		// If no type added, bail it.
 		if ( empty( $r['type'] ) ) {
 			WP_CLI::error( 'You need to add a name of the repair tool.' );
 		}
 
-		// Convert to underscore.
-		$type = str_replace( '-', '_', $r['type'] );
-
 		// Repair function.
-		$repair = 'bbp_admin_repair_' . $type;
+		$repair = 'bbp_admin_repair_' . sanitize_key( $r['type'] );
 
 		if ( function_exists( $repair ) ) {
 			$result = $repair();
@@ -59,6 +59,11 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 * [--type=<type>]
 	 * : Name of the upgrade tool.
+	 * ---
+	 * options:
+	 *   - user-engagements
+	 *   - user-favorites
+	 * ---
 	 *
 	 * ## EXAMPLES
 	 *
@@ -70,22 +75,17 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 * @since 1.0
 	 */
 	public function upgrade( $args, $assoc_args ) {
-		$defaults = array(
+		$r = wp_parse_args( $assoc_args, array(
 			'type' => '',
-		);
-
-		$r = wp_parse_args( $assoc_args, $defaults );
+		) );
 
 		// If no type added, bail it.
 		if ( empty( $r['type'] ) ) {
 			WP_CLI::error( 'You need to add a name of the upgrade tool.' );
 		}
 
-		// Convert to underscore.
-		$type = str_replace( '-', '_', $r['type'] );
-
 		// Repair function.
-		$upgrade = 'bbp_admin_upgrade_' . $type;
+		$upgrade = 'bbp_admin_upgrade_' . sanitize_key( $r['type'] );
 
 		if ( function_exists( $upgrade ) ) {
 			$result = $upgrade();

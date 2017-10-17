@@ -14,7 +14,24 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 * ---
 	 * options:
 	 *   - topic-reply-count
+	 *   - topic-voice-count
 	 *   - topic-hidden-reply-count
+	 *   - forum-topic-count
+	 *   - topic-tag-count
+	 *   - forum-reply-count
+	 *   - user-topic-count
+	 *   - user-reply-count
+	 *   - user-favorites
+	 *   - user-topic-subscriptions
+	 *   - user-forum-subscriptions
+	 *   - user-roles
+	 *   - freshness
+	 *   - sticky
+	 *   - closed-topics
+	 *   - forum-visibility
+	 *   - forum-meta
+	 *   - topic-meta
+	 *   - reply-menu-order
 	 * ---
 	 *
 	 * ## EXAMPLES
@@ -24,7 +41,7 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 * @synopsis [--type=<type>]
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public function repair( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(
@@ -61,8 +78,14 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 * : Name of the upgrade tool.
 	 * ---
 	 * options:
+	 *   - group-forum-relationships
 	 *   - user-engagements
 	 *   - user-favorites
+	 *   - user-topic-subscriptions
+	 *   - user-forum-subscriptions
+	 *   - remove-favorites-from_usermeta
+	 *   - remove-topic-subscriptions-from-usermeta
+	 *   - remove-forum-subscriptions-from-usermeta
 	 * ---
 	 *
 	 * ## EXAMPLES
@@ -72,7 +95,7 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 * @synopsis [--type=<type>]
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public function upgrade( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(

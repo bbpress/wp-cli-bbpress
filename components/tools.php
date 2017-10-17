@@ -122,6 +122,48 @@ class BBPCLI_Tools extends BBPCLI_Component {
 			WP_CLI::error( 'There is no upgrade tool with that name.' );
 		}
 	}
+
+	/**
+	 * Reset bbPress.
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--yes]
+	 * : Answer yes to the confirmation message.
+	 *
+	 * ## EXAMPLE
+	 *
+	 *    wp bbp tools reset --yes
+	 *    Success: bbPress reset.
+	 *
+	 * @synopsis [--yes>]
+	 *
+	 * @since 1.0.0
+	 */
+	public function reset( $_, $assoc_args ) {
+		WP_CLI::confirm( 'Are you sure you want to reset bbPress?', $assoc_args );
+
+		$reset = bbp_admin_reset_handler();
+
+		if ( empty( $reset ) ) {
+			WP_CLI::error( 'Could not reset bbPress. Please, try again.' );
+		} else {
+			WP_CLI::success( 'bbPress reset.' );
+		}
+	}
+
+	/**
+	 * List converters.
+	 *
+	 * ## EXAMPLE
+	 *
+	 *    wp bbp tools list_converters
+	 *
+	 * @since 1.0.0
+	 */
+	public function list_converters( $_, $assoc_args ) {
+		echo implode( ', ', bbp_get_converters() ); // WPCS: XSS ok.
+	}
 }
 
 WP_CLI::add_command( 'bbp tools', 'BBPCLI_Tools' );

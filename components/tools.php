@@ -1,6 +1,8 @@
 <?php
 /**
  * Tools Component - bbPress.
+ *
+ * @since 1.0.0
  */
 class BBPCLI_Tools extends BBPCLI_Component {
 
@@ -9,7 +11,7 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * [--type=<type>]
+	 * --type=<type>
 	 * : Name of the repair tool.
 	 * ---
 	 * options:
@@ -38,23 +40,10 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 *    wp bbp tools repair --type=topic-reply-count
 	 *    wp bbp tools repair --type=topic-hidden-reply-count
-	 *
-	 * @synopsis [--type=<type>]
-	 *
-	 * @since 1.0.0
 	 */
 	public function repair( $args, $assoc_args ) {
-		$r = wp_parse_args( $assoc_args, array(
-			'type' => '',
-		) );
 
-		// If no type added, bail it.
-		if ( empty( $r['type'] ) ) {
-			WP_CLI::error( 'You need to add a name of the repair tool.' );
-		}
-
-		// Repair function.
-		$repair = 'bbp_admin_repair_' . sanitize_key( $r['type'] );
+		$repair = 'bbp_admin_repair_' . sanitize_key( $assoc_args['type'] );
 
 		if ( function_exists( $repair ) ) {
 			$result = $repair();
@@ -74,7 +63,7 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * [--type=<type>]
+	 * --type=<type>
 	 * : Name of the upgrade tool.
 	 * ---
 	 * options:
@@ -92,23 +81,10 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 *    wp bbp tools upgrade --type=user-engagements
 	 *    wp bbp tools upgrade --type=user-favorites
-	 *
-	 * @synopsis [--type=<type>]
-	 *
-	 * @since 1.0.0
 	 */
 	public function upgrade( $args, $assoc_args ) {
-		$r = wp_parse_args( $assoc_args, array(
-			'type' => '',
-		) );
 
-		// If no type added, bail it.
-		if ( empty( $r['type'] ) ) {
-			WP_CLI::error( 'You need to add a name of the upgrade tool.' );
-		}
-
-		// Repair function.
-		$upgrade = 'bbp_admin_upgrade_' . sanitize_key( $r['type'] );
+		$upgrade = 'bbp_admin_upgrade_' . sanitize_key( $assoc_args['type'] );
 
 		if ( function_exists( $upgrade ) ) {
 			$result = $upgrade();
@@ -135,10 +111,6 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 *    wp bbp tools reset --yes
 	 *    Success: bbPress reset.
-	 *
-	 * @synopsis [--yes>]
-	 *
-	 * @since 1.0.0
 	 */
 	public function reset( $_, $assoc_args ) {
 		WP_CLI::confirm( 'Are you sure you want to reset bbPress?', $assoc_args );
@@ -158,8 +130,6 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *    wp bbp tools list_converters
-	 *
-	 * @since 1.0.0
 	 */
 	public function list_converters( $_, $assoc_args ) {
 		echo implode( ', ', bbp_get_converters() ); // WPCS: XSS ok.

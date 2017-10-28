@@ -1,4 +1,4 @@
-Feature: Manage bbPress Tools (Repair/Upgrade/Reset/Converters)
+Feature: Manage bbPress Tools
 
   Scenario: bbPress repair
     Given a WP install
@@ -6,7 +6,7 @@ Feature: Manage bbPress Tools (Repair/Upgrade/Reset/Converters)
     When I run `wp bbp tools repair --type=topic-reply-count`
     Then STDOUT should contain:
       """
-      
+      Success: Counting the number of replies in each topic&hellip; Complete!
       """
 
   Scenario: bbPress upgrade
@@ -15,7 +15,7 @@ Feature: Manage bbPress Tools (Repair/Upgrade/Reset/Converters)
     When I run `wp bbp tools upgrade --type=user-engagements`
     Then STDOUT should contain:
       """
-      
+      Success: Upgrading user engagements&hellip; Complete! 10 engagements upgraded.
       """
 
   Scenario: bbPress reset
@@ -25,13 +25,4 @@ Feature: Manage bbPress Tools (Repair/Upgrade/Reset/Converters)
     Then STDOUT should contain:
       """
       Sucess: bbPress reset.
-      """
-
-  Scenario: List bbPress converters
-    Given a WP install
-
-    When I run `wp bbp tools list_converters`
-    Then STDOUT should contain:
-      """
-      
       """

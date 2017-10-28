@@ -2,7 +2,7 @@
 	"name": "bbpress/wp-cli-bbpress",
 	"type": "wp-cli-package",
 	"description": "WP-CLI Community Package of bbPress commands",
-	"keywords": ["wp-cli", "bbpress", "forum", "wordpress", "bpp"],
+	"keywords": [ "wp-cli", "bbpress", "forum", "wordpress", "bpp" ],
 	"homepage": "https://github.com/bbpress/wp-cli-bbpress",
 	"license": "MIT",
 	"authors": [
@@ -15,14 +15,25 @@
 		"issues": "https://bbpress.trac.wordpress.org",
 		"source": "https://github.com/bbpress/wp-cli-bbpress"
 	},
-	"autoload": {
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
 		"files": [ "wp-cli-bbp.php" ]
 	},
-	"require": {
-		"php": ">=5.3",
-		"wp-cli/wp-cli": ">=0.23.0"
-	},
-	"require-dev": {
-		"behat/behat": "~2.5"
-	}
+    "require": {
+        "php": ">=5.3",
+        "wp-cli/wp-cli": ">=0.23.0"
+    },
+    "require-dev": {
+        "behat/behat": "~2.5"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        },
+        "bundled": true,
+        "commands": [
+            "bbp"
+        ]
+    }
 }

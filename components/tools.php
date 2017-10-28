@@ -7,7 +7,7 @@
 class BBPCLI_Tools extends BBPCLI_Component {
 
 	/**
-	 * Repair.
+	 * Repair Tools.
 	 *
 	 * ## OPTIONS
 	 *
@@ -38,12 +38,12 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    wp bbp tools repair --type=topic-reply-count
-	 *    wp bbp tools repair --type=topic-hidden-reply-count
+	 *    $ wp bbp tools repair --type=topic-reply-count
+	 *    $ wp bbp tools repair --type=topic-hidden-reply-count
 	 */
 	public function repair( $args, $assoc_args ) {
 
-		$repair = 'bbp_admin_repair_' . sanitize_key( $assoc_args['type'] );
+		$repair = 'bbp_admin_repair_' . $this->sanitize_string( $assoc_args['type'] );
 
 		if ( function_exists( $repair ) ) {
 			$result = $repair();
@@ -59,7 +59,7 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	}
 
 	/**
-	 * Upgrade.
+	 * Upgrade Tools.
 	 *
 	 * ## OPTIONS
 	 *
@@ -79,12 +79,12 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    wp bbp tools upgrade --type=user-engagements
-	 *    wp bbp tools upgrade --type=user-favorites
+	 *    $ wp bbp tools upgrade --type=user-engagements
+	 *    $ wp bbp tools upgrade --type=user-favorites
 	 */
 	public function upgrade( $args, $assoc_args ) {
 
-		$upgrade = 'bbp_admin_upgrade_' . sanitize_key( $assoc_args['type'] );
+		$upgrade = 'bbp_admin_upgrade_' . $this->sanitize_string( $assoc_args['type'] );
 
 		if ( function_exists( $upgrade ) ) {
 			$result = $upgrade();
@@ -109,19 +109,15 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLE
 	 *
-	 *    wp bbp tools reset --yes
+	 *    $ wp bbp tools reset --yes
 	 *    Success: bbPress reset.
 	 */
 	public function reset( $_, $assoc_args ) {
 		WP_CLI::confirm( 'Are you sure you want to reset bbPress?', $assoc_args );
 
-		$reset = bbp_admin_reset_handler();
+		bbp_admin_reset_handler();
 
-		if ( empty( $reset ) ) {
-			WP_CLI::error( 'Could not reset bbPress. Please, try again.' );
-		} else {
-			WP_CLI::success( 'bbPress reset.' );
-		}
+		WP_CLI::success( 'bbPress reset.' );
 	}
 
 	/**
@@ -129,11 +125,17 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLE
 	 *
-	 *    wp bbp tools list_converters
+	 *    $ wp bbp tools list_converters
 	 */
 	public function list_converters( $_, $assoc_args ) {
 		echo implode( ', ', bbp_get_converters() ); // WPCS: XSS ok.
 	}
 }
 
-WP_CLI::add_command( 'bbp tools', 'BBPCLI_Tools' );
+WP_CLI::add_command( 'bbp tools', 'BBPCLI_Tools', array(
+	'before_invoke' => function() {
+		if ( ! class_exists( 'bbPress' ) ) {
+			WP_CLI::error( 'bbPress is not installed or active.' );
+		}
+	},
+) );

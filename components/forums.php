@@ -7,6 +7,62 @@
 class BBPCLI_Forums extends BBPCLI_Component {
 
 	/**
+	 * Create a forum.
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--title=<title>]
+	 * : Title of the forum.
+	 *
+	 * [--content=<content>]
+	 * : Forum content. Default: 'Content for forum "[title]"'
+	 *
+	 * [--author=<author>]
+	 * : ID of the forum author. Default: 1.
+	 *
+	 * [--status=<status>]
+	 * : Forum status (open, close, hidden). Default: open.
+	 *
+	 * [--silent=<silent>]
+	 * : Whether to silent the group creation. Default: false.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *    $ wp bbp forum create --title="Forum Test 01" --content="Content for forum" --author=39
+	 *    $ wp bbp forum create --title="Forum Test 01" --content="Content for forum" --author=45 --status=closed
+	 */
+	public function create( $args, $assoc_args ) {
+		$r = wp_parse_args( $assoc_args, array(
+			'title'   => '',
+			'content' => '',
+			'author'  => 1,
+			'status'  => 'open',
+			'silent'  => false,
+		) );
+
+		if ( empty( $r['content'] ) ) {
+			$r['content'] = sprintf( 'Content for the forum "%s"', $r['title'] );
+		}
+
+		$id = bbp_insert_forum( array(
+			'post_title'   => $r['title'],
+			'post_content' => $r['content'],
+			'post_author'  => $r['author'],
+		), $r['status'] );
+
+		if ( $r['silent'] ) {
+			return;
+		}
+
+		if ( is_numeric( $id ) ) {
+			$permalink = bbp_get_forum_permalink( $id );
+			WP_CLI::success( sprintf( 'Forum %d created: %s', $id, $permalink ) );
+		} else {
+			WP_CLI::error( 'Could not create forum.' );
+		}
+	}
+
+	/**
 	 * Opens a forum.
 	 *
 	 * ## OPTIONS

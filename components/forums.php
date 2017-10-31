@@ -81,7 +81,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * <forum-id>
 	 * : Identifier for the forum.
 	 *
-	 * ## EXAMPLES
+	 * ## EXAMPLE
 	 *
 	 *   $ wp bbp forum delete 486
 	 */
@@ -94,6 +94,30 @@ class BBPCLI_Forums extends BBPCLI_Component {
 			WP_CLI::success( 'Forum and its topics and replies deleted.' );
 		} else {
 			WP_CLI::error( 'Could not delete the forum and its topics and replies.' );
+		}
+	}
+
+	/**
+	 * Trash a forum.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <forum-id>
+	 * : Identifier for the forum.
+	 *
+	 * ## EXAMPLE
+	 *
+	 *   $ wp bbp forum trash 789
+	 */
+	public function trash( $args, $assoc_args ) {
+		$forum_id = args[0];
+
+		bbp_trash_forum_topics( $forum_id );
+
+		if ( ! bbp_trash_forum( $forum_id ) ) {
+			WP_CLI::success( 'All forum topics trashed.' );
+		} else {
+			WP_CLI::error( 'Could not trash forum topics.' );
 		}
 	}
 

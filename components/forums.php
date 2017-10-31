@@ -25,9 +25,35 @@ class BBPCLI_Forums extends BBPCLI_Component {
 		$user = bbp_open_forum( $forum_id );
 
 		if ( is_numeric( $forum_id ) ) {
-			WP_CLI::success( 'User demoted to the "member" status.' );
+			WP_CLI::success( 'Forum opened.' );
 		} else {
-			WP_CLI::error( 'Could not demote the member.' );
+			WP_CLI::error( 'Could not open the forum.' );
+		}
+
+	}
+
+	/**
+	 * Closes a forum.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <forum-id>
+	 * : Identifier for the forum.
+	 *
+	 * ## EXAMPLE
+	 *
+	 *    $ wp bp forum close 847
+	 */
+	public function close( $args, $assoc_args ) {
+		// Forum ID.
+		$forum_id = $args[0];
+
+		$user = bbp_close_forum( $forum_id );
+
+		if ( is_numeric( $forum_id ) ) {
+			WP_CLI::success( 'Forum closed.' );
+		} else {
+			WP_CLI::error( 'Could not close the forum.' );
 		}
 
 	}

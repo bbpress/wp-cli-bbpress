@@ -151,6 +151,89 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	}
 
 	/**
+	 * Get a list of forums.
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--<field>=<value>]
+	 * : One or more args to pass to WP_Query.
+	 *
+	 * [--field=<field>]
+	 * : Prints the value of a single field for each forum.
+	 *
+	 * [--fields=<fields>]
+	 * : Limit the output to specific object fields.
+	 *
+	 * [--format=<format>]
+	 * : Render output in a particular format.
+	 * ---
+	 * default: table
+	 * options:
+	 *   - table
+	 *   - ids
+	 *   - json
+	 *   - count
+	 * ---
+	 *
+	 * ## AVAILABLE FIELDS
+	 *
+	 * These fields will be displayed by default for each forum:
+	 *
+	 * * ID
+	 * * post_title
+	 * * post_name
+	 * * post_date
+	 * * post_status
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # List ids of all forums
+	 *     $ wp bbp forum list --format=ids
+	 *     15 25 34 37 198
+	 *
+	 *     # List total count of forums
+	 *     $ wp bbp forum list --format=count
+	 *     451
+	 *
+	 *     # List given forums
+	 *     $ wp bbp forum list --post__in=2,1
+	 *     +----+--------------+-------------+---------------------+-------------+
+	 *     | ID | post_title   | post_name   | post_date           | post_status |
+	 *     +----+--------------+-------------+---------------------+-------------+
+	 *     | 2  | Forum Title  | lorem-ipsum | 2016-06-01 14:34:36 | publish     |
+	 *     | 1  | Other Forum  | hello-world | 2016-06-01 14:31:12 | publish     |
+	 *     +----+--------------+-------------+---------------------+-------------+
+	 *
+	 * @subcommand list
+	 */
+	public function _list( $args, $assoc_args ) {
+
+		$formatter = $this->get_formatter( $assoc_args );
+
+		$query_args = wp_parse_args( $assoc_args, array(
+			'post_type'    => bbp_get_forum_post_type(),
+			'post_status'  => bbp_get_public_status_id(),
+		) );
+
+		if ( isset( $query_args['post_type'] ) && bbp_get_forum_post_type() !== $query_args['post_type'] ) {
+			$query_args['post_type'] = bbp_get_forum_post_type();
+		}
+
+		if ( 'ids' === $formatter->format ) {
+			$query_args['fields'] = 'ids';
+			$query = new WP_Query( $query_args );
+			echo implode( ' ', $query->posts ); // WPCS: XSS ok.
+		} elseif ( 'count' === $formatter->format ) {
+			$query_args['fields'] = 'ids';
+			$query = new WP_Query( $query_args );
+			$formatter->display_items( $query->posts );
+		} else {
+			$query = new WP_Query( $query_args );
+			$formatter->display_items( $query->posts );
+		}
+	}
+
+	/**
 	 * Trash a forum.
 	 *
 	 * ## OPTIONS

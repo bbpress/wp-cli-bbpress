@@ -114,10 +114,34 @@ class BBPCLI_Forums extends BBPCLI_Component {
 
 		bbp_trash_forum_topics( $forum_id );
 
-		if ( ! bbp_trash_forum( $forum_id ) ) {
+		if ( ! bbp_trashed_forum( $forum_id ) ) {
 			WP_CLI::success( 'All forum topics trashed.' );
 		} else {
 			WP_CLI::error( 'Could not trash forum topics.' );
+		}
+	}
+
+	/**
+	 * Untrash a forum.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <forum-id>
+	 * : Identifier for the forum.
+	 *
+	 * ## EXAMPLE
+	 *
+	 *   $ wp bbp forum untrash 789
+	 */
+	public function untrash( $args, $assoc_args ) {
+		$forum_id = args[0];
+
+		bbp_untrash_forum_topics( $forum_id );
+
+		if ( ! bbp_untrashed_forum( $forum_id ) ) {
+			WP_CLI::success( 'All forum topics untrashed.' );
+		} else {
+			WP_CLI::error( 'Could not untrash forum topics.' );
 		}
 	}
 

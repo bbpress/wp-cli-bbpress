@@ -74,6 +74,51 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	}
 
 	/**
+	 * Generate random forums.
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--count=<number>]
+	 * : How many forums to generate.
+	 * ---
+	 * default: 100
+	 * ---
+	 *
+	 * [--status=<status>]
+	 * : Forum status (open, close, hidden).
+	 * ---
+	 * default: open
+	 * ---
+	 *
+	 * ## EXAMPLES
+	 *
+	 *   $ wp bbp forum generate --count=50
+	 *   $ wp bbp forum generate --count=20 --status=closed
+	 *   $ wp bbp forum generate --count=15 --status=hidden
+	 */
+	public function generate( $args, $assoc_args ) {
+		$r = wp_parse_args( $assoc_args, array(
+			'count'  => 100,
+			'status' => 'open',
+		) );
+
+		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating forums', $r['count'] );
+
+		for ( $i = 0; $i < $r['count']; $i++ ) {
+			$this->create( array(), array(
+				'title'   => sprintf( 'Test Forum - #%d', $i ),
+				'content' => sprintf( 'Content for the forum - #%d', $i ),
+				'status'  => $r['status'],
+				'silent'  => true,
+			) );
+
+			$notify->tick();
+		}
+
+		$notify->finish();
+	}
+
+	/**
 	 * Opens a forum.
 	 *
 	 * ## OPTIONS

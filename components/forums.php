@@ -74,6 +74,54 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	}
 
 	/**
+	 * Gets a forum.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <forum-id>
+	 * : Identifier for the forum.
+	 *
+	 * [--field=<field>]
+	 * : Instead of returning the whole forum, returns the value of a single field.
+	 *
+	 * [--fields=<fields>]
+	 * : Limit the output to specific fields. Defaults to all fields.
+	 *
+	 * [--format=<format>]
+	 * : Render output in a particular format.
+	 * ---
+	 * default: table
+	 * options:
+	 *   - table
+	 *   - csv
+	 *   - json
+	 *   - yaml
+	 * ---
+	 *
+	 * ## EXAMPLES
+	 *
+	 *   $ wp bbp forum get 6654
+	 *   $ wp bbp forum get 4677 --field=content
+	 */
+	public function get( $args, $assoc_args ) {
+		$forum_id = $args[0];
+
+		// Check that forum exists.
+		if ( ! bbp_is_forum( $forum_id ) ) {
+			WP_CLI::error( 'No forum found by that ID.' );
+		}
+
+		$forum = bbp_get_forum( $forum_id, ARRAY_A );
+
+		if ( empty( $assoc_args['fields'] ) ) {
+			$assoc_args['fields'] = array_keys( $forum );
+		}
+
+		$formatter = $this->get_formatter( $assoc_args );
+		$formatter->display_items( $forum );
+	}
+
+	/**
 	 * Delete a forum.
 	 *
 	 * ## OPTIONS

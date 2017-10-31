@@ -21,7 +21,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * ---
 	 *
 	 * [--user-id=<user-id>]
-	 * : ID of the user.
+	 * : Identifier of the user.
 	 * ---
 	 * default: 1
 	 * ---
@@ -70,6 +70,30 @@ class BBPCLI_Forums extends BBPCLI_Component {
 			WP_CLI::success( sprintf( 'Forum %d created: %s', $id, bbp_get_forum_permalink( $id ) ) );
 		} else {
 			WP_CLI::error( 'Could not create forum.' );
+		}
+	}
+
+	/**
+	 * Delete a forum.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <forum-id>
+	 * : Identifier for the forum.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *   $ wp bbp forum delete 486
+	 */
+	public function delete( $args, $assoc_args ) {
+		$forum_id = args[0];
+
+		bbp_delete_forum_topics( $forum_id );
+
+		if ( ! bbp_deleted_forum( $forum_id ) ) {
+			WP_CLI::success( 'Forum and its topics and replies deleted.' );
+		} else {
+			WP_CLI::error( 'Could not delete the forum and its topics and replies.' );
 		}
 	}
 

@@ -12,30 +12,42 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * [--title=<title>]
-	 * : Title of the forum.
+	 * : Forum title.
 	 *
 	 * [--content=<content>]
-	 * : Forum content. Default: 'Content for forum "[title]"'
+	 * : Forum content.
+	 * ---
+	 * default: 'Content for forum "[title]"'
+	 * ---
 	 *
-	 * [--author=<author>]
-	 * : ID of the forum author. Default: 1.
+	 * [--user-id=<user-id>]
+	 * : ID of the user.
+	 * ---
+	 * default: 1
+	 * ---
 	 *
 	 * [--status=<status>]
-	 * : Forum status (open, close, hidden). Default: open.
+	 * : Forum status (open, close, hidden).
+	 * ---
+	 * default: open
+	 * ---
 	 *
 	 * [--silent=<silent>]
-	 * : Whether to silent the group creation. Default: false.
+	 * : Whether to silent the forum creation.
+	 * ---
+	 * default: false
+	 * ---
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp forum create --title="Forum Test 01" --content="Content for forum" --author=39
-	 *    $ wp bbp forum create --title="Forum Test 01" --content="Content for forum" --author=45 --status=closed
+	 *    $ wp bbp forum create --title="Forum Test 01" --content="Content for forum" --user-id=39
+	 *    $ wp bbp forum create --title="Forum 02" --content="Another content for forum" --user-id=45 --status=closed
 	 */
 	public function create( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(
 			'title'   => '',
 			'content' => '',
-			'author'  => 1,
+			'user-id'  => 1,
 			'status'  => 'open',
 			'silent'  => false,
 		) );
@@ -47,7 +59,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 		$id = bbp_insert_forum( array(
 			'post_title'   => $r['title'],
 			'post_content' => $r['content'],
-			'post_author'  => $r['author'],
+			'post_author'  => $r['user-id'],
 		), $r['status'] );
 
 		if ( $r['silent'] ) {
@@ -55,8 +67,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 		}
 
 		if ( is_numeric( $id ) ) {
-			$permalink = bbp_get_forum_permalink( $id );
-			WP_CLI::success( sprintf( 'Forum %d created: %s', $id, $permalink ) );
+			WP_CLI::success( sprintf( 'Forum %d created: %s', $id, bbp_get_forum_permalink( $id ) ) );
 		} else {
 			WP_CLI::error( 'Could not create forum.' );
 		}

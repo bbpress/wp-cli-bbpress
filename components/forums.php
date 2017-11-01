@@ -40,8 +40,8 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp forum create --title="Forum Test 01" --content="Content for forum" --user-id=39
-	 *    $ wp bbp forum create --title="Forum 02" --content="Another content for forum" --user-id=45 --status=closed
+	 *     $ wp bbp forum create --title="Forum Test 01" --content="Content for forum" --user-id=39
+	 *     $ wp bbp forum create --title="Forum 02" --content="Another content for forum" --user-id=45 --status=closed
 	 */
 	public function create( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(
@@ -100,8 +100,8 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *   $ wp bbp forum get 6654
-	 *   $ wp bbp forum get 4677 --field=content
+	 *     $ wp bbp forum get 6654
+	 *     $ wp bbp forum get 4677 --field=content
 	 */
 	public function get( $args, $assoc_args ) {
 		$forum_id = $args[0];
@@ -131,7 +131,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLE
 	 *
-	 *   $ wp bbp forum delete 486
+	 *     $ wp bbp forum delete 486
 	 */
 	public function delete( $args, $assoc_args ) {
 		$forum_id = $args[0];
@@ -215,8 +215,9 @@ class BBPCLI_Forums extends BBPCLI_Component {
 			'post_status'  => bbp_get_public_status_id(),
 		) );
 
-		if ( isset( $query_args['post_type'] ) && bbp_get_forum_post_type() !== $query_args['post_type'] ) {
-			$query_args['post_type'] = bbp_get_forum_post_type();
+		 $forum_post_type = bbp_get_forum_post_type();
+		if ( isset( $query_args['post_type'] ) && $forum_post_type !== $query_args['post_type'] ) {
+			$query_args['post_type'] = $forum_post_type;
 		}
 
 		if ( 'ids' === $formatter->format ) {
@@ -243,7 +244,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLE
 	 *
-	 *   $ wp bbp forum trash 789
+	 *     $ wp bbp forum trash 789
 	 */
 	public function trash( $args, $assoc_args ) {
 		$forum_id = $args[0];
@@ -272,7 +273,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLE
 	 *
-	 *   $ wp bbp forum untrash 789
+	 *     $ wp bbp forum untrash 789
 	 */
 	public function untrash( $args, $assoc_args ) {
 		$forum_id = $args[0];
@@ -310,9 +311,9 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *   $ wp bbp forum generate --count=50
-	 *   $ wp bbp forum generate --count=20 --status=closed
-	 *   $ wp bbp forum generate --count=15 --status=hidden
+	 *     $ wp bbp forum generate --count=50
+	 *     $ wp bbp forum generate --count=20 --status=closed
+	 *     $ wp bbp forum generate --count=15 --status=hidden
 	 */
 	public function generate( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(
@@ -346,7 +347,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLE
 	 *
-	 *    $ wp bbp forum open 456
+	 *     $ wp bbp forum open 456
 	 */
 	public function open( $args, $assoc_args ) {
 		$forum_id = $args[0];
@@ -375,7 +376,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLE
 	 *
-	 *    $ wp bbp forum close 847
+	 *     $ wp bbp forum close 847
 	 */
 	public function close( $args, $assoc_args ) {
 		$forum_id = $args[0];
@@ -404,7 +405,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp forum permalink 500
+	 *     $ wp bbp forum permalink 500
 	 */
 	public function permalink( $args, $assoc_args ) {
 		$forum_id = $args[0];

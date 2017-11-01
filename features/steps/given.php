@@ -77,6 +77,12 @@ $steps->Given( '/^these installed and active plugins:$/',
 	}
 );
 
+$steps->Given( '/^bbPress is active$/',
+	function( $world ) {
+		$world->proc( "wp plugin install bbpress --activate" )->run_check();
+	}
+);
+
 $steps->Given( '/^a custom wp-content directory$/',
 	function ( $world ) {
 		$wp_config_path = $world->variables['RUN_DIR'] . "/wp-config.php";

@@ -403,7 +403,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * <forum-id>
 	 * : Identifier for the forum.
 	 *
-	 * ## EXAMPLES
+	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp forum permalink 500
 	 */

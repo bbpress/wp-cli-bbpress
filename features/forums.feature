@@ -4,6 +4,8 @@ Feature: Manage bbPress Forums
     Given a WP install
 
   Scenario: Delete a forum
+    Given these installed and active plugins: bbpress
+
     When I run `wp bbp forum delete 520`
     Then STDOUT should contain:
       """

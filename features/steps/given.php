@@ -77,9 +77,9 @@ $steps->Given( '/^these installed and active plugins:$/',
 	}
 );
 
-$steps->Given( "/^bbPress is active '([^\s]+)'$/",
-	function( $world, $subdir ) {
-		$world->install_wp( $subdir );
+$steps->Given( '/^bbPress is active$/',
+	function( $world ) {
+		$world->install_wp();
 		$world->proc( "wp plugin install bbpress --activate" )->run_check();
 	}
 );

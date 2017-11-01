@@ -1,8 +1,7 @@
 Feature: Manage bbPress Forums
 
   Scenario: Delete a forum
-    Given a WP install
-    AND bbPress is active
+    Given bbPress is active
 
     When I run `wp bbp forum delete 520`
     Then STDOUT should contain:

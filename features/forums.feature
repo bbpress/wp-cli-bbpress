@@ -1,8 +1,9 @@
 Feature: Manage bbPress Forums
 
-  Scenario: Delete a forum
-    Given bbPress is active
+  Background:
+    Given a WP install
 
+  Scenario: Delete a forum
     When I run `wp bbp forum delete 520`
     Then STDOUT should contain:
       """
@@ -10,8 +11,6 @@ Feature: Manage bbPress Forums
       """
 
   Scenario: Trash a forum
-    Given bbPress is active
-
     When I run `wp bbp forum trash 789`
     Then STDOUT should contain:
       """
@@ -19,8 +18,6 @@ Feature: Manage bbPress Forums
       """
 
   Scenario: Untrash a forum
-    Given bbPress is active
-
     When I run `wp bbp forum untrash 789`
     Then STDOUT should contain:
       """
@@ -28,8 +25,6 @@ Feature: Manage bbPress Forums
       """
 
   Scenario: Open a forum
-    Given bbPress is active
-
     When I run `wp bbp forum open 456`
     Then STDOUT should contain:
       """
@@ -37,8 +32,6 @@ Feature: Manage bbPress Forums
       """
 
   Scenario: Close a forum
-    Given bbPress is active
-
     When I run `wp bbp forum close 487`
     Then STDOUT should contain:
       """
@@ -46,8 +39,6 @@ Feature: Manage bbPress Forums
       """
 
   Scenario: Get permalink of a forum
-    Given bbPress is active
-
     When I run `wp bbp forum permalink 500`
     Then STDOUT should contain:
       """

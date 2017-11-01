@@ -136,6 +136,11 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	public function delete( $args, $assoc_args ) {
 		$forum_id = $args[0];
 
+		// Check that forum exists.
+		if ( ! bbp_is_forum( $forum_id ) ) {
+			WP_CLI::error( 'No forum found by that ID.' );
+		}
+
 		bbp_delete_forum_topics( $forum_id );
 
 		if ( ! bbp_deleted_forum( $forum_id ) ) {

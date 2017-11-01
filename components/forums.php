@@ -197,12 +197,12 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 *     # List given forums
 	 *     $ wp bbp forum list --post__in=2,1
-	 *     +----+--------------+-------------+---------------------+-------------+
-	 *     | ID | post_title   | post_name   | post_date           | post_status |
-	 *     +----+--------------+-------------+---------------------+-------------+
-	 *     | 2  | Forum Title  | lorem-ipsum | 2016-06-01 14:34:36 | publish     |
-	 *     | 1  | Other Forum  | hello-world | 2016-06-01 14:31:12 | publish     |
-	 *     +----+--------------+-------------+---------------------+-------------+
+	 *     +----+--------------+-------------+----------------------+-------------+
+	 *     | ID | post_title   | post_name   | post_date            | post_status |
+	 *     +----+--------------+-------------+----------------------+-------------+
+	 *     | 2  | Forum Title  | lorem-ipsum | 2017-11-01 18:35:25  | publish     |
+	 *     | 1  | Other Forum  | hello-world | 2017-11-06 1s3:35:25 | publish     |
+	 *     +----+--------------+-------------+---------------------+--------------+
 	 *
 	 * @subcommand list
 	 */

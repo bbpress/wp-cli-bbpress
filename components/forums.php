@@ -122,7 +122,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	}
 
 	/**
-	 * Delete a forum.
+	 * Delete a forum (its topics and replies).
 	 *
 	 * ## OPTIONS
 	 *
@@ -132,6 +132,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp forum delete 486
+	 *     Success: Forum and its topics and replies deleted.
 	 */
 	public function delete( $args, $assoc_args ) {
 		$forum_id = $args[0];
@@ -142,6 +143,8 @@ class BBPCLI_Forums extends BBPCLI_Component {
 		}
 
 		bbp_delete_forum_topics( $forum_id );
+
+		wp_delete_post( $forum_id, true );
 
 		if ( ! bbp_deleted_forum( $forum_id ) ) {
 			WP_CLI::success( 'Forum and its topics and replies deleted.' );
@@ -158,9 +161,6 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * [--<field>=<value>]
 	 * : One or more args to pass to WP_Query.
 	 *
-	 * [--field=<field>]
-	 * : Prints the value of a single field for each forum.
-	 *
 	 * [--fields=<fields>]
 	 * : Limit the output to specific object fields.
 	 *
@@ -171,8 +171,10 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * options:
 	 *   - table
 	 *   - ids
-	 *   - json
 	 *   - count
+	 *   - json
+	 *   - csv
+	 *   - yaml
 	 * ---
 	 *
 	 * ## AVAILABLE FIELDS
@@ -195,26 +197,20 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *     $ wp bbp forum list --format=count
 	 *     451
 	 *
-	 *     # List given forums
-	 *     $ wp bbp forum list --post__in=2,1
-	 *     +----+--------------+-------------+----------------------+-------------+
-	 *     | ID | post_title   | post_name   | post_date            | post_status |
-	 *     +----+--------------+-------------+----------------------+-------------+
-	 *     | 2  | Forum Title  | lorem-ipsum | 2017-11-01 18:35:25  | publish     |
-	 *     | 1  | Other Forum  | hello-world | 2017-11-06 13:35:25 | publish     |
-	 *     +----+--------------+-------------+---------------------+--------------+
-	 *
 	 * @subcommand list
 	 */
-	public function _list( $args, $assoc_args ) {
+	public function _list( $_, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
 		$query_args = wp_parse_args( $assoc_args, array(
-			'post_type'    => bbp_get_forum_post_type(),
-			'post_status'  => bbp_get_public_status_id(),
+			'post_type'      => bbp_get_forum_post_type(),
+			'post_status'    => bbp_get_public_status_id(),
+			'posts_per_page' => -1,
 		) );
 
-		 $forum_post_type = bbp_get_forum_post_type();
+		$query_args = self::process_csv_arguments_to_arrays( $query_args );
+
+		$forum_post_type = bbp_get_forum_post_type();
 		if ( isset( $query_args['post_type'] ) && $forum_post_type !== $query_args['post_type'] ) {
 			$query_args['post_type'] = $forum_post_type;
 		}

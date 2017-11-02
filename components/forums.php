@@ -74,7 +74,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	}
 
 	/**
-	 * Gets a forum.
+	 * Get a forum.
 	 *
 	 * ## OPTIONS
 	 *
@@ -299,7 +299,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	}
 
 	/**
-	 * Generate random forums.
+	 * Generate random forums (forums only).
 	 *
 	 * ## OPTIONS
 	 *
@@ -344,7 +344,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	}
 
 	/**
-	 * Opens a forum.
+	 * Open a forum.
 	 *
 	 * ## OPTIONS
 	 *
@@ -374,7 +374,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	}
 
 	/**
-	 * Closes a forum.
+	 * Close a forum.
 	 *
 	 * ## OPTIONS
 	 *

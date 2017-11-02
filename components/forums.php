@@ -201,13 +201,12 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *     | ID | post_title   | post_name   | post_date            | post_status |
 	 *     +----+--------------+-------------+----------------------+-------------+
 	 *     | 2  | Forum Title  | lorem-ipsum | 2017-11-01 18:35:25  | publish     |
-	 *     | 1  | Other Forum  | hello-world | 2017-11-06 1s3:35:25 | publish     |
+	 *     | 1  | Other Forum  | hello-world | 2017-11-06 13:35:25 | publish     |
 	 *     +----+--------------+-------------+---------------------+--------------+
 	 *
 	 * @subcommand list
 	 */
 	public function _list( $args, $assoc_args ) {
-
 		$formatter = $this->get_formatter( $assoc_args );
 
 		$query_args = wp_parse_args( $assoc_args, array(
@@ -273,7 +272,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLE
 	 *
-	 *     $ wp bbp forum untrash 789
+	 *     $ wp bbp forum untrash 3938
 	 */
 	public function untrash( $args, $assoc_args ) {
 		$forum_id = $args[0];

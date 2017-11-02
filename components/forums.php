@@ -1,6 +1,6 @@
 <?php
 /**
- * Forums Component - bbPress.
+ * Manage bbPress Forums.
  *
  * @since 1.0.0
  */

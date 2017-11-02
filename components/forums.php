@@ -106,7 +106,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	public function get( $args, $assoc_args ) {
 		$forum_id = $args[0];
 
-		// Check that forum exists.
+		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
 			WP_CLI::error( 'No forum found by that ID.' );
 		}
@@ -126,8 +126,8 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * <forum-id>
-	 * : Identifier for the forum.
+	 * <forum-id>...
+	 * : One or more IDs of forums to delete.
 	 *
 	 * ## EXAMPLE
 	 *
@@ -137,20 +137,25 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	public function delete( $args, $assoc_args ) {
 		$forum_id = $args[0];
 
-		// Check that forum exists.
+		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
 			WP_CLI::error( 'No forum found by that ID.' );
 		}
 
-		bbp_delete_forum_topics( $forum_id );
+		parent::_delete( $args, $assoc_args, function ( $forum_id, $assoc_args ) {
 
-		wp_delete_post( $forum_id, true );
+			bbp_delete_forum_topics( $forum_id );
 
-		if ( ! bbp_deleted_forum( $forum_id ) ) {
-			WP_CLI::success( 'Forum and its topics and replies deleted.' );
-		} else {
-			WP_CLI::error( 'Could not delete the forum and its topics and replies.' );
-		}
+			wp_delete_post( $forum_id, true );
+
+			$r = bbp_deleted_forum( $forum_id );
+
+			if ( ! $r ) {
+				return array( 'success', sprintf( 'Forum %s and its topics and replies deleted.', $forum_id ) );
+			} else {
+				return array( 'error', sprintf( 'Could not delete forum %s and its topics and replies.', $forum_id ) );
+			}
+		} );
 	}
 
 	/**
@@ -234,27 +239,30 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * <forum-id>
-	 * : Identifier for the forum.
+	 * <forum-id>...
+	 * : One or more IDs of forums to trash.
 	 *
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp forum trash 789
+	 *     Success: Forum 789 and its topics trashed.
 	 */
 	public function trash( $args, $assoc_args ) {
 		$forum_id = $args[0];
 
-		// Check that forum exists.
+		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
 			WP_CLI::error( 'No forum found by that ID.' );
 		}
 
 		bbp_trash_forum_topics( $forum_id );
 
+		wp_trash_post( $forum_id );
+
 		if ( ! bbp_trashed_forum( $forum_id ) ) {
-			WP_CLI::success( 'All forum topics trashed.' );
+			WP_CLI::success( sprintf( 'Forum %s and its topics trashed.', $forum_id ) );
 		} else {
-			WP_CLI::error( 'Could not trash forum topics.' );
+			WP_CLI::error( sprintf( 'Could not trash forum %s and its topics.', $forum_id ) );
 		}
 	}
 
@@ -263,27 +271,30 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * <forum-id>
-	 * : Identifier for the forum.
+	 * <forum-id>...
+	 * : One or more IDs of forums to untrash.
 	 *
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp forum untrash 3938
+	 *     Success: Forum 3938 and its topics untrashed.
 	 */
 	public function untrash( $args, $assoc_args ) {
 		$forum_id = $args[0];
 
-		// Check that forum exists.
+		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
 			WP_CLI::error( 'No forum found by that ID.' );
 		}
 
+		wp_untrash_post( $forum_id );
+
 		bbp_untrash_forum_topics( $forum_id );
 
 		if ( ! bbp_untrashed_forum( $forum_id ) ) {
-			WP_CLI::success( 'All forum topics untrashed.' );
+			WP_CLI::success( sprintf( 'Forum %s and its topics untrashed.', $forum_id ) );
 		} else {
-			WP_CLI::error( 'Could not untrash forum topics.' );
+			WP_CLI::error( sprintf( 'Could not untrash forum %s and its topics.', $forum_id ) );
 		}
 	}
 
@@ -337,17 +348,18 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * <forum-id>
-	 * : Identifier for the forum.
+	 * <forum-id>...
+	 * : One or more IDs of forums to open.
 	 *
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp forum open 456
+	 *     Success: Forum successfully opened.
 	 */
 	public function open( $args, $assoc_args ) {
 		$forum_id = $args[0];
 
-		// Check that forum exists.
+		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
 			WP_CLI::error( 'No forum found by that ID.' );
 		}
@@ -355,9 +367,9 @@ class BBPCLI_Forums extends BBPCLI_Component {
 		$id = bbp_open_forum( $forum_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( 'Forum opened.' );
+			WP_CLI::success( sprintf( 'Forum %s successfully opened.', $forum_id ) );
 		} else {
-			WP_CLI::error( 'Could not open the forum.' );
+			WP_CLI::error( sprintf( 'Could not open forum %s.', $forum_id ) );
 		}
 	}
 
@@ -366,17 +378,18 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * <forum-id>
-	 * : Identifier for the forum.
+	 * <forum-id>...
+	 * : One or more IDs of forums to close.
 	 *
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp forum close 847
+	 *     Success: Forum successfully closed.
 	 */
 	public function close( $args, $assoc_args ) {
 		$forum_id = $args[0];
 
-		// Check that forum exists.
+		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
 			WP_CLI::error( 'No forum found by that ID.' );
 		}
@@ -384,9 +397,9 @@ class BBPCLI_Forums extends BBPCLI_Component {
 		$id = bbp_close_forum( $forum_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( 'Forum closed.' );
+			WP_CLI::success( sprintf( 'Forum %s successfully closed.', $forum_id ) );
 		} else {
-			WP_CLI::error( 'Could not close the forum.' );
+			WP_CLI::error( sprintf( 'Could not close the forum %s.', $forum_id ) );
 		}
 	}
 
@@ -401,11 +414,12 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp forum permalink 500
+	 *     Success: Forum Permalink: http://site.com/forums/forum/forum-slug/
 	 */
 	public function permalink( $args, $assoc_args ) {
 		$forum_id = $args[0];
 
-		// Check that forum exists.
+		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
 			WP_CLI::error( 'No forum found by that ID.' );
 		}

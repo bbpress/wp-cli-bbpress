@@ -480,7 +480,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 *     $ wp bbp reply permalink 165
 	 *     Success: Reply Permalink: http://site.com/forums/reply/reply-slug/
 	 *
-	 *     $ wp bbp reply ul 398
+	 *     $ wp bbp reply url 398
 	 *     Success: Reply Permalink: http://site.com/forums/reply/another-reply-slug/
 	 *
 	 * @alias url

@@ -86,7 +86,7 @@ class BBPCLI_TOPICS extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * <topic-id>
-	 * : Identifier for the topic.
+	 * : Identifier for the topic to get.
 	 *
 	 * [--fields=<fields>]
 	 * : Limit the output to specific fields. Defaults to all fields.
@@ -302,7 +302,7 @@ class BBPCLI_TOPICS extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * <topic-id>
-	 * : Identifier of the topic.
+	 * : Identifier of the topic to open.
 	 *
 	 * ## EXAMPLE
 	 *
@@ -332,7 +332,7 @@ class BBPCLI_TOPICS extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * <topic-id>
-	 * : Identifier of the topic.
+	 * : Identifier of the topic to close.
 	 *
 	 * ## EXAMPLE
 	 *

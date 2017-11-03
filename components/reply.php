@@ -4,7 +4,7 @@
  *
  * @since 1.0.0
  */
-class BBPCLI_REPLIES extends BBPCLI_Component {
+class BBPCLI_Replies extends BBPCLI_Component {
 
 	/**
 	 * Create a reply.
@@ -94,7 +94,7 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * <reply-id>
-	 * : Identifier for the reply.
+	 * : Identifier for the reply to get.
 	 *
 	 * [--fields=<fields>]
 	 * : Limit the output to specific fields. Defaults to all fields.
@@ -110,7 +110,7 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 	 *   - yaml
 	 * ---
 	 *
-	 * ## EXAMPLE
+	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp reply get 456
 	 *     $ wp bbp reply get 151 --fields=post_title
@@ -161,9 +161,9 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 			$r = bbp_deleted_reply( $reply_id );
 
 			if ( ! $r ) {
-				return array( 'success', sprintf( 'Reply %s deleted.', $reply_id ) );
+				return array( 'success', sprintf( 'Reply %d deleted.', $reply_id ) );
 			} else {
-				return array( 'error', sprintf( 'Could not delete %s reply.', $reply_id ) );
+				return array( 'error', sprintf( 'Could not delete %d reply.', $reply_id ) );
 			}
 		} );
 	}
@@ -192,9 +192,9 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 		wp_trash_post( $reply_id );
 
 		if ( ! bbp_trashed_reply( $reply_id ) ) {
-			WP_CLI::success( sprintf( 'Reply %s trashed.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d trashed.', $reply_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not trash reply %s.', $reply_id ) );
+			WP_CLI::error( sprintf( 'Could not trash reply %d.', $reply_id ) );
 		}
 	}
 
@@ -222,9 +222,9 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 		wp_untrash_post( $reply_id );
 
 		if ( ! bbp_untrashed_reply( $reply_id ) ) {
-			WP_CLI::success( sprintf( 'Reply %s untrashed.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d untrashed.', $reply_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not untrash reply %s.', $reply_id ) );
+			WP_CLI::error( sprintf( 'Could not untrash reply %d.', $reply_id ) );
 		}
 	}
 
@@ -321,7 +321,7 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 	 * default: 0
 	 * ---
 	 *
-	 * ## EXAMPLE
+	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp reply generate --count=50
 	 *     $ wp bbp reply generate --count=50 --topic-id=342
@@ -371,9 +371,9 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 		$id = bbp_spam_reply( $reply_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Reply %s spammed.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d spammed.', $reply_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not spam reply %s.', $reply_id ) );
+			WP_CLI::error( sprintf( 'Could not spam reply %d.', $reply_id ) );
 		}
 	}
 
@@ -401,9 +401,9 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 		$id = bbp_unspam_reply( $reply_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Reply %s hammed.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d hammed.', $reply_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not ham reply %s.', $reply_id ) );
+			WP_CLI::error( sprintf( 'Could not ham reply %d.', $reply_id ) );
 		}
 	}
 
@@ -431,9 +431,9 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 		$id = bbp_approve_reply( $reply_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Reply %s approved.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d approved.', $reply_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not approve reply %s.', $reply_id ) );
+			WP_CLI::error( sprintf( 'Could not approve reply %d.', $reply_id ) );
 		}
 	}
 
@@ -458,12 +458,12 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 			WP_CLI::error( 'No reply found by that ID.' );
 		}
 
-		$id = bbp_approve_reply( $reply_id );
+		$id = bbp_unapprove_reply( $reply_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Reply %s unapprove.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d unapprove.', $reply_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not unapprove reply %s.', $reply_id ) );
+			WP_CLI::error( sprintf( 'Could not unapprove reply %d.', $reply_id ) );
 		}
 	}
 
@@ -475,10 +475,15 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 	 * <reply-id>
 	 * : Identifier for the reply.
 	 *
-	 * ## EXAMPLE
+	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp reply permalink 165
 	 *     Success: Reply Permalink: http://site.com/forums/reply/reply-slug/
+	 *
+	 *     $ wp bbp reply ul 398
+	 *     Success: Reply Permalink: http://site.com/forums/reply/another-reply-slug/
+	 *
+	 * @alias url
 	 */
 	public function permalink( $args, $assoc_args ) {
 		$reply_id = $args[0];
@@ -498,7 +503,7 @@ class BBPCLI_REPLIES extends BBPCLI_Component {
 	}
 }
 
-WP_CLI::add_command( 'bbp reply', 'BBPCLI_REPLIES', array(
+WP_CLI::add_command( 'bbp reply', 'BBPCLI_Replies', array(
 	'before_invoke' => function() {
 		if ( ! class_exists( 'bbPress' ) ) {
 			WP_CLI::error( 'bbPress is not installed or active.' );

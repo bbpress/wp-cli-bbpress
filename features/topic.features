@@ -3,7 +3,7 @@ Feature: Manage bbPress Topics
 	Background:
 		Given a WP install
 
-  Scenario: Create a topic
+  	Scenario: Create a topic
 		When I run `wp bbp topic create --title="Topic" --user-id=45 --forum-id=2497`
 		Then STDOUT should contain:
 			"""
@@ -35,56 +35,56 @@ Feature: Manage bbPress Topics
 		When I run `wp bbp topic open 784`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 opened.
+			Success: Topic 784 successfully opened.
 			"""
 
 	Scenario: Close a topic
-		When I run `wp bbp topic close 784`
+		When I run `wp bbp topic close 7894`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 closed.
+			Success: Topic 7894 successfully closed.
 			"""
 
 	Scenario: Spam a topic
 		When I run `wp bbp topic spam 784`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 spammed.
+			Success: Topic 784 successfully spammed.
 			"""
 
 	Scenario: Ham a topic
-		When I run `wp bbp topic ham 784`
+		When I run `wp bbp topic ham 456`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 hammed.
+			Success: Topic 456 successfully hammed.
 			"""
 
 	Scenario: Stick a topic
 		When I run `wp bbp topic stick 784`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 sticked.
+			Success: Topic 784 successfully sticked.
 			"""
 
 	Scenario: Unstick a topic
 		When I run `wp bbp topic unstick 784`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 unsticked.
+			Success: Topic 784 successfully unsticked.
 			"""
 
 	Scenario: Approve a topic
 		When I run `wp bbp topic approve 784`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 approved.
+			Success: Topic 784 successfully approved.
 			"""
 
 	Scenario: Unapprove a topic
 		When I run `wp bbp topic unapprove 487`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 487 unapproved.
+			Success: Topic 487 successfully unapproved.
 			"""
 
 	Scenario: Get permalink of a topic
@@ -92,4 +92,10 @@ Feature: Manage bbPress Topics
 		Then STDOUT should contain:
 			"""
 			 Success: Topic Permalink: http://site.com/forums/topic/topic-slug/
+			"""
+
+		When I run `wp bbp topic url 156`
+		Then STDOUT should contain:
+			"""
+			 Success: Topic Permalink: http://site.com/forums/topic/another-topic-slug/
 			"""

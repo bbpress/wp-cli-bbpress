@@ -410,7 +410,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp topic spam 3938
-	 *     Success: Topic 3938 spammed.
+	 *     Success: Topic 3938 successfully spammed.
 	 */
 	public function spam( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -426,7 +426,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		$id = bbp_spam_topic( $topic_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d spammed.', $topic_id ) );
+			WP_CLI::success( sprintf( 'Topic %d successfully spammed.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not spam topic %d.', $topic_id ) );
 		}
@@ -443,7 +443,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp topic ham 3938
-	 *     Success: Topic 3938 hammed.
+	 *     Success: Topic 3938 successfully hammed.
 	 */
 	public function ham( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -459,7 +459,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		$id = bbp_unspam_topic( $topic_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d hammed.', $topic_id ) );
+			WP_CLI::success( sprintf( 'Topic %d successfully hammed.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not ham topic %d.', $topic_id ) );
 		}
@@ -476,7 +476,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp topic stick 465
-	 *     Success: Topic 465 sticked.
+	 *     Success: Topic 465 successfully sticked.
 	 */
 	public function stick( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -487,7 +487,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		}
 
 		if ( bbp_stick_topic( $topic_id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d sticked .', $topic_id ) );
+			WP_CLI::success( sprintf( 'Topic %d successfully sticked .', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not stick topic %d.', $topic_id ) );
 		}
@@ -504,7 +504,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp topic unstick 465
-	 *     Success: Topic 465 unsticked.
+	 *     Success: Topic 465 successfully unsticked.
 	 */
 	public function unstick( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -516,7 +516,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 
 		// It always returns true.
 		if ( bbp_unstick_topic( $topic_id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d unsticked.', $topic_id ) );
+			WP_CLI::success( sprintf( 'Topic %d successfully unsticked.', $topic_id ) );
 		}
 	}
 
@@ -531,7 +531,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp topic approve 3938
-	 *     Success: Topic 3938 approved.
+	 *     Success: Topic 3938 successfully approved.
 	 */
 	public function approve( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -544,7 +544,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		$id = bbp_approve_topic( $topic_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d approved.', $topic_id ) );
+			WP_CLI::success( sprintf( 'Topic %d successfully approved.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not approve topic %d.', $topic_id ) );
 		}
@@ -561,7 +561,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp topic unapprove 3938
-	 *     Success: Topic 3938 unapproved.
+	 *     Success: Topic 3938 successfully unapproved.
 	 */
 	public function unapprove( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -574,7 +574,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		$id = bbp_unapprove_topic( $topic_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d unapprove.', $topic_id ) );
+			WP_CLI::success( sprintf( 'Topic %d successfully unapproved.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not unapprove topic %d.', $topic_id ) );
 		}

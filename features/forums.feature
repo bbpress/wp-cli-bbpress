@@ -7,35 +7,35 @@ Feature: Manage bbPress Forums
     When I run `wp bbp forum delete 520`
     Then STDOUT should contain:
       """
-      Success: Forum and its topics and replies deleted.
+      Success: Forum 520 and its topics and replies deleted.
       """
 
   Scenario: Trash a forum
     When I run `wp bbp forum trash 789`
     Then STDOUT should contain:
       """
-      Success: Forum and its topics trashed.
+      Success: Forum 789 and its topics trashed.
       """
 
   Scenario: Untrash a forum
     When I run `wp bbp forum untrash 789`
     Then STDOUT should contain:
       """
-      Success: Forum and its topics untrashed.
+      Success: Forum 789 and its topics untrashed.
       """
 
   Scenario: Open a forum
     When I run `wp bbp forum open 456`
     Then STDOUT should contain:
       """
-      Success: Forum successfully opened.
+      Success: Forum 456 successfully opened.
       """
 
   Scenario: Close a forum
     When I run `wp bbp forum close 487`
     Then STDOUT should contain:
       """
-      Success: Forum successfully closed.
+      Success: Forum 487 successfully closed.
       """
 
   Scenario: Get permalink of a forum
@@ -43,4 +43,10 @@ Feature: Manage bbPress Forums
     Then STDOUT should contain:
       """
       Success: Forum Permalink: http://site.com/forums/forum/forum-slug/
+      """
+
+    When I run `wp bbp forum url 456`
+    Then STDOUT should contain:
+      """
+      Success: Forum Permalink: http://site.com/forums/forum/another-forum-slug/
       """

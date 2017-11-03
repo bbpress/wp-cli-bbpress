@@ -4,7 +4,7 @@
  *
  * @since 1.0.0
  */
-class BBPCLI_TOPICS extends BBPCLI_Component {
+class BBPCLI_Topics extends BBPCLI_Component {
 
 	/**
 	 * Create a topic.
@@ -616,7 +616,7 @@ class BBPCLI_TOPICS extends BBPCLI_Component {
 	}
 }
 
-WP_CLI::add_command( 'bbp topic', 'BBPCLI_TOPICS', array(
+WP_CLI::add_command( 'bbp topic', 'BBPCLI_Topics', array(
 	'before_invoke' => function() {
 		if ( ! class_exists( 'bbPress' ) ) {
 			WP_CLI::error( 'bbPress is not installed or active.' );

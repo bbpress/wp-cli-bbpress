@@ -1,0 +1,95 @@
+Feature: Manage bbPress Topics
+
+	Background:
+		Given a WP install
+
+  Scenario: Create a topic
+		When I run `wp bbp topic create --title="Topic" --user-id=45 --forum-id=2497`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 784 created: http://site.com/forums/topic/topic-slug/.
+			"""
+
+	Scenario: Delete a topic
+		When I run `wp bbp topic delete 784`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 784 deleted.
+			"""
+
+	Scenario: Trash a topic
+		When I run `wp bbp topic trash 784`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 784 trashed.
+			"""
+
+	Scenario: Untrash a topic
+		When I run `wp bbp topic untrash 784`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 784 untrashed.
+			"""
+
+	Scenario: Open a topic
+		When I run `wp bbp topic open 784`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 784 opened.
+			"""
+
+	Scenario: Close a topic
+		When I run `wp bbp topic close 784`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 784 closed.
+			"""
+
+	Scenario: Spam a topic
+		When I run `wp bbp topic spam 784`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 784 spammed.
+			"""
+
+	Scenario: Ham a topic
+		When I run `wp bbp topic ham 784`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 784 hammed.
+			"""
+
+	Scenario: Stick a topic
+		When I run `wp bbp topic stick 784`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 784 sticked.
+			"""
+
+	Scenario: Unstick a topic
+		When I run `wp bbp topic unstick 784`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 784 unsticked.
+			"""
+
+	Scenario: Approve a topic
+		When I run `wp bbp topic approve 784`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 784 approved.
+			"""
+
+	Scenario: Unapprove a topic
+		When I run `wp bbp topic unapprove 487`
+		Then STDOUT should contain:
+			"""
+			Success: Topic 487 unapproved.
+			"""
+
+	Scenario: Get permalink of a topic
+		When I run `wp bbp topic permalink 500`
+		Then STDOUT should contain:
+			"""
+			 Success: Topic Permalink: http://site.com/forums/topic/topic-slug/
+			"""

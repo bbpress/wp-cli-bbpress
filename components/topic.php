@@ -102,7 +102,7 @@ class BBPCLI_TOPICS extends BBPCLI_Component {
 	 *   - yaml
 	 * ---
 	 *
-	 * ## EXAMPLE
+	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp topic get 456
 	 *     $ wp bbp topic get 151 --fields=post_title
@@ -373,7 +373,7 @@ class BBPCLI_TOPICS extends BBPCLI_Component {
 	 * default: 0
 	 * ---
 	 *
-	 * ## EXAMPLE
+	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp topic generate --count=50
 	 *     $ wp bbp topic generate --count=50 --forum-id=342
@@ -487,9 +487,9 @@ class BBPCLI_TOPICS extends BBPCLI_Component {
 		}
 
 		if ( bbp_stick_topic( $topic_id ) ) {
-			WP_CLI::success( sprintf( 'Topic %s sticked .', $topic_id ) );
+			WP_CLI::success( sprintf( 'Topic %d sticked .', $topic_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not stick topic %s.', $topic_id ) );
+			WP_CLI::error( sprintf( 'Could not stick topic %d.', $topic_id ) );
 		}
 	}
 
@@ -516,7 +516,7 @@ class BBPCLI_TOPICS extends BBPCLI_Component {
 
 		// It always returns true.
 		if ( bbp_unstick_topic( $topic_id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d unsticked .', $topic_id ) );
+			WP_CLI::success( sprintf( 'Topic %d unsticked.', $topic_id ) );
 		}
 	}
 
@@ -586,12 +586,17 @@ class BBPCLI_TOPICS extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * <topic-id>
-	 * : Identifier for the topic.
+	 * : Identifier for the topic permalink.
 	 *
-	 * ## EXAMPLE
+	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp topic permalink 165
 	 *     Success: Topic Permalink: http://site.com/forums/topic/topic-slug/
+	 *
+	 *     $ wp bbp topic url 256
+	 *     Success: Topic Permalink: http://site.com/forums/topic/another-topic-slug/
+	 *
+	 * @alias url
 	 */
 	public function permalink( $args, $assoc_args ) {
 		$topic_id = $args[0];

@@ -144,7 +144,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp reply delete 486
-	 *     Success: Reply 486 deleted.
+	 *     Success: Reply 486 successfully deleted.
 	 */
 	public function delete( $args, $assoc_args ) {
 		$reply_id = $args[0];
@@ -161,7 +161,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 			$r = bbp_deleted_reply( $reply_id );
 
 			if ( ! $r ) {
-				return array( 'success', sprintf( 'Reply %d deleted.', $reply_id ) );
+				return array( 'success', sprintf( 'Reply %d successfully deleted.', $reply_id ) );
 			} else {
 				return array( 'error', sprintf( 'Could not delete %d reply.', $reply_id ) );
 			}
@@ -179,7 +179,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp reply trash 789
-	 *     Success: Reply 789 trashed.
+	 *     Success: Reply 789 successfully trashed.
 	 */
 	public function trash( $args, $assoc_args ) {
 		$reply_id = $args[0];
@@ -192,7 +192,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 		wp_trash_post( $reply_id );
 
 		if ( ! bbp_trashed_reply( $reply_id ) ) {
-			WP_CLI::success( sprintf( 'Reply %d trashed.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d successfully trashed.', $reply_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not trash reply %d.', $reply_id ) );
 		}
@@ -209,7 +209,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp reply untrash 3938
-	 *     Success: Reply 3938 untrashed.
+	 *     Success: Reply 3938 successfully untrashed.
 	 */
 	public function untrash( $args, $assoc_args ) {
 		$reply_id = $args[0];
@@ -222,7 +222,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 		wp_untrash_post( $reply_id );
 
 		if ( ! bbp_untrashed_reply( $reply_id ) ) {
-			WP_CLI::success( sprintf( 'Reply %d untrashed.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d successfully untrashed.', $reply_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not untrash reply %d.', $reply_id ) );
 		}
@@ -358,7 +358,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp reply spam 3938
-	 *     Success: Reply 3938 spammed.
+	 *     Success: Reply 3938 successfully spammed.
 	 */
 	public function spam( $args, $assoc_args ) {
 		$reply_id = $args[0];
@@ -371,7 +371,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 		$id = bbp_spam_reply( $reply_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Reply %d spammed.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d successfully spammed.', $reply_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not spam reply %d.', $reply_id ) );
 		}
@@ -388,7 +388,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp reply ham 3938
-	 *     Success: Reply 3938 hammed.
+	 *     Success: Reply 3938 successfully hammed.
 	 */
 	public function ham( $args, $assoc_args ) {
 		$reply_id = $args[0];
@@ -401,7 +401,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 		$id = bbp_unspam_reply( $reply_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Reply %d hammed.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d successfully hammed.', $reply_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not ham reply %d.', $reply_id ) );
 		}
@@ -418,7 +418,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp reply approve 3938
-	 *     Success: Reply 3938 approved.
+	 *     Success: Reply 3938 successfully approved.
 	 */
 	public function approve( $args, $assoc_args ) {
 		$reply_id = $args[0];
@@ -431,7 +431,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 		$id = bbp_approve_reply( $reply_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Reply %d approved.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d successfully approved.', $reply_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not approve reply %d.', $reply_id ) );
 		}
@@ -448,7 +448,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp reply unapprove 3938
-	 *     Success: Reply 3938 unapproved.
+	 *     Success: Reply 3938 successfully unapproved.
 	 */
 	public function unapprove( $args, $assoc_args ) {
 		$reply_id = $args[0];
@@ -461,7 +461,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 		$id = bbp_unapprove_reply( $reply_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Reply %d unapprove.', $reply_id ) );
+			WP_CLI::success( sprintf( 'Reply %d successfully unapproved.', $reply_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not unapprove reply %d.', $reply_id ) );
 		}

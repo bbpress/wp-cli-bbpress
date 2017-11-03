@@ -571,7 +571,7 @@ class BBPCLI_TOPICS extends BBPCLI_Component {
 			WP_CLI::error( 'No topic found by that ID.' );
 		}
 
-		$id = bbp_approve_topic( $topic_id );
+		$id = bbp_unapprove_topic( $topic_id );
 
 		if ( is_numeric( $id ) ) {
 			WP_CLI::success( sprintf( 'Topic %d unapprove.', $topic_id ) );

@@ -105,7 +105,6 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 * default: table
 	 * options:
 	 *   - table
-	 *   - csv
 	 *   - json
 	 *   - yaml
 	 * ---
@@ -130,7 +129,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 		}
 
 		$formatter = $this->get_formatter( $assoc_args );
-		$formatter->display_items( $reply );
+		$formatter->display_item( $reply );
 	}
 
 	/**
@@ -173,8 +172,8 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * <reply-id>...
-	 * : One or more IDs of replies to trash.
+	 * <reply-id>
+	 * : Identifier for the reply to trash.
 	 *
 	 * ## EXAMPLE
 	 *
@@ -203,8 +202,8 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * <reply-id>...
-	 * : One or more IDs of replies to untrash.
+	 * <reply-id>
+	 * : Identifier for the reply to untrash.
 	 *
 	 * ## EXAMPLE
 	 *
@@ -278,9 +277,8 @@ class BBPCLI_Replies extends BBPCLI_Component {
 		$formatter = $this->get_formatter( $assoc_args );
 
 		$query_args = wp_parse_args( $assoc_args, array(
-			'post_type'      => bbp_get_reply_post_type(),
-			'post_status'    => bbp_get_public_status_id(),
-			'posts_per_page' => -1,
+			'post_type' => bbp_get_reply_post_type(),
+			'post_status' => bbp_get_public_status_id(),
 		) );
 
 		$query_args = self::process_csv_arguments_to_arrays( $query_args );
@@ -328,8 +326,8 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 */
 	public function generate( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(
-			'topic-id' => 0,
 			'count'    => 100,
+			'topic-id' => 0,
 		) );
 
 		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating replies', $r['count'] );

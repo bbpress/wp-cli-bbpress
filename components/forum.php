@@ -93,7 +93,6 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * default: table
 	 * options:
 	 *   - table
-	 *   - csv
 	 *   - json
 	 *   - yaml
 	 * ---
@@ -118,7 +117,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 		}
 
 		$formatter = $this->get_formatter( $assoc_args );
-		$formatter->display_items( $forum );
+		$formatter->display_item( $forum );
 	}
 
 	/**
@@ -182,16 +181,6 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *   - yaml
 	 * ---
 	 *
-	 * ## AVAILABLE FIELDS
-	 *
-	 * These fields will be displayed by default for each forum:
-	 *
-	 * * ID
-	 * * post_title
-	 * * post_name
-	 * * post_date
-	 * * post_status
-	 *
 	 * ## EXAMPLES
 	 *
 	 *     # List ids of all forums
@@ -208,9 +197,8 @@ class BBPCLI_Forums extends BBPCLI_Component {
 		$formatter = $this->get_formatter( $assoc_args );
 
 		$query_args = wp_parse_args( $assoc_args, array(
-			'post_type'      => bbp_get_forum_post_type(),
-			'post_status'    => bbp_get_public_status_id(),
-			'posts_per_page' => -1,
+			'post_type' => bbp_get_forum_post_type(),
+			'post_status' => bbp_get_public_status_id(),
 		) );
 
 		$query_args = self::process_csv_arguments_to_arrays( $query_args );

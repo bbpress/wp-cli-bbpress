@@ -14,21 +14,21 @@ Feature: Manage bbPress Topics
 		When I run `wp bbp topic delete 784`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 deleted.
+			Success: Topic 784 successfully deleted.
 			"""
 
 	Scenario: Trash a topic
 		When I run `wp bbp topic trash 784`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 trashed.
+			Success: Topic 784 successfully trashed.
 			"""
 
 	Scenario: Untrash a topic
 		When I run `wp bbp topic untrash 784`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 untrashed.
+			Success: Topic 784 successfully untrashed.
 			"""
 
 	Scenario: Open a topic

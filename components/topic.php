@@ -64,7 +64,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		);
 
 		$topic_meta = array(
-			'forum_id'  => $r['forum-id'],
+			'forum_id' => $r['forum-id'],
 		);
 
 		$id = bbp_insert_topic( $topic_data, $topic_meta );
@@ -97,7 +97,6 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * default: table
 	 * options:
 	 *   - table
-	 *   - csv
 	 *   - json
 	 *   - yaml
 	 * ---
@@ -122,7 +121,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		}
 
 		$formatter = $this->get_formatter( $assoc_args );
-		$formatter->display_items( $topic );
+		$formatter->display_item( $topic );
 	}
 
 	/**
@@ -131,12 +130,12 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * <topic-id>...
-	 * : One or more IDs of topics.
+	 * : One or more IDs of topics to delete.
 	 *
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp topic delete 486
-	 *     Success: Topic 486 deleted.
+	 *     Success: Topic 486 successfully deleted.
 	 */
 	public function delete( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -153,7 +152,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 			$r = bbp_deleted_topic( $topic_id );
 
 			if ( ! $r ) {
-				return array( 'success', sprintf( 'Topic %d deleted.', $topic_id ) );
+				return array( 'success', sprintf( 'Topic %d successfully deleted.', $topic_id ) );
 			} else {
 				return array( 'error', sprintf( 'Could not delete %d topic.', $topic_id ) );
 			}
@@ -171,7 +170,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp topic trash 789
-	 *     Success: Topic 789 trashed.
+	 *     Success: Topic 789 successfully trashed.
 	 */
 	public function trash( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -184,7 +183,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		wp_trash_post( $topic_id );
 
 		if ( ! bbp_trashed_topic( $topic_id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d trashed.', $topic_id ) );
+			WP_CLI::success( sprintf( 'Topic %d successfully trashed.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not trash topic %d.', $topic_id ) );
 		}
@@ -201,7 +200,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp topic untrash 3938
-	 *     Success: Topic 3938 untrashed.
+	 *     Success: Topic 3938 successfully untrashed.
 	 */
 	public function untrash( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -214,7 +213,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		wp_untrash_post( $topic_id );
 
 		if ( ! bbp_untrashed_topic( $topic_id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d untrashed.', $topic_id ) );
+			WP_CLI::success( sprintf( 'Topic %d successfully untrashed.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not untrash topic %d.', $topic_id ) );
 		}
@@ -244,16 +243,6 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 *   - yaml
 	 * ---
 	 *
-	 * ## AVAILABLE FIELDS
-	 *
-	 * These fields will be displayed by default for each topic:
-	 *
-	 * * ID
-	 * * post_title
-	 * * post_name
-	 * * post_date
-	 * * post_status
-	 *
 	 * ## EXAMPLES
 	 *
 	 *     # List ids of all topics
@@ -270,9 +259,8 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		$formatter = $this->get_formatter( $assoc_args );
 
 		$query_args = wp_parse_args( $assoc_args, array(
-			'post_type'      => bbp_get_topic_post_type(),
-			'post_status'    => bbp_get_public_status_id(),
-			'posts_per_page' => -1,
+			'post_type'   => bbp_get_topic_post_type(),
+			'post_status' => bbp_get_public_status_id(),
 		) );
 
 		$query_args = self::process_csv_arguments_to_arrays( $query_args );
@@ -380,8 +368,8 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 */
 	public function generate( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(
-			'forum-id' => 0,
 			'count'    => 100,
+			'forum-id' => 0,
 		) );
 
 		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating topics', $r['count'] );

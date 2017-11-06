@@ -22,6 +22,8 @@ class BBPCLI_Favorites extends BBPCLI_Component {
 	 *
 	 *    $ wp bbp favorite add --user-id=user_test --topic-id=354354
 	 *    Success: Favorite successfully added.
+	 *
+	 * @alias create
 	 */
 	public function add( $args, $assoc_args ) {
 		// Check if user exists.
@@ -62,6 +64,8 @@ class BBPCLI_Favorites extends BBPCLI_Component {
 	 *
 	 *    $ wp bbp favorite remove --user-id=user_test --topic-id=28468
 	 *    Success: Favorite successfully removed.
+	 *
+	 * @alias delete
 	 */
 	public function remove( $args, $assoc_args ) {
 		// Check if user exists.
@@ -95,6 +99,7 @@ class BBPCLI_Favorites extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp favorite list_users 456
+	 *     54564 4564 454 545
 	 */
 	public function list_users( $args, $assoc_args ) {
 		$topic_id = $args[0];

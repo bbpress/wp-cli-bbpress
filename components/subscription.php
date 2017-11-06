@@ -32,10 +32,6 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 	 * @alias subscribe
 	 */
 	public function add( $args, $assoc_args ) {
-		$r = wp_parse_args( $assoc_args, array(
-			'type' => 'post',
-		) );
-
 		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 		if ( ! $user ) {
@@ -43,7 +39,7 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 		}
 
 		// True if added.
-		if ( bbp_add_user_subscription( $user->ID, $assoc_args['object-id'], $r['type'] ) ) {
+		if ( bbp_add_user_subscription( $user->ID, $assoc_args['object-id'], $assoc_args['type'] ) ) {
 			WP_CLI::success( 'Subscription successfully  added.' );
 		} else {
 			WP_CLI::error( 'Could not add the subscription.' );
@@ -78,10 +74,6 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 	 * @alias unsubscribe
 	 */
 	public function remove( $args, $assoc_args ) {
-		$r = wp_parse_args( $assoc_args, array(
-			'type' => 'post',
-		) );
-
 		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 		if ( ! $user ) {
@@ -89,7 +81,7 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 		}
 
 		// True if added.
-		if ( bbp_remove_user_subscription( $user->ID, $assoc_args['object-id'], $r['type'] ) ) {
+		if ( bbp_remove_user_subscription( $user->ID, $assoc_args['object-id'], $assoc_args['type'] ) ) {
 			WP_CLI::success( 'Subscription successfully removed.' );
 		} else {
 			WP_CLI::error( 'Could not remove the subscription.' );
@@ -113,14 +105,13 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp subscription list_users --object-id=242
+	 *     654654 5465465 4564654 56465
+	 *
 	 *     $ wp bbp subscription list_users --object-id=45765 --type=another-type
+	 *     5545 54654 465456 446 6465
 	 */
 	public function list_users( $args, $assoc_args ) {
-		$r = wp_parse_args( $assoc_args, array(
-			'type' => 'post',
-		) );
-
-		$ids = bbp_get_subscribers( $assoc_args['object-id'], $r['type'] );
+		$ids = bbp_get_subscribers( $assoc_args['object-id'], $assoc_args['type'] );
 
 		if ( ! $ids ) {
 			echo implode( ' ', $ids ); // WPCS: XSS ok.

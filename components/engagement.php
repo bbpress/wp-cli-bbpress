@@ -95,7 +95,10 @@ class BBPCLI_Engagements extends BBPCLI_Component {
 	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp subscription list_users --object-id=242
+	 *     165465 654564 1161 313
+	 *
 	 *     $ wp bbp subscription list_users --object-id=45765 --type=another-type
+	 *     54564 465465 65465
 	 */
 	public function list_users( $args, $assoc_args ) {
 		$ids = bbp_get_topic_engagements( $args[0] );

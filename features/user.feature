@@ -3,7 +3,7 @@ Feature: Manage bbPress Users
   Scenario: Mark a user's topics and replies as spam
     Given a bbPress install
 
-    When I run `wp bbp user spam --user-id=465456`
+    When I run `wp bbp user spam 465456`
     Then STDOUT should contain:
       """
       Success: User topics and replies marked as spam.
@@ -12,7 +12,7 @@ Feature: Manage bbPress Users
   Scenario: Mark a user's topics and replies as ham
     Given a bbPress install
 
-    When I run `wp bbp user ham --user-id=465456`
+    When I run `wp bbp user ham 465456`
     Then STDOUT should contain:
       """
       Success: User topics and replies marked as ham.
@@ -30,7 +30,7 @@ Feature: Manage bbPress Users
   Scenario: Get URL of the user profile page
     Given a bbPress install
 
-    When I run `wp bbp user permalink {USER}`
+    When I run `wp bbp user permalink 5646`
     Then STDOUT should contain:
       """
       Success: User profile page: https://example.com/user-slug

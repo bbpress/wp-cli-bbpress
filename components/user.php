@@ -16,10 +16,10 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp user spam --user-id=465456
+	 *    $ wp bbp user spam 465456
 	 *    Success: User topics and replies marked as spam.
 	 *
-	 *    $ wp bbp user unham --user-id=user_login
+	 *    $ wp bbp user unham user_login
 	 *    Success: User topics and replies marked as spam.
 	 *
 	 * @alias unham
@@ -48,10 +48,10 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp user ham --user-id=465456
+	 *    $ wp bbp user ham 465456
 	 *    Success: User topics and replies marked as ham.
 	 *
-	 *    $ wp bbp user unspam --user-id=user_login
+	 *    $ wp bbp user unspam user_login
 	 *    Success: User topics and replies marked as ham.
 	 *
 	 * @alias unspam
@@ -75,10 +75,10 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * --user-id<user>
+	 * --user-id=<user>
 	 * : Identifier for the user. Accepts either a user_login or a numeric ID.
 	 *
-	 * --role<role>
+	 * --role=<role>
 	 * : Role to set for the member. (keymaster, moderator, participant, spectator, blocked)
 	 * ---
 	 * Default: participant
@@ -123,10 +123,10 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp user permalink --user-id=465456
+	 *    $ wp bbp user permalink 465456
 	 *    Success: User profile page: https://example.com/user-slug
 	 *
-	 *    $ wp bbp user url --user-id=user_login
+	 *    $ wp bbp user url user_login
 	 *    Success: User profile page: https://example.com/user-slug
 	 *
 	 * @alias url

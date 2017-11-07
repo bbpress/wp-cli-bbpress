@@ -7,15 +7,15 @@ use Behat\Gherkin\Node\PyStringNode,
 $steps->Given( '/^a bbPress install$/',
 	function ( $world ) {
 		$world->install_wp();
-		$dest_dir = $world->variables['RUN_DIR'] . '/wp-content/plugins/bbpress/';
-		if ( ! is_dir( $dest_dir ) ) {
-			mkdir( $dest_dir );
-		}
+		// $dest_dir = $world->variables['RUN_DIR'] . '/wp-content/plugins/bbpress/';
+		// if ( ! is_dir( $dest_dir ) ) {
+			// mkdir( $dest_dir );
+		// }
 
-		$bbp_src_dir = getenv( 'BBP_LOAD_SOURCE' );
+		// $bbp_src_dir = getenv( 'BBP_LOAD_SOURCE' );
 		try {
-			$world->copy_dir( $bbp_src_dir, $dest_dir );
-			$world->proc( 'wp plugin activate bbpress' )->run_check();
+			// $world->copy_dir( $bbp_src_dir, $dest_dir );
+			$world->proc( 'wp plugin install bbpress --activate' )->run_check();
 
 		} catch ( Exception $e ) {};
 	}

@@ -16,15 +16,3 @@ Feature: Manage bbPress Users
       """
       Success: New role for user set: moderator
       """
-
-    When I run `wp bbp user spam {USER_ID}`
-    Then STDOUT should contain:
-      """
-      Success: User topics and replies marked as spam.
-      """
-
-    When I run `wp bbp user ham {USER_ID}`
-    Then STDOUT should contain:
-      """
-      Success: User topics and replies marked as ham.
-      """

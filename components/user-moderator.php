@@ -25,6 +25,7 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	 *    $ wp bbp user moderator add --forum-id=465465 --user-id=user_login
 	 *    Success: Member added as a forum moderator.
 	 *
+	 * @subcommand bbp user
 	 * @alias create
 	 */
 	public function add( $args, $assoc_args ) {
@@ -68,6 +69,7 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	 *    $ wp bbp user moderator remove --forum-id=64654 --user-id=user_login
 	 *    Success: Member removed as a forum moderator.
 	 *
+	 * @subcommand bbp user
 	 * @alias delete
 	 */
 	public function remove( $args, $assoc_args ) {

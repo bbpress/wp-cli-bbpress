@@ -9,5 +9,5 @@ WP_CLI::add_hook( 'before_wp_load', function() {
 	require_once( __DIR__ . '/component.php' );
 	require_once( __DIR__ . '/components/tools.php' );
 	require_once( __DIR__ . '/components/user.php' );
-	// require_once( __DIR__ . '/components/user-moderator.php' );
+	require_once( __DIR__ . '/components/user-moderator.php' );
 } );

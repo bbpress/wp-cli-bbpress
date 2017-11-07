@@ -1,37 +1,37 @@
 Feature: Manage bbPress Users
 
-  Scenario: Mark a user's topics and replies as spam
+  Scenario: User CRUD operations
     Given a bbPress install
 
-    When I run `wp bbp user spam 465456`
+    When I try `wp user get bogus-user`
+    Then the return code should be 1
+    And STDOUT should be empty
+
+    When I run `wp user create testuser2 testuser2@example.com --first_name=test --last_name=user --role=participant --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {USER_ID}
+
+
+    When I run `wp bbp user permalink {USER_ID}`
     Then STDOUT should contain:
       """
-      Success: User topics and replies marked as spam.
+      Success: User profile page: https://example.com/user
       """
 
-  Scenario: Mark a user's topics and replies as ham
-    Given a bbPress install
-
-    When I run `wp bbp user ham 465456`
-    Then STDOUT should contain:
-      """
-      Success: User topics and replies marked as ham.
-      """
-
-  Scenario: Set user role
-    Given a bbPress install
-
-    When I run `wp bbp user set_role --user-id=465456 --role=moderator`
+    When I run `wp bbp user set_role --user-id={USER_ID} --role=moderator`
     Then STDOUT should contain:
       """
       Success: New role for user set: moderator
       """
 
-  Scenario: Get URL of the user profile page
-    Given a bbPress install
-
-    When I run `wp bbp user permalink 5646`
+    When I run `wp bbp user spam {USER_ID}`
     Then STDOUT should contain:
       """
-      Success: User profile page: https://example.com/user-slug
+      Success: User topics and replies marked as spam.
+      """
+
+    When I run `wp bbp user ham {USER_ID}`
+    Then STDOUT should contain:
+      """
+      Success: User topics and replies marked as ham.
       """

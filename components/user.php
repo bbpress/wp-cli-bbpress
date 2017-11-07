@@ -155,7 +155,7 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 * @return array An array of forum roles.
 	 */
 	protected function forum_roles() {
-		return array( 'keymaster, moderator, participant, spectator, blocked ' );
+		return array( 'keymaster', 'moderator', 'participant', 'spectator', 'blocked' );
 	}
 }
 

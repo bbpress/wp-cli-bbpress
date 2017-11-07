@@ -7,7 +7,7 @@
 class BBPCLI_User_Moderators extends BBPCLI_Component {
 
 	/**
-	 * Add a moderator
+	 * Add a forum moderator
 	 *
 	 * ## OPTIONS
 	 *
@@ -20,10 +20,10 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	 * ## EXAMPLES
 	 *
 	 *    $ wp bbp user moderator add --forum-id=545646 --user-id=465456
-	 *    Success: Member added as a moderator.
+	 *    Success: Member added as a forum moderator.
 	 *
 	 *    $ wp bbp user moderator add --forum-id=465465 --user-id=user_login
-	 *    Success: Member added as a moderator.
+	 *    Success: Member added as a forum moderator.
 	 *
 	 * @alias create
 	 */
@@ -50,7 +50,7 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	}
 
 	/**
-	 * Remove a moderator
+	 * Remove a forum moderator
 	 *
 	 * ## OPTIONS
 	 *
@@ -63,10 +63,10 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	 * ## EXAMPLES
 	 *
 	 *    $ wp bbp user moderator remove --forum-id=456456 --user-id=4995
-	 *    Success: Member removed as a moderator.
+	 *    Success: Member removed as a forum moderator.
 	 *
 	 *    $ wp bbp user moderator remove --forum-id=64654 --user-id=user_login
-	 *    Success: Member removed as a moderator.
+	 *    Success: Member removed as a forum moderator.
 	 *
 	 * @alias delete
 	 */
@@ -86,9 +86,9 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 		}
 
 		if ( bbp_remove_moderator( $forum_id, $user->ID ) ) {
-			WP_CLI::success( 'Member removed as a moderator.' );
+			WP_CLI::success( 'Member removed as a forum moderator.' );
 		} else {
-			WP_CLI::error( 'Could not add the moderator.' );
+			WP_CLI::error( 'Could not add the user as a forum moderator.' );
 		}
 	}
 
@@ -115,7 +115,7 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	 * ## EXAMPLES
 	 *
 	 *    $ wp bbp user moderator list --forum-id=456456 --format=count
-	 *    5421
+	 *    6
 	 *
 	 *    $ wp bbp user moderator list --forum-id=45456 --format=ids
 	 *    5421 454 654654 5454 545
@@ -132,7 +132,7 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 			WP_CLI::error( 'No forum found by that ID.' );
 		}
 
-		$mod = bbp_get_moderators( $forum_id );
+		$moderators = bbp_get_moderators( $forum_id );
 		$ids = bbp_get_moderator_ids( $forum_id );
 
 		if ( 'ids' === $formatter->format ) {
@@ -140,7 +140,7 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 		} elseif ( 'count' === $formatter->format ) {
 			$formatter->display_items( count( $ids ) );
 		} else {
-			$formatter->display_items( $mod );
+			$formatter->display_items( $moderators );
 		}
 	}
 }

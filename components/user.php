@@ -6,22 +6,6 @@
  */
 class BBPCLI_Users extends BBPCLI_Component {
 
-	public function topics( $args, $assoc_args ) {
-		$defaults = array(
-			'author' => bbp_get_displayed_user_id()
-		);
-
-		// bbp_get_user_topics_started()
-	}
-
-	public function replies( $args, $assoc_args ) {
-		$defaults = array(
-			'author' => bbp_get_displayed_user_id(),
-		);
-
-		// bbp_get_user_replies_created()
-	}
-
 	/**
 	 * Mark a user's topics and replies as spam
 	 *
@@ -32,10 +16,10 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp user moderator spam --user-id=465456
+	 *    $ wp bbp user spam --user-id=465456
 	 *    Success: User topics and replies marked as spam.
 	 *
-	 *    $ wp bbp user moderator spam --user-id=user_login
+	 *    $ wp bbp user unham --user-id=user_login
 	 *    Success: User topics and replies marked as spam.
 	 *
 	 * @alias unham
@@ -64,10 +48,10 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp user moderator ham --user-id=465456
+	 *    $ wp bbp user ham --user-id=465456
 	 *    Success: User topics and replies marked as ham.
 	 *
-	 *    $ wp bbp user moderator ham --user-id=user_login
+	 *    $ wp bbp user unspam --user-id=user_login
 	 *    Success: User topics and replies marked as ham.
 	 *
 	 * @alias unspam
@@ -95,15 +79,18 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 * : Identifier for the user. Accepts either a user_login or a numeric ID.
 	 *
 	 * --role<role>
-	 * : Role to set for the member.
+	 * : Role to set for the member. (keymaster, moderator, participant, spectator, blocked)
+	 * ---
+	 * Default: participant
+	 * ---
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp user moderator set_role --user-id=465456 --role=mod
-	 *    Success: User topics and replies marked as ham.
+	 *    $ wp bbp user set_role --user-id=465456 --role=moderator
+	 *    Success: New role for user set: moderator
 	 *
-	 *    $ wp bbp user moderator set_role --user-id=user_login --role=mod
-	 *    Success: User topics and replies marked as ham.
+	 *    $ wp bbp user set_role --user-id=user_login --role=spectator
+	 *    Success: New role for user set: spectator
 	 */
 	public function set_role( $args, $assoc_args ) {
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
@@ -112,7 +99,12 @@ class BBPCLI_Users extends BBPCLI_Component {
 			WP_CLI::error( 'No user found by that username or id' );
 		}
 
-		$retval = bbp_set_user_role( $user->ID, $assoc_args['role'] );
+		$role = $assoc_args['role'];
+		if ( ! in_array( $role, $this->forum_roles(), true ) ) {
+			$role = 'participant';
+		}
+
+		$retval = bbp_set_user_role( $user->ID, $role );
 
 		if ( is_string( $retval ) ) {
 			WP_CLI::success( sprintf( 'New role for user set: %s', $retval ) );
@@ -131,11 +123,11 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp user moderator permalink --user-id=465456
-	 *    Success: User profile page: https://site.com/
+	 *    $ wp bbp user permalink --user-id=465456
+	 *    Success: User profile page: https://example.com/user-slug
 	 *
-	 *    $ wp bbp user moderator url --user-id=user_login
-	 *    Success: User profile page: https://site.com/
+	 *    $ wp bbp user url --user-id=user_login
+	 *    Success: User profile page: https://example.com/user-slug
 	 *
 	 * @alias url
 	 */
@@ -153,6 +145,17 @@ class BBPCLI_Users extends BBPCLI_Component {
 		} else {
 			WP_CLI::error( 'Could not find user profile page.' );
 		}
+	}
+
+	/**
+	 * Forum Roles
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array An array of forum roles.
+	 */
+	protected function forum_roles() {
+		return array( 'keymaster, moderator, participant, spectator, blocked ' );
 	}
 }
 

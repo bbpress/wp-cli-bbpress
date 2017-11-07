@@ -30,7 +30,7 @@ Feature: Manage bbPress Users
   Scenario: Get URL of the user profile page
     Given a bbPress install
 
-    When I run `wp bbp user permalink --user-id=465456`
+    When I run `wp bbp user permalink {USER}`
     Then STDOUT should contain:
       """
       Success: User profile page: https://example.com/user-slug

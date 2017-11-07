@@ -7,7 +7,7 @@ Feature: Manage bbPress Users
     Then the return code should be 1
     And STDOUT should be empty
 
-    When I run `wp user create testuser2 testuser2@example.com --first_name=test --last_name=user --role=participant --porcelain`
+    When I run `wp user create testuser2 testuser2@example.com --first_name=test --last_name=user --role=author --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {USER_ID}
 

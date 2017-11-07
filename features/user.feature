@@ -15,7 +15,7 @@ Feature: Manage bbPress Users
     When I run `wp bbp user permalink {USER_ID}`
     Then STDOUT should contain:
       """
-      Success: User profile page: https://example.com/user
+      Success: User profile page: http://example.com/?bbp_user={USER_ID}
       """
 
     When I run `wp bbp user set_role --user-id={USER_ID} --role=moderator`

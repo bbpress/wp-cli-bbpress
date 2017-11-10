@@ -139,6 +139,9 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * <forum-id>...
 	 * : One or more IDs of forums to delete.
 	 *
+	 * [--yes]
+	 * : Answer yes to the confirmation message.
+	 *
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp forum delete 486
@@ -146,6 +149,8 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 */
 	public function delete( $args, $assoc_args ) {
 		$forum_id = $args[0];
+
+		WP_CLI::confirm( 'Are you sure you want to delete this forum and its topics/replies?', $assoc_args );
 
 		parent::_delete( array( $forum_id ), $assoc_args, function ( $forum_id ) {
 			// Check if forum exists.

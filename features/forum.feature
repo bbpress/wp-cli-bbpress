@@ -37,8 +37,11 @@ Feature: Manage bbPress Forums
       Success: Forum {FORUM_ID} and its topics untrashed.
       """
 
-    When I run `wp bbp forum delete {FORUM_ID}`
+    When I run `wp bbp forum delete {FORUM_ID} --yes`
     Then STDOUT should contain:
       """
       Success: Forum {FORUM_ID} and its topics and replies deleted.
       """
+
+    When I try `wp bbp forum delete {FORUM_ID} --yes`
+    Then the return code should be 1

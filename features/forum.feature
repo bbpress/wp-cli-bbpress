@@ -1,52 +1,44 @@
 Feature: Manage bbPress Forums
 
-  Background:
-    Given a WP install
+  Scenario: Forum CRUD commands
+    Given a bbPress install
 
-  Scenario: Delete a forum
-    When I run `wp bbp forum delete 520`
+    When I run `wp bbp forum create --title="Forum" --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {FORUM_ID}
+
+    When I run `wp bbp forum list --format=ids`
     Then STDOUT should contain:
       """
-      Success: Forum 520 and its topics and replies deleted.
+      {FORUM_ID}
       """
 
-  Scenario: Trash a forum
-    When I run `wp bbp forum trash 789`
+    When I run `wp bbp forum open {FORUM_ID}`
     Then STDOUT should contain:
       """
-      Success: Forum 789 and its topics trashed.
+      Success: Forum {FORUM_ID} successfully opened.
       """
 
-  Scenario: Untrash a forum
-    When I run `wp bbp forum untrash 789`
+    When I run `wp bbp forum close {FORUM_ID}`
     Then STDOUT should contain:
       """
-      Success: Forum 789 and its topics untrashed.
+      Success: Forum {FORUM_ID} successfully closed.
       """
 
-  Scenario: Open a forum
-    When I run `wp bbp forum open 456`
+    When I run `wp bbp forum trash {FORUM_ID}`
     Then STDOUT should contain:
       """
-      Success: Forum 456 successfully opened.
+      Success: Forum {FORUM_ID} and its topics trashed.
       """
 
-  Scenario: Close a forum
-    When I run `wp bbp forum close 487`
+    When I run `wp bbp forum untrash {FORUM_ID}`
     Then STDOUT should contain:
       """
-      Success: Forum 487 successfully closed.
+      Success: Forum {FORUM_ID} and its topics untrashed.
       """
 
-  Scenario: Get permalink of a forum
-    When I run `wp bbp forum permalink 500`
+    When I run `wp bbp forum delete {FORUM_ID}`
     Then STDOUT should contain:
       """
-      Success: Forum Permalink: http://site.com/forums/forum/forum-slug/
-      """
-
-    When I run `wp bbp forum url 456`
-    Then STDOUT should contain:
-      """
-      Success: Forum Permalink: http://site.com/forums/forum/another-forum-slug/
+      Success: Forum {FORUM_ID} and its topics and replies deleted.
       """

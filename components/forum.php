@@ -38,10 +38,15 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * default: false
 	 * ---
 	 *
+	 * [--porcelain]
+	 * : Output only the new forum id.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp forum create --title="Forum Test 01" --content="Content for forum" --user-id=39
 	 *     $ wp bbp forum create --title="Forum 02" --content="Another content for forum" --user-id=45 --status=closed
+	 *
+	 * @alias add
 	 */
 	public function create( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(
@@ -67,7 +72,11 @@ class BBPCLI_Forums extends BBPCLI_Component {
 		}
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Forum %d created: %s', $id, bbp_get_forum_permalink( $id ) ) );
+			if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
+				WP_CLI::line( $id );
+			} else {
+				WP_CLI::success( sprintf( 'Forum %d created: %s', $id, bbp_get_forum_permalink( $id ) ) );
+			}
 		} else {
 			WP_CLI::error( 'Could not create forum.' );
 		}
@@ -94,6 +103,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * options:
 	 *   - table
 	 *   - json
+	 *   - csv
 	 *   - yaml
 	 * ---
 	 *
@@ -111,6 +121,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 		}
 
 		$forum = bbp_get_forum( $forum_id, ARRAY_A );
+		$forum['url'] = bbp_get_forum_permalink( $forum_id );
 
 		if ( empty( $assoc_args['fields'] ) ) {
 			$assoc_args['fields'] = array_keys( $forum );
@@ -136,12 +147,11 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	public function delete( $args, $assoc_args ) {
 		$forum_id = $args[0];
 
-		// Check if forum exists.
-		if ( ! bbp_is_forum( $forum_id ) ) {
-			WP_CLI::error( 'No forum found by that ID.' );
-		}
-
-		parent::_delete( $args, $assoc_args, function ( $forum_id, $assoc_args ) {
+		parent::_delete( array( $forum_id ), $assoc_args, function ( $forum_id ) {
+			// Check if forum exists.
+			if ( ! bbp_is_forum( $forum_id ) ) {
+				WP_CLI::error( 'No forum found by that ID.' );
+			}
 
 			bbp_delete_forum_topics( $forum_id );
 
@@ -310,18 +320,13 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *     $ wp bbp forum generate --count=15 --status=hidden
 	 */
 	public function generate( $args, $assoc_args ) {
-		$r = wp_parse_args( $assoc_args, array(
-			'count'  => 100,
-			'status' => 'open',
-		) );
+		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating forums', $assoc_args['count'] );
 
-		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating forums', $r['count'] );
-
-		for ( $i = 0; $i < $r['count']; $i++ ) {
+		for ( $i = 0; $i < $assoc_args['count']; $i++ ) {
 			$this->create( array(), array(
 				'title'   => sprintf( 'Test Forum - #%d', $i ),
 				'content' => sprintf( 'Content for the forum - #%d', $i ),
-				'status'  => $r['status'],
+				'status'  => $assoc_args['status'],
 				'silent'  => true,
 			) );
 
@@ -390,47 +395,6 @@ class BBPCLI_Forums extends BBPCLI_Component {
 			WP_CLI::error( sprintf( 'Could not close the forum %d.', $forum_id ) );
 		}
 	}
-
-	/**
-	 * Get the permalink of a forum.
-	 *
-	 * ## OPTIONS
-	 *
-	 * <forum-id>
-	 * : Identifier for the forum.
-	 *
-	 * ## EXAMPLES
-	 *
-	 *     $ wp bbp forum permalink 500
-	 *     Success: Forum Permalink: http://site.com/forums/forum/forum-slug/
-	 *
-	 *     $ wp bbp forum url 456
-	 *     Success: Forum Permalink: http://site.com/forums/forum/another-forum-slug/
-	 *
-	 * @alias url
-	 */
-	public function permalink( $args, $assoc_args ) {
-		$forum_id = $args[0];
-
-		// Check if forum exists.
-		if ( ! bbp_is_forum( $forum_id ) ) {
-			WP_CLI::error( 'No forum found by that ID.' );
-		}
-
-		$permalink = bbp_get_forum_permalink( $forum_id );
-
-		if ( is_string( $permalink ) ) {
-			WP_CLI::success( sprintf( 'Forum Permalink: %s', $permalink ) );
-		} else {
-			WP_CLI::error( 'No permalink found for the forum.' );
-		}
-	}
 }
 
-WP_CLI::add_command( 'bbp forum', 'BBPCLI_Forums', array(
-	'before_invoke' => function() {
-		if ( ! class_exists( 'bbPress' ) ) {
-			WP_CLI::error( 'bbPress is not installed or active.' );
-		}
-	},
-) );
+WP_CLI::add_command( 'bbp forum', 'BBPCLI_Forums' );

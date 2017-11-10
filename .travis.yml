@@ -50,7 +50,7 @@ before_install:
 install:
   - composer install
   - bash bin/install-package-tests.sh
-  - export BBP_SRC_DIR=/tmp/bp-src/
+  - export BBP_SRC_DIR=/tmp/bpp-src/
   - svn co --ignore-externals https://bbpress.svn.wordpress.org/trunk/src $BBP_SRC_DIR
 
 before_script:

@@ -293,6 +293,13 @@ class FeatureContext extends BehatContext implements ClosuredContextInterface {
 		rename( $this->variables['RUN_DIR'] . "/$src", $this->variables['RUN_DIR'] . "/$dest" );
 	}
 
+	/**
+	 * Copy a directory (recursive). Destination directory must exist.
+	 */
+	public static function copy_dir( $src_dir, $dest_dir ) {
+		Process::create( Utils\esc_cmd( "cp -r %s/* %s", $src_dir, $dest_dir ) )->run_check();
+	}
+
 	public function add_line_to_wp_config( &$wp_config_code, $line ) {
 		$token = "/* That's all, stop editing!";
 

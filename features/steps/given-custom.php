@@ -14,7 +14,7 @@ $steps->Given( '/^a bbPress install$/',
 
 		$bbp_src_dir = getenv( 'BBP_SRC_DIR' );
 		try {
-			$world->move_files( $bbp_src_dir, $dest_dir );
+			$world->copy_dir( $bbp_src_dir, $dest_dir );
 			$world->proc( 'wp plugin activate bbpress' )->run_check();
 
 		} catch ( Exception $e ) {};

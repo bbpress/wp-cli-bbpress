@@ -90,9 +90,6 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * <forum-id>
 	 * : Identifier for the forum.
 	 *
-	 * [--field=<field>]
-	 * : Instead of returning the whole forum, returns the value of a single field.
-	 *
 	 * [--fields=<fields>]
 	 * : Limit the output to specific fields. Defaults to all fields.
 	 *
@@ -107,10 +104,9 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *   - yaml
 	 * ---
 	 *
-	 * ## EXAMPLES
+	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp forum get 6654
-	 *     $ wp bbp forum get 4677 --field=content
 	 */
 	public function get( $args, $assoc_args ) {
 		$forum_id = $args[0];
@@ -162,9 +158,7 @@ class BBPCLI_Forums extends BBPCLI_Component {
 
 			wp_delete_post( $forum_id, true );
 
-			$r = bbp_deleted_forum( $forum_id );
-
-			if ( ! $r ) {
+			if ( ! bbp_deleted_forum( $forum_id ) ) {
 				return array( 'success', sprintf( 'Forum %d and its topics and replies deleted.', $forum_id ) );
 			} else {
 				return array( 'error', sprintf( 'Could not delete forum %d and its topics and replies.', $forum_id ) );
@@ -176,9 +170,6 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * Get a list of forums.
 	 *
 	 * ## OPTIONS
-	 *
-	 * [--<field>=<value>]
-	 * : One or more args to pass to WP_Query.
 	 *
 	 * [--fields=<fields>]
 	 * : Limit the output to specific object fields.

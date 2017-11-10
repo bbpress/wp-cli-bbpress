@@ -60,3 +60,9 @@ Feature: Manage bbPress Topics
 			"""
 			Success: Topic {TOPIC_ID} successfully unsticked.
 			"""
+
+		When I run `wp bbp topic delete {TOPIC_ID} --yes`
+		Then STDOUT should contain:
+			"""
+			Success: Topic {TOPIC_ID} successfully deleted.
+			"""

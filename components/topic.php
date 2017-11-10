@@ -377,17 +377,12 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 *     $ wp bbp topic generate --count=50 --forum-id=342
 	 */
 	public function generate( $args, $assoc_args ) {
-		$r = wp_parse_args( $assoc_args, array(
-			'count'    => 100,
-			'forum-id' => 0,
-		) );
+		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating topics', $assoc_args['count'] );
 
-		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating topics', $r['count'] );
-
-		for ( $i = 0; $i < $r['count']; $i++ ) {
+		for ( $i = 0; $i < $assoc_args['count']; $i++ ) {
 			$this->create( array(), array(
 				'title'    => sprintf( 'Topic Title "%s"', $i ),
-				'forum-id' => $r['forum-id'],
+				'forum-id' => $assoc_args['forum-id'],
 				'silent'   => true,
 			) );
 

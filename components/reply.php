@@ -130,6 +130,7 @@ class BBPCLI_Replies extends BBPCLI_Component {
 		}
 
 		$reply = bbp_get_reply( $reply_id, ARRAY_A );
+		$reply['url'] = bbp_get_reply_permalink( $reply_id );
 
 		if ( empty( $assoc_args['fields'] ) ) {
 			$assoc_args['fields'] = array_keys( $reply );
@@ -468,47 +469,6 @@ class BBPCLI_Replies extends BBPCLI_Component {
 			WP_CLI::error( sprintf( 'Could not unapprove reply %d.', $reply_id ) );
 		}
 	}
-
-	/**
-	 * Get the permalink of a reply.
-	 *
-	 * ## OPTIONS
-	 *
-	 * <reply-id>
-	 * : Identifier for the reply.
-	 *
-	 * ## EXAMPLES
-	 *
-	 *     $ wp bbp reply permalink 165
-	 *     Success: Reply Permalink: http://site.com/forums/reply/reply-slug/
-	 *
-	 *     $ wp bbp reply url 398
-	 *     Success: Reply Permalink: http://site.com/forums/reply/another-reply-slug/
-	 *
-	 * @alias url
-	 */
-	public function permalink( $args, $assoc_args ) {
-		$reply_id = $args[0];
-
-		// Check if reply exists.
-		if ( ! bbp_is_reply( $reply_id ) ) {
-			WP_CLI::error( 'No reply found by that ID.' );
-		}
-
-		$permalink = bbp_get_reply_permalink( $reply_id );
-
-		if ( is_string( $permalink ) ) {
-			WP_CLI::success( sprintf( 'Reply Permalink: %s', $permalink ) );
-		} else {
-			WP_CLI::error( 'No permalink found for the reply.' );
-		}
-	}
 }
 
-WP_CLI::add_command( 'bbp reply', 'BBPCLI_Replies', array(
-	'before_invoke' => function() {
-		if ( ! class_exists( 'bbPress' ) ) {
-			WP_CLI::error( 'bbPress is not installed or active.' );
-		}
-	},
-) );
+WP_CLI::add_command( 'bbp reply', 'BBPCLI_Replies' );

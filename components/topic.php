@@ -38,6 +38,9 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * default: false
 	 * ---
 	 *
+	 * [--porcelain]
+	 * : Output only the new topic id.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp topic create --title="Topic 01" --content="Content for topic" --user-id=39
@@ -74,7 +77,11 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		}
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d created: %s', $id, bbp_get_topic_permalink( $id ) ) );
+			if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
+				WP_CLI::line( $id );
+			} else {
+				WP_CLI::success( sprintf( 'Topic %d created: %s', $id, bbp_get_topic_permalink( $id ) ) );
+			}
 		} else {
 			WP_CLI::error( 'Could not create topic.' );
 		}

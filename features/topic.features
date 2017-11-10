@@ -1,101 +1,62 @@
 Feature: Manage bbPress Topics
 
-	Background:
-		Given a WP install
+	Scenario: Topic CRUD commands
+	    Given a bbPress install
 
-  	Scenario: Create a topic
-		When I run `wp bbp topic create --title="Topic" --user-id=45 --forum-id=2497`
+	    When I run `wp bbp topic create --title="Topic" --porcelain`
+	    Then STDOUT should be a number
+	    And save STDOUT as {TOPIC_ID}
+
+	    When I run `wp bbp topic list --format=ids`
+	    Then STDOUT should contain:
+	      """
+	      {TOPIC_ID}
+	      """
+
+		When I run `wp bbp topic trash {TOPIC_ID}`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 created: http://site.com/forums/topic/topic-slug/.
+			Success: Topic {TOPIC_ID} successfully trashed.
 			"""
 
-	Scenario: Delete a topic
-		When I run `wp bbp topic delete 784`
+		When I run `wp bbp topic untrash {TOPIC_ID}`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 successfully deleted.
+			Success: Topic {TOPIC_ID} successfully untrashed.
 			"""
 
-	Scenario: Trash a topic
-		When I run `wp bbp topic trash 784`
+		When I run `wp bbp topic close {TOPIC_ID}`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 successfully trashed.
+			Success: Topic {TOPIC_ID} successfully closed.
 			"""
 
-	Scenario: Untrash a topic
-		When I run `wp bbp topic untrash 784`
+		When I run `wp bbp topic open {TOPIC_ID}`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 successfully untrashed.
+			Success: Topic {TOPIC_ID} successfully opened.
 			"""
 
-	Scenario: Open a topic
-		When I run `wp bbp topic open 784`
+		When I run `wp bbp topic spam {TOPIC_ID}`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 successfully opened.
+			Success: Topic {TOPIC_ID} successfully spammed.
 			"""
 
-	Scenario: Close a topic
-		When I run `wp bbp topic close 7894`
+		When I run `wp bbp topic ham {TOPIC_ID}`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 7894 successfully closed.
+			Success: Topic {TOPIC_ID} successfully hammed.
 			"""
 
-	Scenario: Spam a topic
-		When I run `wp bbp topic spam 784`
+		When I run `wp bbp topic stick {TOPIC_ID}`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 784 successfully spammed.
+			Success: Topic {TOPIC_ID} successfully sticked.
 			"""
 
-	Scenario: Ham a topic
-		When I run `wp bbp topic ham 456`
+		When I run `wp bbp topic unstick {TOPIC_ID}`
 		Then STDOUT should contain:
 			"""
-			Success: Topic 456 successfully hammed.
-			"""
-
-	Scenario: Stick a topic
-		When I run `wp bbp topic stick 784`
-		Then STDOUT should contain:
-			"""
-			Success: Topic 784 successfully sticked.
-			"""
-
-	Scenario: Unstick a topic
-		When I run `wp bbp topic unstick 784`
-		Then STDOUT should contain:
-			"""
-			Success: Topic 784 successfully unsticked.
-			"""
-
-	Scenario: Approve a topic
-		When I run `wp bbp topic approve 784`
-		Then STDOUT should contain:
-			"""
-			Success: Topic 784 successfully approved.
-			"""
-
-	Scenario: Unapprove a topic
-		When I run `wp bbp topic unapprove 487`
-		Then STDOUT should contain:
-			"""
-			Success: Topic 487 successfully unapproved.
-			"""
-
-	Scenario: Get permalink of a topic
-		When I run `wp bbp topic permalink 500`
-		Then STDOUT should contain:
-			"""
-			 Success: Topic Permalink: http://site.com/forums/topic/topic-slug/
-			"""
-
-		When I run `wp bbp topic url 156`
-		Then STDOUT should contain:
-			"""
-			 Success: Topic Permalink: http://site.com/forums/topic/another-topic-slug/
+			Success: Topic {TOPIC_ID} successfully unsticked.
 			"""

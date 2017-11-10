@@ -1,73 +1,52 @@
 Feature: Manage bbPress Replies
 
-  Background:
-    Given a WP install
+  Scenario: Reply CRUD commands
+    Given a bbPress install
 
-  Scenario: Create a reply
-    When I run `wp bbp reply create --title="Title" --content="Content" --topic-id=456 --forum-id=456`
+    When I run `wp bbp forum create --title="Forum" --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {FORUM_ID}
+
+    When I run `wp bbp topic create --title="Topic" --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {TOPIC_ID}
+
+    When I run `wp bbp reply create --content="Content" --topic-id={TOPIC_ID} --forum-id={FORUM_ID} --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {REPLY_ID}
+
+    When I run `wp bbp reply list --format=ids`
     Then STDOUT should contain:
       """
-      Success: Reply 81 created: http://site.com/forums/reply/reply-test/
+      {REPLY_ID}
       """
 
-  Scenario: Delete a reply
-    When I run `wp bbp reply delete 520`
+    When I run `wp bbp reply trash {REPLY_ID}`
     Then STDOUT should contain:
       """
-      Success: Reply 520 successfully deleted.
+      Success: Reply {REPLY_ID} successfully trashed.
       """
 
-  Scenario: Trash a reply
-    When I run `wp bbp reply trash 789`
+    When I run `wp bbp reply untrash {REPLY_ID}`
     Then STDOUT should contain:
       """
-      Success: Reply 789 successfully trashed.
+      Success: Reply {REPLY_ID} successfully untrashed.
       """
 
-  Scenario: Untrash a reply
-    When I run `wp bbp reply untrash 784`
+    When I run `wp bbp reply spam {REPLY_ID}`
     Then STDOUT should contain:
       """
-      Success: Reply 784 successfully untrashed.
+      Success: Reply {REPLY_ID} successfully spammed.
       """
 
-  Scenario: Spam a reply
-    When I run `wp bbp reply spam 498`
+    When I run `wp bbp reply ham {REPLY_ID}`
     Then STDOUT should contain:
       """
-      Success: Reply 498 successfully spammed.
+      Success: Reply {REPLY_ID} successfully hammed.
       """
 
-  Scenario: Ham a reply
-    When I run `wp bbp reply ham 368`
+    When I run `wp bbp reply delete {REPLY_ID}`
     Then STDOUT should contain:
       """
-      Success: Reply 368 successfully hammed.
-      """
-
-  Scenario: Approve a reply
-    When I run `wp bbp reply approve 1234`
-    Then STDOUT should contain:
-      """
-      Success: Reply 1234 successfully approved.
-      """
-
-  Scenario: Unapprove a reply
-    When I run `wp bbp reply unapprove 6654`
-    Then STDOUT should contain:
-      """
-      Success: Reply 6654 successfully unapproved.
-      """
-
-  Scenario: Get permalink of a reply
-    When I run `wp bbp reply permalink 500`
-    Then STDOUT should contain:
-      """
-      Success: Reply Permalink: http://site.com/forums/reply/reply-slug/
-      """
-
-    When I run `wp bbp reply url 156`
-    Then STDOUT should contain:
-      """
-      Success: Reply Permalink: http://site.com/forums/reply/another-reply-slug/
+      Success: Reply {REPLY_ID} successfully deleted.
       """

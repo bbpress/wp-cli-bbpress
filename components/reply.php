@@ -44,6 +44,9 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 * default: false
 	 * ---
 	 *
+	 * [--porcelain]
+	 * : Output only the new reply id.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp reply create --title="Reply 01" --content="Content for reply" --user-id=39
@@ -82,7 +85,11 @@ class BBPCLI_Replies extends BBPCLI_Component {
 		}
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Reply %d created: %s', $id, bbp_get_reply_permalink( $id ) ) );
+			if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
+				WP_CLI::line( $id );
+			} else {
+				WP_CLI::success( sprintf( 'Reply %d created: %s', $id, bbp_get_reply_permalink( $id ) ) );
+			}
 		} else {
 			WP_CLI::error( 'Could not create reply.' );
 		}

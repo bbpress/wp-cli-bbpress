@@ -12,7 +12,7 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * --forum-id=<forum-id>
-	 * : Indentifier of the object (forum).
+	 * : Indentifier of the forum.
 	 *
 	 * --user-id=<user>
 	 * : Identifier for the user. Accepts either a user_login or a numeric ID.
@@ -20,12 +20,11 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	 * ## EXAMPLES
 	 *
 	 *    $ wp bbp user moderator add --forum-id=545646 --user-id=465456
-	 *    Success: Member added as a forum moderator.
+	 *    Success: Member added as a moderator.
 	 *
 	 *    $ wp bbp user moderator add --forum-id=465465 --user-id=user_login
-	 *    Success: Member added as a forum moderator.
+	 *    Success: Member added as a moderator.
 	 *
-	 * @subcommand bbp user
 	 * @alias create
 	 */
 	public function add( $args, $assoc_args ) {
@@ -56,7 +55,7 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * --forum-id=<forum-id>
-	 * : Indentifier of the object (forum).
+	 * : Indentifier of the forum.
 	 *
 	 * --user-id=<user>
 	 * : Identifier for the user. Accepts either a user_login or a numeric ID.
@@ -64,12 +63,11 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	 * ## EXAMPLES
 	 *
 	 *    $ wp bbp user moderator remove --forum-id=456456 --user-id=4995
-	 *    Success: Member removed as a forum moderator.
+	 *    Success: Member removed as a moderator.
 	 *
 	 *    $ wp bbp user moderator remove --forum-id=64654 --user-id=user_login
-	 *    Success: Member removed as a forum moderator.
+	 *    Success: Member removed as a moderator.
 	 *
-	 * @subcommand bbp user
 	 * @alias delete
 	 */
 	public function remove( $args, $assoc_args ) {
@@ -88,9 +86,9 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 		}
 
 		if ( bbp_remove_moderator( $forum_id, $user->ID ) ) {
-			WP_CLI::success( 'Member removed as a forum moderator.' );
+			WP_CLI::success( 'Member removed as a moderator.' );
 		} else {
-			WP_CLI::error( 'Could not add the user as a forum moderator.' );
+			WP_CLI::error( 'Could not add the user as a moderator.' );
 		}
 	}
 

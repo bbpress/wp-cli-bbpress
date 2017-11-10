@@ -334,17 +334,12 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 *     $ wp bbp reply generate --count=50 --topic-id=342
 	 */
 	public function generate( $args, $assoc_args ) {
-		$r = wp_parse_args( $assoc_args, array(
-			'count'    => 100,
-			'topic-id' => 0,
-		) );
+		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating replies', $assoc_args['count'] );
 
-		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating replies', $r['count'] );
-
-		for ( $i = 0; $i < $r['count']; $i++ ) {
+		for ( $i = 0; $i < $assoc_args['count']; $i++ ) {
 			$this->create( array(), array(
 				'title'    => sprintf( 'Reply Title "%s"', $i ),
-				'topic-id' => $r['topic-id'],
+				'topic-id' => $assoc_args['topic-id'],
 				'silent'   => true,
 			) );
 

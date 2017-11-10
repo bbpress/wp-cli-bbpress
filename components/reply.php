@@ -147,26 +147,28 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	 * <reply-id>...
 	 * : One or more IDs of replies to delete.
 	 *
+	 * [--yes]
+	 * : Answer yes to the confirmation message.
+	 *
 	 * ## EXAMPLE
 	 *
-	 *     $ wp bbp reply delete 486
+	 *     $ wp bbp reply delete 486 --yes
 	 *     Success: Reply 486 successfully deleted.
 	 */
 	public function delete( $args, $assoc_args ) {
 		$reply_id = $args[0];
 
-		// Check if reply exists.
-		if ( ! bbp_is_reply( $reply_id ) ) {
-			WP_CLI::error( 'No reply found by that ID.' );
-		}
+		WP_CLI::confirm( 'Are you sure you want to delete this reply?', $assoc_args );
 
-		parent::_delete( $args, $assoc_args, function ( $reply_id, $assoc_args ) {
+		parent::_delete( array( $reply_id ), $assoc_args, function ( $reply_id ) {
+			// Check if reply exists.
+			if ( ! bbp_is_reply( $reply_id ) ) {
+				WP_CLI::error( 'No reply found by that ID.' );
+			}
 
 			wp_delete_post( $reply_id, true );
 
-			$r = bbp_deleted_reply( $reply_id );
-
-			if ( ! $r ) {
+			if ( ! bbp_deleted_reply( $reply_id ) ) {
 				return array( 'success', sprintf( 'Reply %d successfully deleted.', $reply_id ) );
 			} else {
 				return array( 'error', sprintf( 'Could not delete %d reply.', $reply_id ) );

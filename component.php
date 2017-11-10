@@ -4,14 +4,14 @@
  *
  * Borrowed for wp-cli-buddypress. Not sure if that's going to be needed yet.
  *
- * @since 1.0
+ * @since 1.0.0
  */
 class BBPCLI_Component extends \WP_CLI\CommandWithDBObject {
 
 	/**
 	 * Get a random user id.
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
 	 * @return int
 	 */
@@ -23,7 +23,7 @@ class BBPCLI_Component extends \WP_CLI\CommandWithDBObject {
 	/**
 	 * Verify a user ID by the passed identifier.
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
 	 * @param mixed $i User ID, email or login.
 	 * @return WP_User|false
@@ -38,5 +38,16 @@ class BBPCLI_Component extends \WP_CLI\CommandWithDBObject {
 		}
 
 		return $user;
+	}
+
+	/**
+	 * Forum Roles
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array An array of forum roles.
+	 */
+	protected function forum_roles() {
+		return array( 'keymaster', 'moderator', 'participant', 'spectator', 'blocked' );
 	}
 }

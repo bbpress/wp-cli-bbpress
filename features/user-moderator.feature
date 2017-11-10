@@ -1,6 +1,6 @@
 Feature: Manage bbPress Moderators
 
-   Scenario: User moderators operations
+  Scenario: User moderators operations
     Given a bbPress install
 
     When I try `wp user get bogus-user`

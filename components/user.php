@@ -87,10 +87,10 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 * ## EXAMPLES
 	 *
 	 *    $ wp bbp user set_role --user-id=465456 --role=moderator
-	 *    Success: New role for user set: moderator
+	 *    Success: New role for user set successfully.
 	 *
 	 *    $ wp bbp user set_role --user-id=user_login --role=spectator
-	 *    Success: New role for user set: spectator
+	 *    Success: New role for user set successfully.
 	 */
 	public function set_role( $args, $assoc_args ) {
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
@@ -107,55 +107,10 @@ class BBPCLI_Users extends BBPCLI_Component {
 		$retval = bbp_set_user_role( $user->ID, $role );
 
 		if ( is_string( $retval ) ) {
-			WP_CLI::success( sprintf( 'New role for user set: %s', $retval ) );
+			WP_CLI::success( 'New role for user set successfully.' );
 		} else {
 			WP_CLI::error( 'Could not set new role for user.' );
 		}
-	}
-
-	/**
-	 * Get URL of the user profile page
-	 *
-	 * ## OPTIONS
-	 *
-	 * <user>
-	 * : Identifier for the user. Accepts either a user_login or a numeric ID.
-	 *
-	 * ## EXAMPLES
-	 *
-	 *    $ wp bbp user permalink 465456
-	 *    Success: User profile page: https://example.com/user-slug
-	 *
-	 *    $ wp bbp user url user_login
-	 *    Success: User profile page: https://example.com/user-slug
-	 *
-	 * @alias url
-	 */
-	public function permalink( $args, $assoc_args ) {
-		$user = $this->get_user_id_from_identifier( $args[0] );
-
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
-		}
-
-		$permalink = bbp_get_user_profile_url( $user->ID );
-
-		if ( is_string( $permalink ) ) {
-			WP_CLI::success( sprintf( 'User profile page: %s', $permalink ) );
-		} else {
-			WP_CLI::error( 'Could not find user profile page.' );
-		}
-	}
-
-	/**
-	 * Forum Roles
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array An array of forum roles.
-	 */
-	protected function forum_roles() {
-		return array( 'keymaster', 'moderator', 'participant', 'spectator', 'blocked' );
 	}
 }
 

@@ -122,6 +122,7 @@ class BBPCLI_Topics extends BBPCLI_Component {
 		}
 
 		$topic = bbp_get_topic( $topic_id, ARRAY_A );
+		$topic['url'] = bbp_get_topic_permalink( $topic_id );
 
 		if ( empty( $assoc_args['fields'] ) ) {
 			$assoc_args['fields'] = array_keys( $topic );
@@ -139,6 +140,9 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	 * <topic-id>...
 	 * : One or more IDs of topics to delete.
 	 *
+	 * [--yes]
+	 * : Answer yes to the confirmation message.
+	 *
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp topic delete 486
@@ -147,18 +151,17 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	public function delete( $args, $assoc_args ) {
 		$topic_id = $args[0];
 
-		// Check if topic exists.
-		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
-		}
+		WP_CLI::confirm( 'Are you sure you want to delete this topic?', $assoc_args );
 
 		parent::_delete( $args, $assoc_args, function ( $topic_id, $assoc_args ) {
+			// Check if topic exists.
+			if ( ! bbp_is_topic( $topic_id ) ) {
+				WP_CLI::error( 'No topic found by that ID.' );
+			}
 
 			wp_delete_post( $topic_id, true );
 
-			$r = bbp_deleted_topic( $topic_id );
-
-			if ( ! $r ) {
+			if ( ! bbp_deleted_topic( $topic_id ) ) {
 				return array( 'success', sprintf( 'Topic %d successfully deleted.', $topic_id ) );
 			} else {
 				return array( 'error', sprintf( 'Could not delete %d topic.', $topic_id ) );
@@ -572,41 +575,6 @@ class BBPCLI_Topics extends BBPCLI_Component {
 			WP_CLI::success( sprintf( 'Topic %d successfully unapproved.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not unapprove topic %d.', $topic_id ) );
-		}
-	}
-
-	/**
-	 * Get the permalink of a topic.
-	 *
-	 * ## OPTIONS
-	 *
-	 * <topic-id>
-	 * : Identifier for the topic permalink.
-	 *
-	 * ## EXAMPLES
-	 *
-	 *     $ wp bbp topic permalink 165
-	 *     Success: Topic Permalink: http://site.com/forums/topic/topic-slug/
-	 *
-	 *     $ wp bbp topic url 256
-	 *     Success: Topic Permalink: http://site.com/forums/topic/another-topic-slug/
-	 *
-	 * @alias url
-	 */
-	public function permalink( $args, $assoc_args ) {
-		$topic_id = $args[0];
-
-		// Check if topic exists.
-		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
-		}
-
-		$permalink = bbp_get_topic_permalink( $topic_id );
-
-		if ( is_string( $permalink ) ) {
-			WP_CLI::success( sprintf( 'Topic Permalink: %s', $permalink ) );
-		} else {
-			WP_CLI::error( 'No permalink found for the topic.' );
 		}
 	}
 }

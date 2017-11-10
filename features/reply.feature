@@ -50,3 +50,6 @@ Feature: Manage bbPress Replies
       """
       Success: Reply {REPLY_ID} successfully deleted.
       """
+
+    When I try `wp bbp reply delete {REPLY_ID} --yes`
+    Then the return code should be 1

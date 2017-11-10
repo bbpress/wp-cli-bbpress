@@ -66,3 +66,6 @@ Feature: Manage bbPress Topics
 			"""
 			Success: Topic {TOPIC_ID} successfully deleted.
 			"""
+
+		When I try `wp bbp topic delete {TOPIC_ID} --yes`
+    	Then the return code should be 1

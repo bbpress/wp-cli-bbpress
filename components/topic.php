@@ -604,10 +604,4 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	}
 }
 
-WP_CLI::add_command( 'bbp topic', 'BBPCLI_Topics', array(
-	'before_invoke' => function() {
-		if ( ! class_exists( 'bbPress' ) ) {
-			WP_CLI::error( 'bbPress is not installed or active.' );
-		}
-	},
-) );
+WP_CLI::add_command( 'bbp topic', 'BBPCLI_Topics' );

@@ -39,3 +39,22 @@ Feature: Manage bbPress Topics
 
 		When I try `wp bbp topic delete {TOPIC_ID} --yes`
     	Then the return code should be 1
+
+  Scenario: Testing Close/Open Commands
+    Given a bbPress install
+
+    When I run `wp bbp topic create --title="Topic" --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {TOPIC_ID}
+
+    When I run `wp bbp topic open {TOPIC_ID}`
+    Then STDOUT should contain:
+      """
+      Success: Topic {TOPIC_ID} successfully opened.
+      """
+
+    When I run `wp bbp topic close {TOPIC_ID}`
+    Then STDOUT should contain:
+      """
+      Success: Topic {TOPIC_ID} successfully closed.
+      """

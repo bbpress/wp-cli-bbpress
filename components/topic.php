@@ -311,7 +311,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 		$topic_id = $args[0];
 
 		// Check if topic exists.
-		if ( ! bbp_is_forum( $topic_id ) ) {
+		if ( ! bbp_is_topic( $topic_id ) ) {
 			WP_CLI::error( 'No topic found by that ID.' );
 		}
 
@@ -341,7 +341,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 		$topic_id = $args[0];
 
 		// Check if topic exists.
-		if ( ! bbp_is_forum( $topic_id ) ) {
+		if ( ! bbp_is_topic( $topic_id ) ) {
 			WP_CLI::error( 'No topic found by that ID.' );
 		}
 

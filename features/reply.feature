@@ -53,16 +53,16 @@ Feature: Manage bbPress Replies
     Then STDOUT should be a number
     And save STDOUT as {REPLY_ID}
 
-    When I run `wp bbp reply approve {REPLY_ID}`
-    Then STDOUT should contain:
-      """
-      Success: Reply {REPLY_ID} successfully approved.
-      """
-
     When I run `wp bbp reply unapprove {REPLY_ID}`
     Then STDOUT should contain:
       """
       Success: Reply {REPLY_ID} successfully unapproved.
+      """
+
+    When I run `wp bbp reply approve {REPLY_ID}`
+    Then STDOUT should contain:
+      """
+      Success: Reply {REPLY_ID} successfully approved.
       """
 
     When I run `wp bbp reply delete {REPLY_ID}`

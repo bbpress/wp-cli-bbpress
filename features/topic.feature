@@ -3,7 +3,7 @@ Feature: Manage bbPress Topics
 	Scenario: Topic CRUD commands
     Given a bbPress install
 
-    When I run `wp bbp topic create --title="Topic" --porcelain`
+    When I run `wp bbp topic create --title="CRUD Topic" --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {TOPIC_ID}
 
@@ -49,7 +49,7 @@ Feature: Manage bbPress Topics
   Scenario: Testing close/open commands
     Given a bbPress install
 
-    When I run `wp bbp topic create --title="Topic" --porcelain`
+    When I run `wp bbp topic create --title="Close Topic" --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {TOPIC_ID}
 
@@ -89,7 +89,7 @@ Feature: Manage bbPress Topics
   Scenario: Testing approve/unapprove commands
     Given a bbPress install
 
-    When I run `wp bbp topic create --title="Topic" --porcelain`
+    When I run `wp bbp topic create --title="Approve Topic" --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {TOPIC_ID}
 
@@ -117,7 +117,7 @@ Feature: Manage bbPress Topics
   Scenario: Testing stick/unstick commands
     Given a bbPress install
 
-    When I run `wp bbp topic create --title="Topic" --porcelain`
+    When I run `wp bbp topic create --title="Stick Topic" --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {TOPIC_ID}
 

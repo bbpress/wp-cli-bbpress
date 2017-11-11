@@ -59,6 +59,12 @@ Feature: Manage bbPress Topics
       Success: Topic {TOPIC_ID} successfully closed.
       """
 
+    When I run `wp bbp topic close {TOPIC_ID}`
+    Then STDOUT should contain:
+      """
+      Error: Topic is already closed.
+      """
+
     When I run `wp bbp topic open {TOPIC_ID}`
     Then STDOUT should contain:
       """
@@ -70,6 +76,15 @@ Feature: Manage bbPress Topics
       """
       Error: Topic is already opened.
       """
+
+    When I run `wp bbp topic delete {TOPIC_ID} --yes`
+    Then STDOUT should contain:
+      """
+      Success: Topic {TOPIC_ID} successfully deleted.
+      """
+
+    When I try `wp bbp topic delete {TOPIC_ID} --yes`
+    Then the return code should be 1
 
   Scenario: Testing approve/unapprove commands
     Given a bbPress install
@@ -90,6 +105,15 @@ Feature: Manage bbPress Topics
       Success: Topic {TOPIC_ID} successfully approved.
       """
 
+    When I run `wp bbp topic delete {TOPIC_ID} --yes`
+    Then STDOUT should contain:
+      """
+      Success: Topic {TOPIC_ID} successfully deleted.
+      """
+
+    When I try `wp bbp topic delete {TOPIC_ID} --yes`
+    Then the return code should be 1
+
   Scenario: Testing stick/unstick commands
     Given a bbPress install
 
@@ -108,3 +132,12 @@ Feature: Manage bbPress Topics
       """
       Success: Topic {TOPIC_ID} successfully unsticked.
       """
+
+    When I run `wp bbp topic delete {TOPIC_ID} --yes`
+    Then STDOUT should contain:
+      """
+      Success: Topic {TOPIC_ID} successfully deleted.
+      """
+
+    When I try `wp bbp topic delete {TOPIC_ID} --yes`
+    Then the return code should be 1

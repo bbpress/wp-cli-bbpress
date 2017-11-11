@@ -3,15 +3,7 @@ Feature: Manage bbPress Replies
   Scenario: Reply CRUD commands
     Given a bbPress install
 
-    When I run `wp bbp forum create --title="Forum" --porcelain`
-    Then STDOUT should be a number
-    And save STDOUT as {FORUM_ID}
-
-    When I run `wp bbp topic create --title="Topic" --porcelain`
-    Then STDOUT should be a number
-    And save STDOUT as {TOPIC_ID}
-
-    When I run `wp bbp reply create --content="Content" --topic-id={TOPIC_ID} --forum-id={FORUM_ID} --porcelain`
+    When I run `wp bbp reply create --content="Reply" --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {REPLY_ID}
 
@@ -45,8 +37,11 @@ Feature: Manage bbPress Replies
       Success: Reply {REPLY_ID} successfully hammed.
       """
 
-    When I run `wp bbp reply delete {REPLY_ID}`
+    When I run `wp bbp reply delete {REPLY_ID} --yes`
     Then STDOUT should contain:
       """
       Success: Reply {REPLY_ID} successfully deleted.
       """
+
+    When I try `wp bbp reply delete {REPLY_ID} --yes`
+    Then the return code should be 1

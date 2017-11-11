@@ -4,7 +4,7 @@
  *
  * @since 1.0.0
  */
-class BBPCLI_Replies extends BBPCLI_Component {
+class BBPCLI_Reply extends BBPCLI_Component {
 
 	/**
 	 * Create a reply.
@@ -471,4 +471,4 @@ class BBPCLI_Replies extends BBPCLI_Component {
 	}
 }
 
-WP_CLI::add_command( 'bbp reply', 'BBPCLI_Replies' );
+WP_CLI::add_command( 'bbp reply', 'BBPCLI_Reply' );

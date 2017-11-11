@@ -25,6 +25,18 @@ Feature: Manage bbPress Topics
 			Success: Topic {TOPIC_ID} successfully untrashed.
 			"""
 
+    When I run `wp bbp topic spam {TOPIC_ID}`
+    Then STDOUT should contain:
+      """
+      Success: Topic {TOPIC_ID} successfully spammed.
+      """
+
+    When I run `wp bbp topic ham {TOPIC_ID}`
+    Then STDOUT should contain:
+      """
+      Success: Topic {TOPIC_ID} successfully hammed.
+      """
+
 		When I run `wp bbp topic delete {TOPIC_ID} --yes`
 		Then STDOUT should contain:
 			"""

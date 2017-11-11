@@ -51,25 +51,22 @@ Feature: Manage bbPress Replies
 
     When I run `wp bbp reply create --content="Reply" --porcelain`
     Then STDOUT should be a number
-    And save STDOUT as {REPLY_ID}
+    And save STDOUT as {REPLY_ID_2}
 
-    When I run `wp bbp reply unapprove {REPLY_ID}`
+    When I run `wp bbp reply unapprove {REPLY_ID_2}`
     Then STDOUT should contain:
       """
-      Success: Reply {REPLY_ID} successfully unapproved.
+      Success: Reply {REPLY_ID_2} successfully unapproved.
       """
 
-    When I run `wp bbp reply approve {REPLY_ID}`
+    When I run `wp bbp reply approve {REPLY_ID_2}`
     Then STDOUT should contain:
       """
-      Success: Reply {REPLY_ID} successfully approved.
+      Success: Reply {REPLY_ID_2} successfully approved.
       """
 
-    When I run `wp bbp reply delete {REPLY_ID}`
+    When I run `wp bbp reply delete {REPLY_ID_2} --yes`
     Then STDOUT should contain:
       """
-      Success: Reply {REPLY_ID} successfully deleted.
+      Success: Reply {REPLY_ID_2} successfully deleted.
       """
-
-    When I try `wp bbp reply delete {REPLY_ID} --yes`
-    Then the return code should be 1

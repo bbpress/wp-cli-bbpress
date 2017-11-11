@@ -1,17 +1,17 @@
 Feature: Manage bbPress Topics
 
 	Scenario: Topic CRUD commands
-	    Given a bbPress install
+    Given a bbPress install
 
-	    When I run `wp bbp topic create --title="Topic" --porcelain`
-	    Then STDOUT should be a number
-	    And save STDOUT as {TOPIC_ID}
+    When I run `wp bbp topic create --title="Topic" --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {TOPIC_ID}
 
-	    When I run `wp bbp topic list --format=ids`
-	    Then STDOUT should contain:
-	      """
-	      {TOPIC_ID}
-	      """
+    When I run `wp bbp topic list --format=ids`
+    Then STDOUT should contain:
+      """
+      {TOPIC_ID}
+      """
 
 		When I run `wp bbp topic trash {TOPIC_ID}`
 		Then STDOUT should contain:

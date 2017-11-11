@@ -45,7 +45,7 @@ Feature: Manage bbPress Replies
       Success: Reply {REPLY_ID} successfully hammed.
       """
 
-    When I run `wp bbp reply delete {REPLY_ID}`
+    When I run `wp bbp reply delete {REPLY_ID} --yes`
     Then STDOUT should contain:
       """
       Success: Reply {REPLY_ID} successfully deleted.

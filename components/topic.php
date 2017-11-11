@@ -4,7 +4,7 @@
  *
  * @since 1.0.0
  */
-class BBPCLI_Topics extends BBPCLI_Component {
+class BBPCLI_Topic extends BBPCLI_Component {
 
 	/**
 	 * Create a topic.
@@ -574,4 +574,4 @@ class BBPCLI_Topics extends BBPCLI_Component {
 	}
 }
 
-WP_CLI::add_command( 'bbp topic', 'BBPCLI_Topics' );
+WP_CLI::add_command( 'bbp topic', 'BBPCLI_Topic' );

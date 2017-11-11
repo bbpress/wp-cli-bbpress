@@ -490,7 +490,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 		}
 
 		if ( bbp_stick_topic( $topic_id, true ) ) {
-			WP_CLI::success( sprintf( 'Topic %d successfully sticked .', $topic_id ) );
+			WP_CLI::success( sprintf( 'Topic %d successfully sticked.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not stick topic %d.', $topic_id ) );
 		}

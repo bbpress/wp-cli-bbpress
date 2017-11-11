@@ -77,3 +77,22 @@ Feature: Manage bbPress Topics
       """
       Success: Topic {TOPIC_ID} successfully approved.
       """
+
+  Scenario: Testing stick/unstick commands
+    Given a bbPress install
+
+    When I run `wp bbp topic create --title="Topic" --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {TOPIC_ID}
+
+    When I run `wp bbp topic stick {TOPIC_ID}`
+    Then STDOUT should contain:
+      """
+      Success: Topic {TOPIC_ID} successfully sticked.
+      """
+
+    When I run `wp bbp topic unstick {TOPIC_ID}`
+    Then STDOUT should contain:
+      """
+      Success: Topic {TOPIC_ID} successfully unsticked.
+      """

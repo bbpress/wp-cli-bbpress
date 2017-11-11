@@ -25,12 +25,6 @@ Feature: Manage bbPress Topics
 			Success: Topic {TOPIC_ID} successfully untrashed.
 			"""
 
-    When I run `wp bbp topic open {TOPIC_ID}`
-    Then STDOUT should contain:
-      """
-      Success: Topic {TOPIC_ID} successfully opened.
-      """
-
 		When I run `wp bbp topic delete {TOPIC_ID} --yes`
 		Then STDOUT should contain:
 			"""
@@ -47,14 +41,14 @@ Feature: Manage bbPress Topics
     Then STDOUT should be a number
     And save STDOUT as {TOPIC_ID}
 
-    When I run `wp bbp topic open {TOPIC_ID}`
-    Then STDOUT should contain:
-      """
-      Success: Topic {TOPIC_ID} successfully opened.
-      """
-
     When I run `wp bbp topic close {TOPIC_ID}`
     Then STDOUT should contain:
       """
       Success: Topic {TOPIC_ID} successfully closed.
+      """
+
+    When I run `wp bbp topic open {TOPIC_ID}`
+    Then STDOUT should contain:
+      """
+      Success: Topic {TOPIC_ID} successfully opened.
       """

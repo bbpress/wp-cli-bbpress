@@ -315,6 +315,11 @@ class BBPCLI_Topic extends BBPCLI_Component {
 			WP_CLI::error( 'No topic found by that ID.' );
 		}
 
+		// Check if topic is already open.
+		if ( bbp_is_topic_open( $topic_id ) ) {
+			WP_CLI::error( 'Topic is already opened.' );
+		}
+
 		$id = bbp_open_topic( $topic_id );
 
 		if ( is_numeric( $id ) ) {
@@ -343,6 +348,11 @@ class BBPCLI_Topic extends BBPCLI_Component {
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
 			WP_CLI::error( 'No topic found by that ID.' );
+		}
+
+		// Check if topic is already closed.
+		if ( bbp_is_topic_closed( $topic_id ) ) {
+			WP_CLI::error( 'Topic is already closed.' );
 		}
 
 		$id = bbp_close_topic( $topic_id );

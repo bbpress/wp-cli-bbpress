@@ -280,17 +280,16 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	public function _list( $_, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
+		$topic_post_type = bbp_get_topic_post_type();
 		$query_args = wp_parse_args( $assoc_args, array(
-			'post_type'   => bbp_get_topic_post_type(),
-			'post_status' => bbp_get_public_status_id(),
+			'post_type' => $topic_post_type,
 		) );
 
-		$query_args = self::process_csv_arguments_to_arrays( $query_args );
-
-		$topic_post_type = bbp_get_topic_post_type();
 		if ( isset( $query_args['post_type'] ) && $topic_post_type !== $query_args['post_type'] ) {
 			$query_args['post_type'] = $topic_post_type;
 		}
+
+		$query_args = self::process_csv_arguments_to_arrays( $query_args );
 
 		if ( 'ids' === $formatter->format ) {
 			$query_args['fields'] = 'ids';
@@ -299,7 +298,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 		} elseif ( 'count' === $formatter->format ) {
 			$query_args['fields'] = 'ids';
 			$query = new WP_Query( $query_args );
-			$formatter->display_items( $query->posts );
+			$formatter->display_items( $query->found_posts );
 		} else {
 			$query = new WP_Query( $query_args );
 			$formatter->display_items( $query->posts );

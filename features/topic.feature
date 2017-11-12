@@ -49,20 +49,20 @@ Feature: Manage bbPress Topics
   Scenario: Testing close/open commands
     Given a bbPress install
 
-    When I run `wp bbp topic create --title="Close Topic" --status=publish --porcelain`
+    When I run `wp bbp topic create --title="Close Topic" --status=closed --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {TOPIC_ID}
+
+    When I run `wp bbp topic open {TOPIC_ID}`
+    Then STDOUT should contain:
+      """
+      Success: Topic {TOPIC_ID} successfully opened.
+      """
 
     When I run `wp bbp topic close {TOPIC_ID}`
     Then STDOUT should contain:
       """
       Success: Topic {TOPIC_ID} successfully closed.
-      """
-
-    When I run `wp bbp topic close {TOPIC_ID}`
-    Then STDOUT should contain:
-      """
-      Error: Topic is already closed.
       """
 
     When I run `wp bbp topic open {TOPIC_ID}`

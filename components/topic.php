@@ -33,7 +33,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 * ---
 	 *
 	 * [--status=<status>]
-	 * : Status of the topic (public, closed, spam, trash, pending).
+	 * : Status of the topic (publish, closed, spam, trash, pending).
 	 * ---
 	 * Default: publish
 	 * ---

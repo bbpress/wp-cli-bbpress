@@ -65,10 +65,22 @@ Feature: Manage bbPress Topics
       Success: Topic {TOPIC_ID} successfully closed.
       """
 
+    When I run `wp bbp topic close {TOPIC_ID}`
+    Then STDOUT should contain:
+      """
+      Error: Topic is already closed.
+      """
+
     When I run `wp bbp topic open {TOPIC_ID}`
     Then STDOUT should contain:
       """
       Success: Topic {TOPIC_ID} successfully opened.
+      """
+
+    When I run `wp bbp topic open {TOPIC_ID}`
+    Then STDOUT should contain:
+      """
+      Error: Topic is already opened.
       """
 
     When I run `wp bbp topic delete {TOPIC_ID} --yes`

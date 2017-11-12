@@ -3,7 +3,7 @@ Feature: Manage bbPress Replies
   Scenario: Reply CRUD commands
     Given a bbPress install
 
-    When I run `wp bbp reply create --content="Reply" --porcelain`
+    When I run `wp bbp reply create --content="Reply" --status=publish --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {REPLY_ID}
 
@@ -49,7 +49,7 @@ Feature: Manage bbPress Replies
   Scenario: Testing approve/unapprove commands
     Given a bbPress install
 
-    When I run `wp bbp reply create --content="Reply" --porcelain`
+    When I run `wp bbp reply create --content="Reply" --status=pending --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {REPLY_ID_2}
 
@@ -70,3 +70,20 @@ Feature: Manage bbPress Replies
       """
       Success: Reply {REPLY_ID_2} successfully deleted.
       """
+
+  Scenario: Reply List
+    Given a bbPress install
+
+    When I run `wp bbp reply create --content="Reply" --status=pending --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {REPLY_ID}
+
+    When I run `wp bbp reply create --content="Another Reply" --status=publish --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {REPLY_ID_2}
+
+    When I run `wp bbp reply list --fields=id,post_status`
+    Then STDOUT should contain:
+      | ID           | post_status  |
+      | {REPLY_ID}   | pending      |
+      | {REPLY_ID_2} | publish      |

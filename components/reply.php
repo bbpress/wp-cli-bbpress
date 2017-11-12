@@ -38,6 +38,12 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	 * default: 0
 	 * ---
 	 *
+	 * [--status=<status>]
+	 * : Status of the reply (publish, pending, spam).
+	 * ---
+	 * default: publish
+	 * ---
+	 *
 	 * [--silent=<silent>]
 	 * : Whether to silent the reply creation.
 	 * ---
@@ -51,6 +57,8 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp reply create --title="Reply 01" --content="Content for reply" --user-id=39
 	 *     $ wp bbp reply create --title="Reply" --user-id=45 --topic-id=120 --forum-id=2497
+	 *
+	 * @alias add
 	 */
 	public function create( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(
@@ -59,6 +67,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 			'user-id'  => 1,
 			'topic-id' => 0,
 			'forum-id' => 0,
+			'status'   => 'publish',
 			'silent'   => false,
 		) );
 
@@ -66,10 +75,15 @@ class BBPCLI_Reply extends BBPCLI_Component {
 			$r['content'] = sprintf( 'Content for the reply "%s"', $r['title'] );
 		}
 
+		if ( ! in_array( $r['status'], array( 'publish', 'pending', 'spam' ), true ) ) {
+			$r['status'] = 'publish';
+		}
+
 		$reply_data = array(
 			'post_parent'  => $r['topic-id'],
 			'post_title'   => $r['title'],
 			'post_content' => $r['content'],
+			'post_status'  => $r['status'],
 			'post_author'  => $r['user-id'],
 		);
 
@@ -113,6 +127,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	 * options:
 	 *   - table
 	 *   - json
+	 *   - csv
 	 *   - yaml
 	 * ---
 	 *
@@ -120,6 +135,8 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp reply get 456
 	 *     $ wp bbp reply get 151 --fields=post_title
+	 *
+	 * @alias see
 	 */
 	public function get( $args, $assoc_args ) {
 		$reply_id = $args[0];
@@ -286,14 +303,13 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	public function _list( $_, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
-		$query_args = wp_parse_args( $assoc_args, array(
-			'post_type' => bbp_get_reply_post_type(),
-			'post_status' => bbp_get_public_status_id(),
-		) );
-
 		$query_args = self::process_csv_arguments_to_arrays( $query_args );
 
 		$reply_post_type = bbp_get_reply_post_type();
+		$query_args = wp_parse_args( $assoc_args, array(
+			'post_type' => $reply_post_type,
+		) );
+
 		if ( isset( $query_args['post_type'] ) && $reply_post_type !== $query_args['post_type'] ) {
 			$query_args['post_type'] = $reply_post_type;
 		}
@@ -305,7 +321,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 		} elseif ( 'count' === $formatter->format ) {
 			$query_args['fields'] = 'ids';
 			$query = new WP_Query( $query_args );
-			$formatter->display_items( $query->posts );
+			$formatter->display_items( $query->found_posts );
 		} else {
 			$query = new WP_Query( $query_args );
 			$formatter->display_items( $query->posts );

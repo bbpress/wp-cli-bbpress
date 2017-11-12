@@ -35,7 +35,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 * [--status=<status>]
 	 * : Status of the topic (public, closed, spam, trash, pending).
 	 * ---
-	 * Default: public
+	 * Default: publish
 	 * ---
 	 *
 	 * [--silent=<silent>]
@@ -58,7 +58,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 			'content'  => '',
 			'user-id'  => 1,
 			'forum-id' => 0,
-			'status'   => 'public',
+			'status'   => 'publish',
 			'silent'   => false,
 		) );
 
@@ -67,7 +67,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 		}
 
 		if ( ! in_array( $r['status'], array_keys( bbp_get_topic_statuses() ), true ) ) {
-			$r['status'] = 'public';
+			$r['status'] = 'publish';
 		}
 
 		$topic_data = array(

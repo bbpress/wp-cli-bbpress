@@ -7,6 +7,19 @@
 class BBPCLI_Reply extends BBPCLI_Component {
 
 	/**
+	 * Reply Object Default fields
+	 *
+	 * @var array
+	 */
+	protected $obj_fields = array(
+		'ID',
+		'post_title',
+		'post_name',
+		'post_date',
+		'post_status',
+	);
+
+	/**
 	 * Create a reply.
 	 *
 	 * ## OPTIONS
@@ -303,16 +316,18 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	public function _list( $_, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
-		$query_args = self::process_csv_arguments_to_arrays( $query_args );
-
 		$reply_post_type = bbp_get_reply_post_type();
 		$query_args = wp_parse_args( $assoc_args, array(
-			'post_type' => $reply_post_type,
+			'post_type'      => $reply_post_type,
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
 		) );
 
 		if ( isset( $query_args['post_type'] ) && $reply_post_type !== $query_args['post_type'] ) {
 			$query_args['post_type'] = $reply_post_type;
 		}
+
+		$query_args = self::process_csv_arguments_to_arrays( $query_args );
 
 		if ( 'ids' === $formatter->format ) {
 			$query_args['fields'] = 'ids';
@@ -321,10 +336,14 @@ class BBPCLI_Reply extends BBPCLI_Component {
 		} elseif ( 'count' === $formatter->format ) {
 			$query_args['fields'] = 'ids';
 			$query = new WP_Query( $query_args );
-			$formatter->display_items( $query->found_posts );
+			$formatter->display_items( $query->posts );
 		} else {
 			$query = new WP_Query( $query_args );
-			$formatter->display_items( $query->posts );
+			$replies = array_map( function( $post ) {
+				$post->url = get_permalink( $post->ID );
+				return $post;
+			}, $query->posts );
+			$formatter->display_items( $replies );
 		}
 	}
 

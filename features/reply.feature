@@ -49,7 +49,7 @@ Feature: Manage bbPress Replies
   Scenario: Testing approve/unapprove commands
     Given a bbPress install
 
-    When I run `wp bbp reply create --content="Reply" --status=pending --porcelain`
+    When I run `wp bbp reply create --content="Reply" --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {REPLY_ID_2}
 

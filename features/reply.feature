@@ -51,24 +51,24 @@ Feature: Manage bbPress Replies
 
     When I run `wp bbp reply create --title="Reply" --status=pending --porcelain`
     Then STDOUT should be a number
-    And save STDOUT as {REPLY_ID_2}
+    And save STDOUT as {REPLY_ID}
 
-    When I run `wp bbp reply approve {REPLY_ID_2}`
+    When I run `wp bbp reply unapprove {REPLY_ID}`
     Then STDOUT should contain:
       """
-      Success: Reply {REPLY_ID_2} successfully approved.
+      Success: Reply {REPLY_ID} successfully unapproved.
       """
 
-    When I run `wp bbp reply unapprove {REPLY_ID_2}`
+    When I run `wp bbp reply approve {REPLY_ID}`
     Then STDOUT should contain:
       """
-      Success: Reply {REPLY_ID_2} successfully unapproved.
+      Success: Reply {REPLY_ID} successfully approved.
       """
 
-    When I run `wp bbp reply delete {REPLY_ID_2} --yes`
+    When I run `wp bbp reply delete {REPLY_ID} --yes`
     Then STDOUT should contain:
       """
-      Success: Reply {REPLY_ID_2} successfully deleted.
+      Success: Reply {REPLY_ID} successfully deleted.
       """
 
   Scenario: Reply List
@@ -82,8 +82,14 @@ Feature: Manage bbPress Replies
     Then STDOUT should be a number
     And save STDOUT as {REPLY_ID_2}
 
+    When I run `wp bbp reply list --format=count`
+    Then STDOUT should be:
+      """
+      2
+      """
+
     When I run `wp bbp reply list --fields=ID,post_status`
-    Then STDOUT should be a table containing rows:
+    Then STDOUT should be CSV containing:
       | ID           | post_status  |
       | {REPLY_ID}   | pending      |
       | {REPLY_ID_2} | publish      |

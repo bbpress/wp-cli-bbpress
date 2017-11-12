@@ -49,7 +49,7 @@ Feature: Manage bbPress Topics
   Scenario: Testing close/open commands
     Given a bbPress install
 
-    When I run `wp bbp topic create --title="Close Topic" --status=public --porcelain`
+    When I run `wp bbp topic create --title="Close Topic" --status=publish --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {TOPIC_ID}
 

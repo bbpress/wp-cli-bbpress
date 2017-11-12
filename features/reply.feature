@@ -83,7 +83,7 @@ Feature: Manage bbPress Replies
     And save STDOUT as {REPLY_ID_2}
 
     When I run `wp bbp reply list --fields=id,post_status`
-    Then STDOUT should contain:
+    Then STDOUT should be a table containing rows:
       | ID           | post_status  |
       | {REPLY_ID}   | pending      |
       | {REPLY_ID_2} | publish      |

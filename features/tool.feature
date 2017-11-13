@@ -10,10 +10,7 @@ Feature: Manage bbPress Tools
       """
 
     When I run `wp bbp tool upgrade --type=user-engagements`
-    Then STDOUT should contain:
-      """
-      Success: Error: Upgrading user engagements&hellip; No engagements to upgrade.
-      """
+    Then the return code should be 1
 
     When I run `wp bbp tool reset --yes`
     Then STDOUT should contain:

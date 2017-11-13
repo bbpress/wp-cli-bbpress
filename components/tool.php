@@ -50,7 +50,7 @@ class BBPCLI_Tool extends BBPCLI_Component {
 			if ( 0 === $result[0] ) {
 				WP_CLI::success( $result[1] );
 			} else {
-				WP_CLI::error( sprintf( 'Error: %s', $result[1] ) );
+				WP_CLI::error( $result[1] );
 			}
 		} else {
 			WP_CLI::error( 'There is no repair tool with that name.' );
@@ -90,7 +90,7 @@ class BBPCLI_Tool extends BBPCLI_Component {
 			if ( 0 === $result[0] ) {
 				WP_CLI::success( $result[1] );
 			} else {
-				WP_CLI::error( sprintf( 'Error: %s', $result[1] ) );
+				WP_CLI::error( $result[1] );
 			}
 		} else {
 			WP_CLI::error( 'There is no upgrade tool with that name.' );

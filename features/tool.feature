@@ -9,9 +9,6 @@ Feature: Manage bbPress Tools
       Success: Counting the number of replies in each topic&hellip; Complete!
       """
 
-    When I run `wp bbp tool upgrade --type=user-engagements`
-    Then the return code should be 1
-
     When I run `wp bbp tool reset --yes`
     Then STDOUT should contain:
       """

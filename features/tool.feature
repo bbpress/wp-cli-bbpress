@@ -6,7 +6,7 @@ Feature: Manage bbPress Tools
     When I run `wp bbp tool repair --type=topic-reply-count`
     Then STDOUT should contain:
       """
-      Success: Counting the number of replies in each topic. Complete!
+      Success: Counting the number of replies in each topic&hellip; Complete!
       """
 
     When I run `wp bbp tool upgrade --type=user-engagements`

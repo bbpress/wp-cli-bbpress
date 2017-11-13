@@ -38,8 +38,8 @@ class BBPCLI_Tool extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp tools repair --type=topic-reply-count
-	 *    $ wp bbp tools repair --type=topic-hidden-reply-count
+	 *    $ wp bbp tool repair --type=topic-reply-count
+	 *    $ wp bbp tool repair --type=topic-hidden-reply-count
 	 */
 	public function repair( $args, $assoc_args ) {
 		$repair = 'bbp_admin_repair_' . $this->sanitize_string( $assoc_args['type'] );
@@ -78,8 +78,8 @@ class BBPCLI_Tool extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp tools upgrade --type=user-engagements
-	 *    $ wp bbp tools upgrade --type=user-favorites
+	 *    $ wp bbp tool upgrade --type=user-engagements
+	 *    $ wp bbp tool upgrade --type=user-favorites
 	 */
 	public function upgrade( $args, $assoc_args ) {
 		$upgrade = 'bbp_admin_upgrade_' . $this->sanitize_string( $assoc_args['type'] );
@@ -107,7 +107,7 @@ class BBPCLI_Tool extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLE
 	 *
-	 *    $ wp bbp tools reset --yes
+	 *    $ wp bbp tool reset --yes
 	 *    Success: bbPress reset.
 	 */
 	public function reset( $_, $assoc_args ) {
@@ -123,7 +123,7 @@ class BBPCLI_Tool extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLE
 	 *
-	 *    $ wp bbp tools list_converters
+	 *    $ wp bbp tool list_converters
 	 */
 	public function list_converters( $_, $assoc_args ) {
 		echo implode( ', ', bbp_get_converters() ); // WPCS: XSS ok.
@@ -132,9 +132,9 @@ class BBPCLI_Tool extends BBPCLI_Component {
 
 WP_CLI::add_command( 'bbp tool', 'BBPCLI_Tool', array(
 	'before_invoke' => function() {
-		require_once( bbpress()->includes_dir . 'admin/tools/repair.php' );
-		require_once( bbpress()->includes_dir . 'admin/tools/upgrade.php' );
-		require_once( bbpress()->includes_dir . 'admin/tools/reset.php' );
-		require_once( bbpress()->includes_dir . 'admin/tools/converter.php' );
+		require_once( bbpress()->includes_dir . 'admin/tool/repair.php' );
+		require_once( bbpress()->includes_dir . 'admin/tool/upgrade.php' );
+		require_once( bbpress()->includes_dir . 'admin/tool/reset.php' );
+		require_once( bbpress()->includes_dir . 'admin/tool/converter.php' );
 	},
 ) );

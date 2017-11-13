@@ -81,11 +81,11 @@ Feature: Manage bbPress Replies
   Scenario: Reply List
     Given a bbPress install
 
-    When I run `wp bbp reply create --content="Reply" --status=pending --porcelain`
+    When I run `wp bbp reply create --title="Reply 01" --content="Reply" --status=pending --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {REPLY_ID}
 
-    When I run `wp bbp reply create --content="Another Reply" --status=publish --porcelain`
+    When I run `wp bbp reply create --title="Reply 02" --content="Another Reply" --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {REPLY_ID_2}
 
@@ -95,8 +95,20 @@ Feature: Manage bbPress Replies
       2
       """
 
+    When I run `wp bbp reply list --post_status=pending --format=count`
+    Then STDOUT should be:
+      """
+      1
+      """
+
     When I run `wp bbp reply list --format=ids`
     Then STDOUT should be:
       """
       {REPLY_ID} {REPLY_ID_2}
       """
+
+    When I run `wp bbp reply list --fields=id,post_title,post_status --format=csv`
+    Then STDOUT should be CSV containing:
+      | id           | post_title  |  post_status  |
+      | {REPLY_ID}   | Reply 01    |  pending      |
+      | {REPLY_ID_2} | Reply 02    |  publish      |

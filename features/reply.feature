@@ -101,12 +101,6 @@ Feature: Manage bbPress Replies
       1
       """
 
-    When I run `wp bbp reply list --format=ids`
-    Then STDOUT should be:
-      """
-      {REPLY_ID_2} {REPLY_ID}
-      """
-
     When I run `wp bbp reply list --fields=id,post_title,post_status --format=csv`
     Then STDOUT should be CSV containing:
       | id           | post_title  |  post_status  |

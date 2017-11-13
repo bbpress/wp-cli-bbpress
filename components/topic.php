@@ -66,7 +66,8 @@ class BBPCLI_Topic extends BBPCLI_Component {
 			$r['content'] = sprintf( 'Content for the topic: "%s"', $r['title'] );
 		}
 
-		if ( ! in_array( $r['status'], array_keys( bbp_get_topic_statuses() ), true ) ) {
+		// Fallback for topic status.
+		if ( ! in_array( $r['status'], $this->topic_status(), true ) ) {
 			$r['status'] = 'publish';
 		}
 
@@ -392,10 +393,17 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 * default: 0
 	 * ---
 	 *
+	 * [--status=<status>]
+	 * : Status of the topic (publish, closed, spam, trash, pending or mixed).
+	 * ---
+	 * Default: publish
+	 * ---
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp topic generate --count=50
 	 *     $ wp bbp topic generate --count=50 --forum-id=342
+	 *     $ wp bbp topic generate --count=10 --forum-id=4543 --status=mixed
 	 */
 	public function generate( $args, $assoc_args ) {
 		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating topics', $assoc_args['count'] );
@@ -404,6 +412,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 			$this->create( array(), array(
 				'title'    => sprintf( 'Topic Title "%s"', $i ),
 				'forum-id' => $assoc_args['forum-id'],
+				'status'   => $this->random_topic_status( $assoc_args['status'] ),
 				'silent'   => true,
 			) );
 
@@ -592,6 +601,35 @@ class BBPCLI_Topic extends BBPCLI_Component {
 		} else {
 			WP_CLI::error( sprintf( 'Could not unapprove topic %d.', $topic_id ) );
 		}
+	}
+
+	/**
+	 * List of Topic Status
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array An array of default topic status.
+	 */
+	protected function topic_status() {
+		return array_keys( bbp_get_topic_statuses() );
+	}
+
+	/**
+	 * Gets a randon reply status.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  string $status Reply status.
+	 * @return string Random Reply Status.
+	 */
+	protected function random_topic_status( $status ) {
+		$reply_status = $this->topic_status();
+
+		$status = ( 'mixed' === $status )
+			? $reply_status[ array_rand( $reply_status ) ]
+			: $status;
+
+		return $status;
 	}
 }
 

@@ -82,5 +82,5 @@ Feature: Manage bbPress Forums
     When I run `wp bbp forum list --fields=post_title,post_status --format=csv`
     Then STDOUT should be CSV containing:
       | post_title  |  post_status  |
-      | Forum 01    |  pending      |
+      | Forum 01    |  publish      |
       | Forum 02    |  publish      |

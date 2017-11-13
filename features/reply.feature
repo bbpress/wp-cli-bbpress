@@ -104,7 +104,7 @@ Feature: Manage bbPress Replies
     When I run `wp bbp reply list --format=ids`
     Then STDOUT should be:
       """
-      {REPLY_ID} {REPLY_ID_2}
+      {REPLY_ID_2} {REPLY_ID}
       """
 
     When I run `wp bbp reply list --fields=id,post_title,post_status --format=csv`

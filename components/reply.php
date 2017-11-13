@@ -522,7 +522,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	 *
 	 * @return array An array of default reply status.
 	 */
-	public function reply_status() {
+	protected function reply_status() {
 		return array( 'publish', 'pending', 'spam', 'trash' );
 	}
 

@@ -4,7 +4,7 @@
  *
  * @since 1.0.0
  */
-class BBPCLI_Tools extends BBPCLI_Component {
+class BBPCLI_Tool extends BBPCLI_Component {
 
 	/**
 	 * Repair Tools.
@@ -42,7 +42,6 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *    $ wp bbp tools repair --type=topic-hidden-reply-count
 	 */
 	public function repair( $args, $assoc_args ) {
-
 		$repair = 'bbp_admin_repair_' . $this->sanitize_string( $assoc_args['type'] );
 
 		if ( function_exists( $repair ) ) {
@@ -83,7 +82,6 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	 *    $ wp bbp tools upgrade --type=user-favorites
 	 */
 	public function upgrade( $args, $assoc_args ) {
-
 		$upgrade = 'bbp_admin_upgrade_' . $this->sanitize_string( $assoc_args['type'] );
 
 		if ( function_exists( $upgrade ) ) {
@@ -132,10 +130,11 @@ class BBPCLI_Tools extends BBPCLI_Component {
 	}
 }
 
-WP_CLI::add_command( 'bbp tools', 'BBPCLI_Tools', array(
+WP_CLI::add_command( 'bbp tool', 'BBPCLI_Tool', array(
 	'before_invoke' => function() {
-		if ( ! class_exists( 'bbPress' ) ) {
-			WP_CLI::error( 'bbPress is not installed or active.' );
-		}
+		require_once( bbpress()->includes_dir . 'admin/tools/repair.php' );
+		require_once( bbpress()->includes_dir . 'admin/tools/upgrade.php' );
+		require_once( bbpress()->includes_dir . 'admin/tools/reset.php' );
+		require_once( bbpress()->includes_dir . 'admin/tools/converter.php' );
 	},
 ) );

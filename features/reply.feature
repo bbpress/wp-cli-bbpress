@@ -49,7 +49,11 @@ Feature: Manage bbPress Replies
   Scenario: Testing approve/unapprove commands
     Given a bbPress install
 
-    When I run `wp bbp reply create --title="Reply" --status=pending --porcelain`
+    When I run `wp user create testuser1 testuser1@example.com --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {MEMBER_ID}
+
+    When I run `wp bbp reply create --title="Approve Reply" --user-id={MEMBER_ID} --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {REPLY_ID}
 
@@ -71,6 +75,9 @@ Feature: Manage bbPress Replies
       Success: Reply {REPLY_ID} successfully deleted.
       """
 
+    When I try `wp bbp reply delete {REPLY_ID} --yes`
+    Then the return code should be 1
+
   Scenario: Reply List
     Given a bbPress install
 
@@ -88,8 +95,8 @@ Feature: Manage bbPress Replies
       2
       """
 
-    When I run `wp bbp reply list --fields=ID,post_status`
-    Then STDOUT should be CSV containing:
-      | ID           | post_status  |
-      | {REPLY_ID}   | pending      |
-      | {REPLY_ID_2} | publish      |
+    When I run `wp bbp reply list --format=ids`
+    Then STDOUT should be:
+      """
+      {REPLY_ID} {REPLY_ID_2}
+      """

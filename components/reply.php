@@ -52,7 +52,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	 * ---
 	 *
 	 * [--status=<status>]
-	 * : Status of the reply (publish, pending, spam).
+	 * : Status of the reply (publish, pending, spam, trash).
 	 * ---
 	 * default: publish
 	 * ---
@@ -70,6 +70,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp reply create --title="Reply 01" --content="Content for reply" --user-id=39
 	 *     $ wp bbp reply create --title="Reply" --user-id=45 --topic-id=120 --forum-id=2497
+	 *     $ wp bbp reply create --title="Reply" --user-id=545 --topic-id=12 --forum-id=24 --status=pending
 	 *
 	 * @alias add
 	 */
@@ -88,15 +89,16 @@ class BBPCLI_Reply extends BBPCLI_Component {
 			$r['content'] = sprintf( 'Content for the reply "%s"', $r['title'] );
 		}
 
-		if ( ! in_array( $r['status'], array( 'publish', 'pending', 'spam' ), true ) ) {
+		// Fallback for reply status.
+		if ( ! in_array( $r['status'], $this->reply_status(), true ) ) {
 			$r['status'] = 'publish';
 		}
 
 		$reply_data = array(
 			'post_parent'  => $r['topic-id'],
+			'post_status'  => $r['status'],
 			'post_title'   => $r['title'],
 			'post_content' => $r['content'],
-			'post_status'  => $r['status'],
 			'post_author'  => $r['user-id'],
 		);
 
@@ -358,6 +360,12 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	 * default: 100
 	 * ---
 	 *
+	 * [--status=<status>]
+	 * : The status of the generated replies. (publish, spam, pending, trash or mixed).
+	 * ---
+	 * default: publish
+	 * ---
+	 *
 	 * [--topic-id=<topic-id>]
 	 * : Identifier of the topic the replied is for.
 	 * ---
@@ -367,7 +375,8 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp reply generate --count=50
-	 *     $ wp bbp reply generate --count=50 --topic-id=342
+	 *     $ wp bbp reply generate --count=112 --topic-id=342
+	 *     $ wp bbp reply generate --count=10 --status=mixed --topic-id=4584
 	 */
 	public function generate( $args, $assoc_args ) {
 		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating replies', $assoc_args['count'] );
@@ -375,6 +384,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 		for ( $i = 0; $i < $assoc_args['count']; $i++ ) {
 			$this->create( array(), array(
 				'title'    => sprintf( 'Reply Title "%s"', $i ),
+				'status'   => $this->random_reply_status( $assoc_args['status'] ),
 				'topic-id' => $assoc_args['topic-id'],
 				'silent'   => true,
 			) );
@@ -503,6 +513,35 @@ class BBPCLI_Reply extends BBPCLI_Component {
 		} else {
 			WP_CLI::error( sprintf( 'Could not unapprove reply %d.', $reply_id ) );
 		}
+	}
+
+	/**
+	 * List of reply status
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array An array of default reply status.
+	 */
+	public function reply_status() {
+		return array( 'publish', 'pending', 'spam', 'trash' );
+	}
+
+	/**
+	 * Gets a randon reply status.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  string $status Reply status.
+	 * @return string Random Reply Status.
+	 */
+	protected function random_reply_status( $status ) {
+		$reply_status = $this->reply_status();
+
+		$status = ( 'mixed' === $status )
+			? $reply_status[ array_rand( $reply_status ) ]
+			: $status;
+
+		return $status;
 	}
 }
 

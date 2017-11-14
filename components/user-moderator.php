@@ -4,7 +4,7 @@
  *
  * @since 1.0.0
  */
-class BBPCLI_User_Moderators extends BBPCLI_Component {
+class BBPCLI_User_Moderator extends BBPCLI_Component {
 
 	/**
 	 * Add a forum moderator
@@ -81,7 +81,7 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 			return;
 		}
 
@@ -118,7 +118,7 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	 *    6
 	 *
 	 *    $ wp bbp user moderator list --forum-id=45456 --format=ids
-	 *    5421 454 654654 5454 545
+	 *    5421 454
 	 *
 	 * @subcommand list
 	 */
@@ -145,4 +145,4 @@ class BBPCLI_User_Moderators extends BBPCLI_Component {
 	}
 }
 
-WP_CLI::add_command( 'bbp user moderator', 'BBPCLI_User_Moderators' );
+WP_CLI::add_command( 'bbp user moderator', 'BBPCLI_User_Moderator' );

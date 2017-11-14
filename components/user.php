@@ -4,7 +4,7 @@
  *
  * @since 1.0.0
  */
-class BBPCLI_Users extends BBPCLI_Component {
+class BBPCLI_User extends BBPCLI_Component {
 
 	/**
 	 * Mark a user's topics and replies as spam
@@ -28,7 +28,7 @@ class BBPCLI_Users extends BBPCLI_Component {
 		$user = $this->get_user_id_from_identifier( $args[0] );
 
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
 		if ( bbp_make_spam_user( $user->ID ) ) {
@@ -60,7 +60,7 @@ class BBPCLI_Users extends BBPCLI_Component {
 		$user = $this->get_user_id_from_identifier( $args[0] );
 
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
 		if ( bbp_make_ham_user( $user->ID ) ) {
@@ -81,7 +81,7 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 * --role=<role>
 	 * : Role to set for the member. (keymaster, moderator, participant, spectator, blocked)
 	 * ---
-	 * Default: participant
+	 * default: participant
 	 * ---
 	 *
 	 * ## EXAMPLES
@@ -91,12 +91,14 @@ class BBPCLI_Users extends BBPCLI_Component {
 	 *
 	 *    $ wp bbp user set_role --user-id=user_login --role=spectator
 	 *    Success: New role for user set successfully.
+	 *
+	 * @alias update_role
 	 */
 	public function set_role( $args, $assoc_args ) {
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
 		$role = $assoc_args['role'];
@@ -114,4 +116,4 @@ class BBPCLI_Users extends BBPCLI_Component {
 	}
 }
 
-WP_CLI::add_command( 'bbp user', 'BBPCLI_Users' );
+WP_CLI::add_command( 'bbp user', 'BBPCLI_User' );

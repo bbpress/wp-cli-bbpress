@@ -9,18 +9,12 @@ Feature: Manage bbPress Moderators
 
     When I run `wp user create testuser2 testuser2@example.com --porcelain`
     Then STDOUT should be a number
-    And save STDOUT as {USER_ID}
+    And save STDOUT as {MEMBER_ID}
 
-    When I run `wp bbp user moderator add --forum-id={FORUM_ID} --user-id={USER_ID}`
+    When I run `wp bbp user moderator add --forum-id={FORUM_ID} --user-id={MEMBER_ID}`
     Then STDOUT should contain:
       """
       Success: Member added as a moderator.
-      """
-
-    When I run `wp bbp user moderator remove --forum-id={FORUM_ID} --user-id={USER_ID}`
-    Then STDOUT should contain:
-      """
-      Success: Member removed as a moderator.
       """
 
     When I run `wp bbp user moderator list --forum-id={FORUM_ID} --format=count`
@@ -32,5 +26,11 @@ Feature: Manage bbPress Moderators
     When I run `wp bbp user moderator list --forum-id={FORUM_ID} --format=ids`
     Then STDOUT should contain:
       """
-      {USER_ID}
+      {MEMBER_ID}
+      """
+
+    When I run `wp bbp user moderator remove --forum-id={FORUM_ID} --user-id={MEMBER_ID}`
+    Then STDOUT should contain:
+      """
+      Success: Member removed as a moderator.
       """

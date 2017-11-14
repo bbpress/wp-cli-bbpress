@@ -17,12 +17,6 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	 * --obejct-id=<object-id>
 	 * : Identifier for the object (forum, topic, or something else).
 	 *
-	 * [--type=<type>]
-	 * : Type of object being subscribed to.
-	 * ---
-	 * default: post
-	 * ---
-	 *
 	 * ## EXAMPLES
 	 *
 	 *    $ wp bbp subscription add --user-id=5465 --object-id=65476
@@ -41,7 +35,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 		}
 
 		// True if added.
-		if ( bbp_add_user_subscription( $user->ID, $assoc_args['object-id'], $assoc_args['type'] ) ) {
+		if ( bbp_add_user_subscription( $user->ID, $assoc_args['object-id'] ) ) {
 			WP_CLI::success( 'Subscription successfully  added.' );
 		} else {
 			WP_CLI::error( 'Could not add the subscription.' );
@@ -59,18 +53,12 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	 * --object-id=<object-id>
 	 * : Identifier for the object (forum, topic, or something else).
 	 *
-	 * [--type=<type>]
-	 * : Type of object being removed from.
-	 * ---
-	 * default: post
-	 * ---
-	 *
 	 * ## EXAMPLES
 	 *
 	 *    $ wp bbp subscription remove --user-id=5465 --object-id=65476
 	 *    Success: Subscription successfully removed.
 	 *
-	 *    $ wp bbp subscription unsubscribe --user-id=user_login --object-id=4646 --type=forum
+	 *    $ wp bbp subscription unsubscribe --user-id=user_login --object-id=4646
 	 *    Success: Subscription successfully removed.
 	 *
 	 * @alias unsubscribe
@@ -83,7 +71,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 		}
 
 		// True if added.
-		if ( bbp_remove_user_subscription( $user->ID, $assoc_args['object-id'], $assoc_args['type'] ) ) {
+		if ( bbp_remove_user_subscription( $user->ID, $assoc_args['object-id'] ) ) {
 			WP_CLI::success( 'Subscription successfully removed.' );
 		} else {
 			WP_CLI::error( 'Could not remove the subscription.' );
@@ -96,27 +84,38 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * --object-id=<object-id>
-	 * : Identifier for the object (forum, topic, or something else).
+	 * : Identifier for the object (forum or topic).
 	 *
-	 * [--type=<type>]
-	 * : Type of object.
+	 * [--format=<format>]
+	 * : Render output in a particular format.
 	 * ---
-	 * default: post
+	 * default: count
+	 * options:
+	 *   - ids
+	 *   - count
+	 *   - json
+	 *   - haml
 	 * ---
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp bbp subscription list_users --object-id=242
-	 *     654654 5465465 4564654 56465
+	 *     $ wp bbp subscription list_users --object-id=334938
+	 *     3
 	 *
-	 *     $ wp bbp subscription list_users --object-id=45765 --type=another-type
-	 *     5545 54654 465456 446 6465
+	 *     $ wp bbp subscription list_users --object-id=242 --format=ids
+	 *     65 5454 5454 545
 	 */
 	public function list_users( $args, $assoc_args ) {
-		$ids = bbp_get_subscribers( $assoc_args['object-id'], $assoc_args['type'] );
+		$formatter = $this->get_formatter( $assoc_args );
+
+		$ids = bbp_get_subscribers( $assoc_args['object-id'] );
 
 		if ( ! $ids ) {
-			echo implode( ' ', $ids ); // WPCS: XSS ok.
+			if ( 'ids' === $formatter->format ) {
+				echo implode( ' ', $ids ); // WPCS: XSS ok.
+			} elseif ( 'count' === $formatter->format ) {
+				$formatter->display_items( count( $ids ) );
+			}
 		} else {
 			WP_CLI::error( 'Could not find any users.' );
 		}

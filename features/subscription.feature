@@ -1,25 +1,47 @@
 Feature: Manage bbPress subscriptions
 
-  Background:
-    Given a WP install
+  Scenario: Subscription CRUD commands.
+    Given a bbPress install
 
-  Scenario: Add a user subscription.
-    When I run `wp bbp subscription add --user-id=5465 --object-id=65476`
+    When I run `wp user create testuser1 testuser1@example.com --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {MEMBER_ID}
+
+    When I run `wp bbp forum create --title="Forum" --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {FORUM_ID}
+
+    When I run `wp bbp subscription add --user-id={MEMBER_ID} --object-id={FORUM_ID}`
     Then STDOUT should contain:
       """
       Success: Subscription successfully added.
       """
+    When I run `wp bbp subscription list_users --object-id={FORUM_ID} --format=ids`
+    Then STDOUT should contain:
+      """
+      {MEMBER_ID}
+      """
 
-  Scenario: Remove a user subscription.
-    When I run `wp bbp subscription remove --user-id=5465 --object-id=65476`
+    When I run `wp bbp subscription list_users --object-id={FORUM_ID}`
+    Then STDOUT should contain:
+      """
+      1
+      """
+
+    When I run `wp bbp subscription list --user-id={MEMBER_ID} --object=forum --format=count`
+    Then STDOUT should contain:
+      """
+      1
+      """
+
+    When I run `wp bbp subscription list --user-id={MEMBER_ID} --object=forum --format=ids`
+    Then STDOUT should contain:
+      """
+      {FORUM_ID}
+      """
+
+    When I run `wp bbp subscription remove --user-id={MEMBER_ID} --object-id={FORUM_ID}`
     Then STDOUT should contain:
       """
       Success: Subscription successfully removed.
-      """
-
-  Scenario: List users who subscribed to an object.
-    When I run `wp bbp subscription list_users --object-id=242`
-    Then STDOUT should contain:
-      """
-      54564 4564 454 545
       """

@@ -1,8 +1,10 @@
 <?php
 /**
  * Manage bbPress Subscriptions.
+ *
+ * @since 1.0.0
  */
-class BBPCLI_Subscriptions extends BBPCLI_Component {
+class BBPCLI_Subscription extends BBPCLI_Component {
 
 	/**
 	 * Add a user subscription.
@@ -18,7 +20,7 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 	 * [--type=<type>]
 	 * : Type of object being subscribed to.
 	 * ---
-	 * Default: post
+	 * default: post
 	 * ---
 	 *
 	 * ## EXAMPLES
@@ -35,7 +37,7 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
 		// True if added.
@@ -60,7 +62,7 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 	 * [--type=<type>]
 	 * : Type of object being removed from.
 	 * ---
-	 * Default: post
+	 * default: post
 	 * ---
 	 *
 	 * ## EXAMPLES
@@ -77,7 +79,7 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
 		// True if added.
@@ -99,7 +101,7 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 	 * [--type=<type>]
 	 * : Type of object.
 	 * ---
-	 * Default: post
+	 * default: post
 	 * ---
 	 *
 	 * ## EXAMPLES
@@ -116,7 +118,7 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 		if ( ! $ids ) {
 			echo implode( ' ', $ids ); // WPCS: XSS ok.
 		} else {
-			WP_CLI::error( 'Could not find any subscribers.' );
+			WP_CLI::error( 'Could not find any users.' );
 		}
 	}
 
@@ -131,7 +133,7 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 	 * --object=<object>
 	 * : Type of object (forum or topic).
 	 * ---
-	 * Default: forum
+	 * default: forum
 	 * ---
 	 *
 	 * [--format=<format>]
@@ -142,6 +144,8 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 	 *   - table
 	 *   - ids
 	 *   - count
+	 *   - json
+	 *   - haml
 	 * ---
 	 *
 	 * ## EXAMPLES
@@ -154,10 +158,10 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 	public function _list( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
+		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
-
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
 		$query_args = array(
@@ -170,18 +174,18 @@ class BBPCLI_Subscriptions extends BBPCLI_Component {
 			),
 		);
 
-		$posts = ( 'forum' === $assoc_args['object'] )
+		$objects = ( 'forum' === $assoc_args['object'] )
 			? bbp_get_user_forum_subscriptions( $query_args )
 			: bbp_get_user_topic_subscriptions( $query_args );
 
 		if ( 'ids' === $formatter->format ) {
-			echo implode( ' ', $posts->posts ); // WPCS: XSS ok.
+			echo implode( ' ', wp_list_pluck( $objects->posts, 'ID' ) ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
-			$formatter->display_items( $posts->found_posts );
+			$formatter->display_items( $objects->posts );
 		} else {
-			$formatter->display_items( $posts->posts );
+			$formatter->display_items( $objects->posts );
 		}
 	}
 }
 
-WP_CLI::add_command( 'bbp subscription', 'BBPCLI_Subscriptions' );
+WP_CLI::add_command( 'bbp subscription', 'BBPCLI_Subscription' );

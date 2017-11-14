@@ -1,8 +1,10 @@
 <?php
 /**
  * Manage bbPress Engagements.
+ *
+ * @since 1.0.0
  */
-class BBPCLI_Engagements extends BBPCLI_Component {
+class BBPCLI_Engagement extends BBPCLI_Component {
 
 	/**
 	 * Add a topic to user's engagements.
@@ -22,12 +24,14 @@ class BBPCLI_Engagements extends BBPCLI_Component {
 	 *
 	 *    $ wp bbp engagement add --user-id=user_test --topic-id=354354
 	 *    Success: Engagement successfully added.
+	 *
+	 * @alias create
 	 */
 	public function add( $args, $assoc_args ) {
 		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
 		// Check if topic exists.
@@ -62,12 +66,14 @@ class BBPCLI_Engagements extends BBPCLI_Component {
 	 *
 	 *    $ wp bbp engagement remove --user-id=user_test --topic-id=28468
 	 *    Success: Engagement successfully removed.
+	 *
+	 * @alias delete
 	 */
 	public function remove( $args, $assoc_args ) {
 		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
 		// Check if topic exists.
@@ -101,7 +107,14 @@ class BBPCLI_Engagements extends BBPCLI_Component {
 	 *     54564 465465 65465
 	 */
 	public function list_users( $args, $assoc_args ) {
-		$ids = bbp_get_topic_engagements( $args[0] );
+		$topic_id = $args[0];
+
+		// Check if topic exists.
+		if ( ! bbp_is_topic( $topic_id ) ) {
+			WP_CLI::error( 'No topic found by that ID.' );
+		}
+
+		$ids = bbp_get_topic_engagements( $topic_id );
 
 		if ( ! $ids ) {
 			echo implode( ' ', $ids ); // WPCS: XSS ok.
@@ -126,6 +139,8 @@ class BBPCLI_Engagements extends BBPCLI_Component {
 	 *   - table
 	 *   - ids
 	 *   - count
+	 *   - json
+	 *   - haml
 	 * ---
 	 *
 	 * ## EXAMPLE
@@ -139,7 +154,7 @@ class BBPCLI_Engagements extends BBPCLI_Component {
 		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
 		$query_args = array(
@@ -155,9 +170,9 @@ class BBPCLI_Engagements extends BBPCLI_Component {
 		$topics = bbp_get_user_engagements( $query_args );
 
 		if ( 'ids' === $formatter->format ) {
-			echo implode( ' ', $topics->posts ); // WPCS: XSS ok.
+			echo implode( ' ', wp_list_pluck( $topics->posts, 'ID' ) ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
-			$formatter->display_items( $topics->found_posts );
+			$formatter->display_items( $topics->posts );
 		} else {
 			$formatter->display_items( $topics->posts );
 		}
@@ -191,4 +206,4 @@ class BBPCLI_Engagements extends BBPCLI_Component {
 	}
 }
 
-WP_CLI::add_command( 'bbp engagement', 'BBPCLI_Engagements' );
+WP_CLI::add_command( 'bbp engagement', 'BBPCLI_Engagement' );

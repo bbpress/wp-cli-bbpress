@@ -1,8 +1,10 @@
 <?php
 /**
  * Manage bbPress Favorites.
+ *
+ * @since 1.0.0
  */
-class BBPCLI_Favorites extends BBPCLI_Component {
+class BBPCLI_Favorite extends BBPCLI_Component {
 
 	/**
 	 * Add a topic to user's favorites.
@@ -29,7 +31,7 @@ class BBPCLI_Favorites extends BBPCLI_Component {
 		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
 		// Check if topic exists.
@@ -71,7 +73,7 @@ class BBPCLI_Favorites extends BBPCLI_Component {
 		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
+			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
 		// Check if topic exists.
@@ -114,7 +116,7 @@ class BBPCLI_Favorites extends BBPCLI_Component {
 		if ( ! $ids ) {
 			echo implode( ' ', $ids ); // WPCS: XSS ok.
 		} else {
-			WP_CLI::error( 'Could not find any favoriters.' );
+			WP_CLI::error( 'Could not find any users.' );
 		}
 	}
 
@@ -134,6 +136,8 @@ class BBPCLI_Favorites extends BBPCLI_Component {
 	 *   - table
 	 *   - ids
 	 *   - count
+	 *   - json
+	 *   - haml
 	 * ---
 	 *
 	 * ## EXAMPLES
@@ -142,20 +146,22 @@ class BBPCLI_Favorites extends BBPCLI_Component {
 	 *     $ wp bbp favorite list_topics 54464 --format=count
 	 */
 	public function list_topics( $args, $assoc_args ) {
-		$user = $this->get_user_id_from_identifier( $args[0] );
-
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID' );
-		}
-
 		$formatter = $this->get_formatter( $assoc_args );
 
+		// Check if user exists.
+		$user = $this->get_user_id_from_identifier( $args[0] );
+		if ( ! $user ) {
+			WP_CLI::error( 'No user found by that username or ID.' );
+		}
+
 		$args = array(
-			'meta_query' => array( array(
-				'key'     => '_bbp_favorite',
-				'value'   => $user->ID,
-				'compare' => 'NUMERIC',
-			) )
+			'meta_query' => array( // WPCS: slow query ok.
+				array(
+					'key'     => '_bbp_favorite',
+					'value'   => $user->ID,
+					'compare' => 'NUMERIC',
+				),
+			),
 		);
 
 		$topics = bbp_get_user_favorites( $args );
@@ -163,11 +169,11 @@ class BBPCLI_Favorites extends BBPCLI_Component {
 		if ( 'ids' === $formatter->format ) {
 			echo implode( ' ', bbp_get_user_favorites_topic_ids( $user->ID ) ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
-			$formatter->display_items( $topics->found_posts );
+			$formatter->display_items( $topics->posts );
 		} else {
 			$formatter->display_items( $topics->posts );
 		}
 	}
 }
 
-WP_CLI::add_command( 'bbp favorite', 'BBPCLI_Favorites' );
+WP_CLI::add_command( 'bbp favorite', 'BBPCLI_Favorite' );

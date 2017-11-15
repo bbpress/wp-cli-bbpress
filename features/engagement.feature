@@ -29,6 +29,12 @@ Feature: Manage bbPress engagements
       1
       """
 
+    When I run `wp bbp subscription list {MEMBER_ID} --format=ids`
+    Then STDOUT should contain:
+      """
+      {TOPIC_ID}
+      """
+
     When I run `wp bbp engagement recalculate {TOPIC_ID}`
     Then STDOUT should contain:
       """

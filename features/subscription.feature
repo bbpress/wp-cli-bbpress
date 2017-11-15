@@ -16,6 +16,7 @@ Feature: Manage bbPress subscriptions
       """
       Success: Subscription successfully added.
       """
+
     When I run `wp bbp subscription list_users --object-id={FORUM_ID} --format=ids`
     Then STDOUT should contain:
       """

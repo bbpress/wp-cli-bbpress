@@ -14,7 +14,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	 * --user-id=<user>
 	 * : Identifier for the user. Accepts either a user_login or a numeric ID.
 	 *
-	 * --obejct-id=<object-id>
+	 * --object-id=<object-id>
 	 * : Identifier for the object (forum, topic, or something else).
 	 *
 	 * ## EXAMPLES

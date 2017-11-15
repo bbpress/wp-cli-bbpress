@@ -1,32 +1,44 @@
 Feature: Manage bbPress engagements
 
-  Background:
-    Given a WP install
+  Scenario: Engagement CRUD commands.
+    Given a bbPress install
 
-  Scenario: Add a topic to user's engagements.
-    When I run `wp bbp engagement add --user-id=5465 --topic-id=65476`
+    When I run `wp user create testuser1 testuser1@example.com --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {MEMBER_ID}
+
+    When I run `wp bbp topic create --title="Topic" --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {TOPIC_ID}
+
+    When I run `wp bbp engagement add --user-id={MEMBER_ID} --topic-id={TOPIC_ID}`
     Then STDOUT should contain:
       """
       Success: Engagement successfully added.
       """
 
-  Scenario: Remove a topic from user's engagements.
-    When I run `wp bbp engagement remove --user-id=5465 --topic-id=65476`
+    When I run `wp bbp subscription list_users --topic-id={TOPIC_ID} --format=ids`
     Then STDOUT should contain:
       """
-      Success: Engagement successfully removed.
+      {MEMBER_ID}
       """
 
-  Scenario: Recalculate all of the users who have engaged in a topic.
-    When I run `wp bbp engagement recalculate 132`
+    When I run `wp bbp subscription list {MEMBER_ID} --format=count`
+    Then STDOUT should contain:
+      """
+      1
+      """
+
+    When I run `wp bbp engagement recalculate {TOPIC_ID}`
     Then STDOUT should contain:
       """
       Success: Engagements successfully recalculated.
       """
 
-  Scenario: List the users who have engaged in a topic.
-    When I run `wp bbp subscription list_users --object-id=242`
+    When I run `wp bbp engagement remove --user-id={MEMBER_ID} --topic-id={TOPIC_ID}`
     Then STDOUT should contain:
       """
-      54564 4564 454 545
+      Success: Engagement successfully removed.
       """
+
+

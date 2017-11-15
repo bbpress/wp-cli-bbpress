@@ -98,12 +98,23 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 	 * <topic-id>
 	 * : Identifier for the topic.
 	 *
+	 * [--format=<format>]
+	 * : Render output in a particular format.
+	 * ---
+	 * default: count
+	 * options:
+	 *   - ids
+	 *   - count
+	 *   - json
+	 *   - haml
+	 * ---
+	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp bbp subscription list_users --object-id=242
-	 *     165465 654564 1161 313
+	 *     $ wp bbp subscription list_users --topic-id=242
+	 *     3
 	 *
-	 *     $ wp bbp subscription list_users --object-id=45765 --type=another-type
+	 *     $ wp bbp subscription list_users --topic-id=45765 --format=ids
 	 *     54564 465465 65465
 	 */
 	public function list_users( $args, $assoc_args ) {
@@ -117,7 +128,11 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 		$ids = bbp_get_topic_engagements( $topic_id );
 
 		if ( ! $ids ) {
-			echo implode( ' ', $ids ); // WPCS: XSS ok.
+			if ( 'ids' === $formatter->format ) {
+				echo implode( ' ', $ids ); // WPCS: XSS ok.
+			} elseif ( 'count' === $formatter->format ) {
+				$formatter->display_items( count( $ids ) );
+			}
 		} else {
 			WP_CLI::error( 'Could not find any users.' );
 		}
@@ -145,10 +160,12 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLE
 	 *
-	 *     $ wp bbp favorite list_topics 456
-	 *     $ wp bbp favorite list_topics 456546 --format=ids
+	 *     $ wp bbp favorite list 456
+	 *     $ wp bbp favorite list 456546 --format=ids
+	 *
+	 * @subcommand list
 	 */
-	public function list_topics( $args, $assoc_args ) {
+	public function _list( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
 		// Check if user exists.

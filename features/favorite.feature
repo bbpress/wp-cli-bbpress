@@ -1,25 +1,30 @@
 Feature: Manage bbPress subscriptions
 
-  Background:
-    Given a WP install
+  Scenario: Favorite CRUD commands.
+    Given a bbPress install
 
-  Scenario: Add a topic to user's favorites.
-    When I run `wp bbp favorite add --user-id=5465 --topic-id=65476`
+    When I run `wp user create testuser1 testuser1@example.com --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {MEMBER_ID}
+
+    When I run `wp bbp topic create --title="Topic" --porcelain`
+    Then STDOUT should be a number
+    And save STDOUT as {TOPIC_ID}
+
+    When I run `wp bbp favorite add --user-id={MEMBER_ID} --topic-id={TOPIC_ID}`
     Then STDOUT should contain:
       """
       Success: Favorite successfully added.
       """
 
-  Scenario: Remove a topic from user's favorites.
-    When I run `wp bbp favorite remove --user-id=5465 --topic-id=65476`
+    When I run `wp bbp favorite list_users {TOPIC_ID} --format=ids`
+    Then STDOUT should contain:
+      """
+      {MEMBER_ID}
+      """
+
+    When I run `wp bbp favorite remove --user-id={MEMBER_ID} --topic-id={TOPIC_ID}`
     Then STDOUT should contain:
       """
       Success: Favorite successfully removed.
-      """
-
-  Scenario: List users who favorited a topic.
-    When I run `wp bbp favorite list_users 456`
-    Then STDOUT should contain:
-      """
-      54564 4564 454 545
       """

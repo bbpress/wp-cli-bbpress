@@ -98,9 +98,20 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 * <topic-id>
 	 * : Identifier of the topic.
 	 *
+	 * [--format=<format>]
+	 * : Render output in a particular format.
+	 * ---
+	 * default: count
+	 * options:
+	 *   - ids
+	 *   - count
+	 *   - json
+	 *   - haml
+	 * ---
+	 *
 	 * ## EXAMPLE
 	 *
-	 *     $ wp bbp favorite list_users 456
+	 *     $ wp bbp favorite list_users 456 --format=ids
 	 *     54564 4564 454 545
 	 */
 	public function list_users( $args, $assoc_args ) {
@@ -114,7 +125,11 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 		$ids = bbp_get_topic_favoriters( $topic_id );
 
 		if ( ! $ids ) {
-			echo implode( ' ', $ids ); // WPCS: XSS ok.
+			if ( 'ids' === $formatter->format ) {
+				echo implode( ' ', $ids ); // WPCS: XSS ok.
+			} elseif ( 'count' === $formatter->format ) {
+				$formatter->display_items( count( $ids ) );
+			}
 		} else {
 			WP_CLI::error( 'Could not find any users.' );
 		}
@@ -144,8 +159,10 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp favorite list_topics 5456
 	 *     $ wp bbp favorite list_topics 54464 --format=count
+	 *
+	 * @subcommand list
 	 */
-	public function list_topics( $args, $assoc_args ) {
+	public function _list( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
 		// Check if user exists.

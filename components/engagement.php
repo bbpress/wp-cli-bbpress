@@ -42,7 +42,7 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 
 		// True if added.
 		if ( bbp_add_user_engagement( $user->ID, $topic_id ) ) {
-			WP_CLI::success( 'Engagement successfully  added.' );
+			WP_CLI::success( 'Engagement successfully added.' );
 		} else {
 			WP_CLI::error( 'Could not add the engagement.' );
 		}

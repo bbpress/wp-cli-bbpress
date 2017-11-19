@@ -109,12 +109,15 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *   - haml
 	 * ---
 	 *
-	 * ## EXAMPLE
+	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp favorite list_users 456 --format=ids
 	 *     54564 4564 454 545
+	 *
+	 *     $ wp bbp favorite list_users 354 --format=count
+	 *     2
 	 */
-	public function list_users( $args, $assoc_args ) {
+	public function _list_users( $args, $assoc_args ) {
 		$topic_id = $args[0];
 
 		// Check if topic exists.
@@ -125,13 +128,13 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 		$ids = bbp_get_topic_favoriters( $topic_id );
 
 		if ( ! $ids ) {
-			if ( 'ids' === $formatter->format ) {
-				echo implode( ' ', $ids ); // WPCS: XSS ok.
-			} elseif ( 'count' === $formatter->format ) {
-				$formatter->display_items( count( $ids ) );
-			}
-		} else {
 			WP_CLI::error( 'Could not find any users.' );
+		}
+
+		if ( 'ids' === $formatter->format ) {
+			echo implode( ' ', $ids ); // WPCS: XSS ok.
+		} elseif ( 'count' === $formatter->format ) {
+			$formatter->display_items( $ids );
 		}
 	}
 
@@ -171,7 +174,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
-		$args = array(
+		$topics = bbp_get_user_favorites( array(
 			'meta_query' => array( // WPCS: slow query ok.
 				array(
 					'key'     => '_bbp_favorite',
@@ -179,9 +182,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 					'compare' => 'NUMERIC',
 				),
 			),
-		);
-
-		$topics = bbp_get_user_favorites( $args );
+		) );
 
 		if ( 'ids' === $formatter->format ) {
 			echo implode( ' ', bbp_get_user_favorites_topic_ids( $user->ID ) ); // WPCS: XSS ok.

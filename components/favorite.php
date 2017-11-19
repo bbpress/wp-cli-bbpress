@@ -117,7 +117,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *     $ wp bbp favorite list_users 354 --format=count
 	 *     2
 	 */
-	public function _list_users( $args, $assoc_args ) {
+	public function list_users( $args, $assoc_args ) {
 		$topic_id = $args[0];
 
 		// Check if topic exists.

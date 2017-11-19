@@ -111,13 +111,13 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 		$ids = bbp_get_subscribers( $assoc_args['object-id'] );
 
 		if ( ! $ids ) {
-			if ( 'ids' === $formatter->format ) {
-				echo implode( ' ', $ids ); // WPCS: XSS ok.
-			} elseif ( 'count' === $formatter->format ) {
-				$formatter->display_items( count( $ids ) );
-			}
-		} else {
 			WP_CLI::error( 'Could not find any users.' );
+		}
+
+		if ( 'ids' === $formatter->format ) {
+			echo implode( ' ', $ids ); // WPCS: XSS ok.
+		} elseif ( 'count' === $formatter->format ) {
+			$formatter->display_items( $ids );
 		}
 	}
 

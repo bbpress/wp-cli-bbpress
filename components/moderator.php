@@ -4,7 +4,7 @@
  *
  * @since 1.0.0
  */
-class BBPCLI_User_Moderator extends BBPCLI_Component {
+class BBPCLI_Moderator extends BBPCLI_Component {
 
 	/**
 	 * Add a forum moderator
@@ -145,4 +145,4 @@ class BBPCLI_User_Moderator extends BBPCLI_Component {
 	}
 }
 
-WP_CLI::add_command( 'bbp user moderator', 'BBPCLI_User_Moderator' );
+WP_CLI::add_command( 'bbp moderator', 'BBPCLI_Moderator' );

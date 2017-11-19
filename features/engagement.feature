@@ -17,19 +17,19 @@ Feature: Manage bbPress engagements
       Success: Engagement successfully added.
       """
 
-    When I run `wp bbp subscription list_users --topic-id={TOPIC_ID} --format=ids`
+    When I run `wp bbp engagement list_users --topic-id={TOPIC_ID} --format=ids`
     Then STDOUT should contain:
       """
       {MEMBER_ID}
       """
 
-    When I run `wp bbp subscription list {MEMBER_ID} --format=count`
+    When I run `wp bbp engagement list {MEMBER_ID} --format=count`
     Then STDOUT should contain:
       """
       1
       """
 
-    When I run `wp bbp subscription list {MEMBER_ID} --format=ids`
+    When I run `wp bbp engagement list {MEMBER_ID} --format=ids`
     Then STDOUT should contain:
       """
       {TOPIC_ID}

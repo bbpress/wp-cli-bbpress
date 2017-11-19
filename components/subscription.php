@@ -36,7 +36,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 
 		// True if added.
 		if ( bbp_add_user_subscription( $user->ID, $assoc_args['object-id'] ) ) {
-			WP_CLI::success( 'Subscription successfully  added.' );
+			WP_CLI::success( 'Subscription successfully added.' );
 		} else {
 			WP_CLI::error( 'Could not add the subscription.' );
 		}

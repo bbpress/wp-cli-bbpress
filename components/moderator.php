@@ -133,12 +133,11 @@ class BBPCLI_Moderator extends BBPCLI_Component {
 		}
 
 		$moderators = bbp_get_moderators( $forum_id );
-		$ids = bbp_get_moderator_ids( $forum_id );
 
 		if ( 'ids' === $formatter->format ) {
-			echo implode( ' ', $ids ); // WPCS: XSS ok.
+			echo implode( ' ', bbp_get_moderator_ids( $forum_id ) ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
-			$formatter->display_items( count( $ids ) );
+			$formatter->display_items( $moderators );
 		} else {
 			$formatter->display_items( $moderators );
 		}

@@ -163,19 +163,9 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
-		$query_args = array(
-			'meta_query' => array( // WPCS: slow query ok.
-				array(
-					'key'     => '_bbp_subscription',
-					'value'   => $user->ID,
-					'compare' => 'NUMERIC',
-				),
-			),
-		);
-
 		$objects = ( 'forum' === $assoc_args['object'] )
-			? bbp_get_user_forum_subscriptions( $query_args )
-			: bbp_get_user_topic_subscriptions( $query_args );
+			? bbp_get_user_forum_subscriptions( $user->ID )
+			: bbp_get_user_topic_subscriptions( $user->ID );
 
 		if ( 'ids' === $formatter->format ) {
 			echo implode( ' ', wp_list_pluck( $objects->posts, 'ID' ) ); // WPCS: XSS ok.

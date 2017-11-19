@@ -95,7 +95,7 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * <topic-id>
+	 * --topic-id=<topic-id>
 	 * : Identifier for the topic.
 	 *
 	 * [--format=<format>]

@@ -95,7 +95,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * <topic-id>
+	 * --topic-id=<topic-id>
 	 * : Identifier of the topic.
 	 *
 	 * [--format=<format>]
@@ -111,10 +111,10 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp bbp favorite list_users 456 --format=ids
+	 *     $ wp bbp favorite list_users --topic=id=456 --format=ids
 	 *     54564 4564 454 545
 	 *
-	 *     $ wp bbp favorite list_users 354 --format=count
+	 *     $ wp bbp favorite list_users --topic=id=354 --format=count
 	 *     2
 	 */
 	public function list_users( $args, $assoc_args ) {

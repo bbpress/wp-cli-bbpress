@@ -4,7 +4,20 @@
  *
  * @since 1.0.0
  */
-class BBPCLI_Forums extends BBPCLI_Component {
+class BBPCLI_Forum extends BBPCLI_Component {
+
+	/**
+	 * Forum Object Default fields
+	 *
+	 * @var array
+	 */
+	protected $obj_fields = array(
+		'ID',
+		'post_title',
+		'post_name',
+		'post_date',
+		'post_status',
+	);
 
 	/**
 	 * Create a forum.
@@ -26,8 +39,20 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * default: 1
 	 * ---
 	 *
+	 * [--forum-id=<forum-id>]
+	 * : Identifier of the forum.
+	 * ---
+	 * default: 0
+	 * ---
+	 *
+	 * [--forum-status=<forum-status>]
+	 * : Forum status (publish, pending, spam, trash).
+	 * ---
+	 * default: publish
+	 * ---
+	 *
 	 * [--status=<status>]
-	 * : Forum status (open, close, hidden).
+	 * : Forum status (open, close).
 	 * ---
 	 * default: open
 	 * ---
@@ -50,22 +75,37 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 */
 	public function create( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(
-			'title'   => '',
-			'content' => '',
-			'user-id'  => 1,
-			'status'  => 'open',
-			'silent'  => false,
+			'title'        => '',
+			'content'      => '',
+			'user-id'      => 1,
+			'forum-id'     => 0,
+			'forum-status' => 'publish',
+			'status'       => 'open',
+			'silent'       => false,
 		) );
 
 		if ( empty( $r['content'] ) ) {
 			$r['content'] = sprintf( 'Content for the forum "%s"', $r['title'] );
 		}
 
-		$id = bbp_insert_forum( array(
+		// Fallback for forum status.
+		if ( ! in_array( $r['forum-status'], $this->forum_status(), true ) ) {
+			$r['forum-status'] = 'publish';
+		}
+
+		$forum_data = array(
+			'post_parent'  => $r['forum-id'],
 			'post_title'   => $r['title'],
 			'post_content' => $r['content'],
+			'post_status'  => $r['forum-status'],
 			'post_author'  => $r['user-id'],
-		), $r['status'] );
+		);
+
+		$forum_meta = array(
+			'status' => $r['status'],
+		);
+
+		$id = bbp_insert_forum( $forum_data, $forum_meta );
 
 		if ( $r['silent'] ) {
 			return;
@@ -202,14 +242,13 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	public function _list( $_, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
+		$forum_post_type = bbp_get_forum_post_type();
 		$query_args = wp_parse_args( $assoc_args, array(
-			'post_type' => bbp_get_forum_post_type(),
-			'post_status' => bbp_get_public_status_id(),
+			'post_type' => $forum_post_type,
 		) );
 
 		$query_args = self::process_csv_arguments_to_arrays( $query_args );
 
-		$forum_post_type = bbp_get_forum_post_type();
 		if ( isset( $query_args['post_type'] ) && $forum_post_type !== $query_args['post_type'] ) {
 			$query_args['post_type'] = $forum_post_type;
 		}
@@ -303,8 +342,14 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 * default: 100
 	 * ---
 	 *
+	 * [--forum-status=<forum-status>]
+	 * : Forum status (publish, pending, spam, trash or mixed).
+	 * ---
+	 * default: publish
+	 * ---
+	 *
 	 * [--status=<status>]
-	 * : Forum status (open, close, hidden).
+	 * : Status (open, close).
 	 * ---
 	 * default: open
 	 * ---
@@ -313,17 +358,18 @@ class BBPCLI_Forums extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp forum generate --count=50
 	 *     $ wp bbp forum generate --count=20 --status=closed
-	 *     $ wp bbp forum generate --count=15 --status=hidden
+	 *     $ wp bbp forum generate --count=15 --status=mixed
 	 */
 	public function generate( $args, $assoc_args ) {
 		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating forums', $assoc_args['count'] );
 
 		for ( $i = 0; $i < $assoc_args['count']; $i++ ) {
 			$this->create( array(), array(
-				'title'   => sprintf( 'Test Forum - #%d', $i ),
-				'content' => sprintf( 'Content for the forum - #%d', $i ),
-				'status'  => $assoc_args['status'],
-				'silent'  => true,
+				'title'        => sprintf( 'Test Forum - #%d', $i ),
+				'content'      => sprintf( 'Content for the forum - #%d', $i ),
+				'forum-status' => $this->random_forum_status( $assoc_args['forum-status'] ),
+				'status'       => $assoc_args['status'],
+				'silent'       => true,
 			) );
 
 			$notify->tick();
@@ -351,6 +397,10 @@ class BBPCLI_Forums extends BBPCLI_Component {
 		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
 			WP_CLI::error( 'No forum found by that ID.' );
+		}
+
+		if ( bbp_is_forum_open( $forum_id ) ) {
+			WP_CLI::error( 'Forum is already opened.' );
 		}
 
 		$id = bbp_open_forum( $forum_id );
@@ -383,6 +433,10 @@ class BBPCLI_Forums extends BBPCLI_Component {
 			WP_CLI::error( 'No forum found by that ID.' );
 		}
 
+		if ( bbp_is_forum_closed( $forum_id ) ) {
+			WP_CLI::error( 'Forum is already closed.' );
+		}
+
 		$id = bbp_close_forum( $forum_id );
 
 		if ( is_numeric( $id ) ) {
@@ -391,6 +445,35 @@ class BBPCLI_Forums extends BBPCLI_Component {
 			WP_CLI::error( sprintf( 'Could not close the forum %d.', $forum_id ) );
 		}
 	}
+
+	/**
+	 * List of forum status
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array An array of default forum status.
+	 */
+	protected function forum_status() {
+		return array( 'publish', 'pending', 'spam', 'trash' );
+	}
+
+	/**
+	 * Gets a random reply status.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  string $status Reply status.
+	 * @return string Random Reply Status.
+	 */
+	protected function random_forum_status( $status ) {
+		$forum_status = $this->forum_status();
+
+		$status = ( 'mixed' === $status )
+			? $forum_status[ array_rand( $forum_status ) ]
+			: $status;
+
+		return $status;
+	}
 }
 
-WP_CLI::add_command( 'bbp forum', 'BBPCLI_Forums' );
+WP_CLI::add_command( 'bbp forum', 'BBPCLI_Forum' );

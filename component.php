@@ -2,7 +2,7 @@
 /**
  * Base component class.
  *
- * Borrowed for wp-cli-buddypress. Not sure if that's going to be needed yet.
+ * Stolen for wp-cli-buddypress.
  *
  * @since 1.0.0
  */

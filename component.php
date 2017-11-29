@@ -41,6 +41,18 @@ class BBPCLI_Component extends \WP_CLI\CommandWithDBObject {
 	}
 
 	/**
+	 * String Sanitization.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  string $type String to sanitize.
+	 * @return string Sanitized string.
+	 */
+	protected function sanitize_string( $type ) {
+		return strtolower( str_replace( '-', '_', $type ) );
+	}
+
+	/**
 	 * Forum Roles
 	 *
 	 * @since 1.0.0

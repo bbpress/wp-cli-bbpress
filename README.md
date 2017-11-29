@@ -1,5 +1,4 @@
-bbpress/wp-cli-bbpress
-======================
+# bbpress/wp-cli-bbpress
 
 WP-CLI commands for use with bbPress
 

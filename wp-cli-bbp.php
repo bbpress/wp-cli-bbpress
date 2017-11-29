@@ -7,10 +7,12 @@ if ( ! class_exists( 'WP_CLI' ) ) {
 
 WP_CLI::add_hook( 'before_wp_load', function() {
 	require_once( __DIR__ . '/component.php' );
-	require_once( __DIR__ . '/components/tools.php' );
 	require_once( __DIR__ . '/components/subscription.php' );
 	require_once( __DIR__ . '/components/favorite.php' );
 	require_once( __DIR__ . '/components/engagement.php' );
+	require_once( __DIR__ . '/components/tool.php' );
+	require_once( __DIR__ . '/components/user.php' );
+	require_once( __DIR__ . '/components/moderator.php' );
 	require_once( __DIR__ . '/components/forum.php' );
 	require_once( __DIR__ . '/components/topic.php' );
 	require_once( __DIR__ . '/components/reply.php' );

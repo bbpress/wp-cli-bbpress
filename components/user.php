@@ -114,6 +114,17 @@ class BBPCLI_User extends BBPCLI_Component {
 			WP_CLI::error( 'Could not set new role for user.' );
 		}
 	}
+
+	/**
+	 * Forum Roles
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array An array of forum roles.
+	 */
+	protected function forum_roles() {
+		return array( 'keymaster', 'moderator', 'participant', 'spectator', 'blocked' );
+	}
 }
 
 WP_CLI::add_command( 'bbp user', 'BBPCLI_User' );

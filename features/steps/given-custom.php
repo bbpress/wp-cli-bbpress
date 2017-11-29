@@ -13,6 +13,11 @@ $steps->Given( '/^a bbPress install$/',
 		}
 
 		$bbp_src_dir = getenv( 'BBP_SRC_DIR' );
+
+		if ( ! is_dir( $bbp_src_dir ) ) {
+			throw new Exception( 'bbPress not found in BBP_SRC_DIR' );
+		}
+
 		try {
 			$world->copy_dir( $bbp_src_dir, $dest_dir );
 			$world->proc( 'wp plugin activate bbpress' )->run_check();

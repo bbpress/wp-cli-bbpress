@@ -147,6 +147,8 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp forum get 6654
+	 *
+	 * @alias see
 	 */
 	public function get( $args, $assoc_args ) {
 		$forum_id = $args[0];
@@ -263,7 +265,11 @@ class BBPCLI_Forum extends BBPCLI_Component {
 			$formatter->display_items( $query->posts );
 		} else {
 			$query = new WP_Query( $query_args );
-			$formatter->display_items( $query->posts );
+			$forums = array_map( function( $post ) {
+				$post->url = get_permalink( $post->ID );
+				return $post;
+			}, $query->posts );
+			$formatter->display_items( $forums );
 		}
 	}
 
@@ -447,7 +453,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	}
 
 	/**
-	 * List of forum status
+	 * List of Forum stati.
 	 *
 	 * @since 1.0.0
 	 *

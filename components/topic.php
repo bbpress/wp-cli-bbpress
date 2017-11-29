@@ -140,6 +140,8 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp topic get 456
 	 *     $ wp bbp topic get 151 --fields=post_title
+	 *
+	 * @alias see
 	 */
 	public function get( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -183,7 +185,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		WP_CLI::confirm( 'Are you sure you want to delete this topic?', $assoc_args );
 
-		parent::_delete( array( $topic_id ), $assoc_args, function ( $topic_id, $assoc_args ) {
+		parent::_delete( array( $topic_id ), $assoc_args, function ( $topic_id ) {
 			// Check if topic exists.
 			if ( ! bbp_is_topic( $topic_id ) ) {
 				WP_CLI::error( 'No topic found by that ID.' );
@@ -319,7 +321,11 @@ class BBPCLI_Topic extends BBPCLI_Component {
 			$formatter->display_items( $query->found_posts );
 		} else {
 			$query = new WP_Query( $query_args );
-			$formatter->display_items( $query->posts );
+			$topics = array_map( function( $post ) {
+				$post->url = get_permalink( $post->ID );
+				return $post;
+			}, $query->posts );
+			$formatter->display_items( $topics );
 		}
 	}
 
@@ -625,7 +631,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	}
 
 	/**
-	 * List of Topic Status
+	 * List of Topic stati
 	 *
 	 * @since 1.0.0
 	 *

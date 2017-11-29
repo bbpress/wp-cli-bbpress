@@ -64,6 +64,8 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp topic create --title="Topic 01" --content="Content for topic" --user-id=39
 	 *     $ wp bbp topic create --title="Topic" --user-id=45 --forum-id=2497
+	 *
+	 * @alias add
 	 */
 	public function create( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(
@@ -173,6 +175,8 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp topic delete 486
 	 *     Success: Topic 486 successfully deleted.
+	 *
+	 * @alias remove
 	 */
 	public function delete( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -447,6 +451,8 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp topic spam 3938
 	 *     Success: Topic 3938 successfully spammed.
+	 *
+	 * @alias unham
 	 */
 	public function spam( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -480,6 +486,8 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp topic ham 3938
 	 *     Success: Topic 3938 successfully hammed.
+	 *
+	 * @alias unspam
 	 */
 	public function ham( $args, $assoc_args ) {
 		$topic_id = $args[0];

@@ -7,6 +7,19 @@
 class BBPCLI_Topic extends BBPCLI_Component {
 
 	/**
+	 * Topic Object Default fields
+	 *
+	 * @var array
+	 */
+	protected $obj_fields = array(
+		'ID',
+		'post_title',
+		'post_name',
+		'post_date',
+		'post_status',
+	);
+
+	/**
 	 * Create a topic.
 	 *
 	 * ## OPTIONS

@@ -102,14 +102,14 @@ class BBPCLI_Topic extends BBPCLI_Component {
 			return;
 		}
 
-		if ( is_numeric( $id ) ) {
-			if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
-				WP_CLI::line( $id );
-			} else {
-				WP_CLI::success( sprintf( 'Topic %d created: %s', $id, bbp_get_topic_permalink( $id ) ) );
-			}
-		} else {
+		if ( ! is_numeric( $id ) ) {
 			WP_CLI::error( 'Could not create topic.' );
+		}
+
+		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
+			WP_CLI::line( $id );
+		} else {
+			WP_CLI::success( sprintf( 'Topic %d created: %s', $id, bbp_get_topic_permalink( $id ) ) );
 		}
 	}
 
@@ -179,7 +179,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		WP_CLI::confirm( 'Are you sure you want to delete this topic?', $assoc_args );
 
-		parent::_delete( $args, $assoc_args, function ( $topic_id, $assoc_args ) {
+		parent::_delete( array( $topic_id ), $assoc_args, function ( $topic_id, $assoc_args ) {
 			// Check if topic exists.
 			if ( ! bbp_is_topic( $topic_id ) ) {
 				WP_CLI::error( 'No topic found by that ID.' );

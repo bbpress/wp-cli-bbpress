@@ -400,7 +400,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	}
 
 	/**
-	 * Generate random topics.
+	 * Generate random topics (topics only).
 	 *
 	 * ## OPTIONS
 	 *
@@ -417,7 +417,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 * ---
 	 *
 	 * [--status=<status>]
-	 * : Status of the topic (publish, closed, spam, trash, pending or mixed).
+	 * : Topic Status (publish, closed, spam, trash, pending or mixed).
 	 * ---
 	 * Default: publish
 	 * ---
@@ -642,12 +642,12 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	}
 
 	/**
-	 * Gets a randon reply status.
+	 * Gets a randon topic stati.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  string $status Reply status.
-	 * @return string Random Reply Status.
+	 * @param  string $status Topic status.
+	 * @return string Random Topic Status.
 	 */
 	protected function random_topic_status( $status ) {
 		$reply_status = $this->topic_status();

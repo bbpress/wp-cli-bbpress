@@ -516,14 +516,14 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	}
 
 	/**
-	 * List of reply status
+	 * List of Reply stati.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @return array An array of default reply status.
 	 */
 	protected function reply_status() {
-		return array( 'publish', 'pending', 'spam', 'trash' );
+		return array_keys( bbp_get_reply_statuses() );
 	}
 
 	/**

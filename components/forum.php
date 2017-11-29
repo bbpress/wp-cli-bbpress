@@ -147,6 +147,8 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	 * ## EXAMPLE
 	 *
 	 *     $ wp bbp forum get 6654
+	 *
+	 * @alias see
 	 */
 	public function get( $args, $assoc_args ) {
 		$forum_id = $args[0];
@@ -263,7 +265,11 @@ class BBPCLI_Forum extends BBPCLI_Component {
 			$formatter->display_items( $query->posts );
 		} else {
 			$query = new WP_Query( $query_args );
-			$formatter->display_items( $query->posts );
+			$forums = array_map( function( $post ) {
+				$post->url = get_permalink( $post->ID );
+				return $post;
+			}, $query->posts );
+			$formatter->display_items( $forums );
 		}
 	}
 
@@ -349,7 +355,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	 * ---
 	 *
 	 * [--status=<status>]
-	 * : Status (open, close).
+	 * : Status (open, close or mixed).
 	 * ---
 	 * default: open
 	 * ---
@@ -368,7 +374,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 				'title'        => sprintf( 'Test Forum - #%d', $i ),
 				'content'      => sprintf( 'Content for the forum - #%d', $i ),
 				'forum-status' => $this->random_forum_status( $assoc_args['forum-status'] ),
-				'status'       => $assoc_args['status'],
+				'status'       => $this->random_status( $assoc_args['status'] ),
 				'silent'       => true,
 			) );
 
@@ -447,7 +453,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	}
 
 	/**
-	 * List of forum status
+	 * List of Forum stati.
 	 *
 	 * @since 1.0.0
 	 *
@@ -458,15 +464,33 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	}
 
 	/**
-	 * Gets a random reply status.
+	 * Get a random forum status.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  string $status Reply status.
-	 * @return string Random Reply Status.
+	 * @param  string $status Forum status.
+	 * @return string Random Forum Status.
 	 */
 	protected function random_forum_status( $status ) {
 		$forum_status = $this->forum_status();
+
+		$status = ( 'mixed' === $status )
+			? $forum_status[ array_rand( $forum_status ) ]
+			: $status;
+
+		return $status;
+	}
+
+	/**
+	 * Get a random status.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  string $status forum status.
+	 * @return string Random forum Status.
+	 */
+	protected function random_status( $status ) {
+		$forum_status = array( 'open', 'close' );
 
 		$status = ( 'mixed' === $status )
 			? $forum_status[ array_rand( $forum_status ) ]

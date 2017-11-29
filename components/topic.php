@@ -7,6 +7,19 @@
 class BBPCLI_Topic extends BBPCLI_Component {
 
 	/**
+	 * Topic Object Default fields
+	 *
+	 * @var array
+	 */
+	protected $obj_fields = array(
+		'ID',
+		'post_title',
+		'post_name',
+		'post_date',
+		'post_status',
+	);
+
+	/**
 	 * Create a topic.
 	 *
 	 * ## OPTIONS
@@ -51,6 +64,8 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp topic create --title="Topic 01" --content="Content for topic" --user-id=39
 	 *     $ wp bbp topic create --title="Topic" --user-id=45 --forum-id=2497
+	 *
+	 * @alias add
 	 */
 	public function create( $args, $assoc_args ) {
 		$r = wp_parse_args( $assoc_args, array(
@@ -89,14 +104,14 @@ class BBPCLI_Topic extends BBPCLI_Component {
 			return;
 		}
 
-		if ( is_numeric( $id ) ) {
-			if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
-				WP_CLI::line( $id );
-			} else {
-				WP_CLI::success( sprintf( 'Topic %d created: %s', $id, bbp_get_topic_permalink( $id ) ) );
-			}
-		} else {
+		if ( ! is_numeric( $id ) ) {
 			WP_CLI::error( 'Could not create topic.' );
+		}
+
+		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
+			WP_CLI::line( $id );
+		} else {
+			WP_CLI::success( sprintf( 'Topic %d created: %s', $id, bbp_get_topic_permalink( $id ) ) );
 		}
 	}
 
@@ -125,6 +140,8 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp topic get 456
 	 *     $ wp bbp topic get 151 --fields=post_title
+	 *
+	 * @alias see
 	 */
 	public function get( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -160,13 +177,15 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp topic delete 486
 	 *     Success: Topic 486 successfully deleted.
+	 *
+	 * @alias remove
 	 */
 	public function delete( $args, $assoc_args ) {
 		$topic_id = $args[0];
 
 		WP_CLI::confirm( 'Are you sure you want to delete this topic?', $assoc_args );
 
-		parent::_delete( $args, $assoc_args, function ( $topic_id, $assoc_args ) {
+		parent::_delete( array( $topic_id ), $assoc_args, function ( $topic_id ) {
 			// Check if topic exists.
 			if ( ! bbp_is_topic( $topic_id ) ) {
 				WP_CLI::error( 'No topic found by that ID.' );
@@ -302,7 +321,11 @@ class BBPCLI_Topic extends BBPCLI_Component {
 			$formatter->display_items( $query->found_posts );
 		} else {
 			$query = new WP_Query( $query_args );
-			$formatter->display_items( $query->posts );
+			$topics = array_map( function( $post ) {
+				$post->url = get_permalink( $post->ID );
+				return $post;
+			}, $query->posts );
+			$formatter->display_items( $topics );
 		}
 	}
 
@@ -377,7 +400,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	}
 
 	/**
-	 * Generate random topics.
+	 * Generate random topics (topics only).
 	 *
 	 * ## OPTIONS
 	 *
@@ -394,7 +417,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 * ---
 	 *
 	 * [--status=<status>]
-	 * : Status of the topic (publish, closed, spam, trash, pending or mixed).
+	 * : Topic Status (publish, closed, spam, trash, pending or mixed).
 	 * ---
 	 * Default: publish
 	 * ---
@@ -434,6 +457,8 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp topic spam 3938
 	 *     Success: Topic 3938 successfully spammed.
+	 *
+	 * @alias unham
 	 */
 	public function spam( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -467,6 +492,8 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp topic ham 3938
 	 *     Success: Topic 3938 successfully hammed.
+	 *
+	 * @alias unspam
 	 */
 	public function ham( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -604,7 +631,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	}
 
 	/**
-	 * List of Topic Status
+	 * List of Topic stati
 	 *
 	 * @since 1.0.0
 	 *
@@ -615,12 +642,12 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	}
 
 	/**
-	 * Gets a randon reply status.
+	 * Gets a randon topic stati.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  string $status Reply status.
-	 * @return string Random Reply Status.
+	 * @param  string $status Topic status.
+	 * @return string Random Topic Status.
 	 */
 	protected function random_topic_status( $status ) {
 		$reply_status = $this->topic_status();

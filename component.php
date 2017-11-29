@@ -2,7 +2,7 @@
 /**
  * Base component class.
  *
- * Borrowed for wp-cli-buddypress. Not sure if that's going to be needed yet.
+ * Stolen for wp-cli-buddypress.
  *
  * @since 1.0.0
  */
@@ -50,16 +50,5 @@ class BBPCLI_Component extends \WP_CLI\CommandWithDBObject {
 	 */
 	protected function sanitize_string( $type ) {
 		return strtolower( str_replace( '-', '_', $type ) );
-	}
-
-	/**
-	 * Forum Roles
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array An array of forum roles.
-	 */
-	protected function forum_roles() {
-		return array( 'keymaster', 'moderator', 'participant', 'spectator', 'blocked' );
 	}
 }

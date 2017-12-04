@@ -111,14 +111,14 @@ class BBPCLI_Forum extends BBPCLI_Component {
 			return;
 		}
 
-		if ( is_numeric( $id ) ) {
-			if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
-				WP_CLI::line( $id );
-			} else {
-				WP_CLI::success( sprintf( 'Forum %d created: %s', $id, bbp_get_forum_permalink( $id ) ) );
-			}
-		} else {
+		if ( ! is_numeric( $id ) ) {
 			WP_CLI::error( 'Could not create forum.' );
+		}
+
+		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
+			WP_CLI::line( $id );
+		} else {
+			WP_CLI::success( sprintf( 'Forum %d created: %s', $id, bbp_get_forum_permalink( $id ) ) );
 		}
 	}
 
@@ -453,7 +453,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	}
 
 	/**
-	 * List of Forum stati.
+	 * List of forum statuses.
 	 *
 	 * @since 1.0.0
 	 *

@@ -113,14 +113,14 @@ class BBPCLI_Reply extends BBPCLI_Component {
 			return;
 		}
 
-		if ( is_numeric( $id ) ) {
-			if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
-				WP_CLI::line( $id );
-			} else {
-				WP_CLI::success( sprintf( 'Reply %d created: %s', $id, bbp_get_reply_permalink( $id ) ) );
-			}
-		} else {
+		if ( ! is_numeric( $id ) ) {
 			WP_CLI::error( 'Could not create reply.' );
+		}
+
+		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
+			WP_CLI::line( $id );
+		} else {
+			WP_CLI::success( sprintf( 'Reply %d created: %s', $id, bbp_get_reply_permalink( $id ) ) );
 		}
 	}
 
@@ -320,9 +320,8 @@ class BBPCLI_Reply extends BBPCLI_Component {
 
 		$reply_post_type = bbp_get_reply_post_type();
 		$query_args = wp_parse_args( $assoc_args, array(
-			'post_type'      => $reply_post_type,
-			'post_status'    => 'any',
-			'posts_per_page' => -1,
+			'post_type'   => $reply_post_type,
+			'post_status' => 'any',
 		) );
 
 		if ( isset( $query_args['post_type'] ) && $reply_post_type !== $query_args['post_type'] ) {
@@ -516,7 +515,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	}
 
 	/**
-	 * List of Reply stati.
+	 * List of reply statuses.
 	 *
 	 * @since 1.0.0
 	 *

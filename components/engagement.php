@@ -128,13 +128,13 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 		$ids = bbp_get_topic_engagements( $topic_id );
 
 		if ( ! $ids ) {
-			if ( 'ids' === $formatter->format ) {
-				echo implode( ' ', $ids ); // WPCS: XSS ok.
-			} elseif ( 'count' === $formatter->format ) {
-				$formatter->display_items( count( $ids ) );
-			}
-		} else {
 			WP_CLI::error( 'Could not find any users.' );
+		}
+
+		if ( 'ids' === $formatter->format ) {
+			echo implode( ' ', $ids ); // WPCS: XSS ok.
+		} elseif ( 'count' === $formatter->format ) {
+			$formatter->display_items( count( $ids ) );
 		}
 	}
 

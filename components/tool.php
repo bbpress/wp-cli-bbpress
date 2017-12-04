@@ -44,16 +44,16 @@ class BBPCLI_Tool extends BBPCLI_Component {
 	public function repair( $args, $assoc_args ) {
 		$repair = 'bbp_admin_repair_' . $this->sanitize_string( $assoc_args['type'] );
 
-		if ( function_exists( $repair ) ) {
-			$result = $repair();
-
-			if ( 0 === $result[0] ) {
-				WP_CLI::success( $result[1] );
-			} else {
-				WP_CLI::error( $result[1] );
-			}
-		} else {
+		if ( ! function_exists( $repair ) ) {
 			WP_CLI::error( 'There is no repair tool with that name.' );
+		}
+
+		$result = $repair();
+
+		if ( 0 === $result[0] ) {
+			WP_CLI::success( $result[1] );
+		} else {
+			WP_CLI::error( $result[1] );
 		}
 	}
 
@@ -84,16 +84,16 @@ class BBPCLI_Tool extends BBPCLI_Component {
 	public function upgrade( $args, $assoc_args ) {
 		$upgrade = 'bbp_admin_upgrade_' . $this->sanitize_string( $assoc_args['type'] );
 
-		if ( function_exists( $upgrade ) ) {
-			$result = $upgrade();
-
-			if ( 0 === $result[0] ) {
-				WP_CLI::success( $result[1] );
-			} else {
-				WP_CLI::error( $result[1] );
-			}
-		} else {
+		if ( ! function_exists( $upgrade ) ) {
 			WP_CLI::error( 'There is no upgrade tool with that name.' );
+		}
+
+		$result = $upgrade();
+
+		if ( 0 === $result[0] ) {
+			WP_CLI::success( $result[1] );
+		} else {
+			WP_CLI::error( $result[1] );
 		}
 	}
 

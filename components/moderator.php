@@ -39,7 +39,6 @@ class BBPCLI_Moderator extends BBPCLI_Component {
 
 		if ( ! $user ) {
 			WP_CLI::error( 'No user found by that username or id' );
-			return;
 		}
 
 		if ( bbp_add_moderator( $forum_id, $user->ID ) ) {
@@ -82,7 +81,6 @@ class BBPCLI_Moderator extends BBPCLI_Component {
 
 		if ( ! $user ) {
 			WP_CLI::error( 'No user found by that username or ID.' );
-			return;
 		}
 
 		if ( bbp_remove_moderator( $forum_id, $user->ID ) ) {

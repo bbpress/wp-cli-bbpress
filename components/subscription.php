@@ -169,8 +169,8 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 		}
 
 		$objects = ( 'forum' === $assoc_args['object'] )
-			? bbp_get_user_forum_subscriptions( $user->ID )
-			: bbp_get_user_topic_subscriptions( $user->ID );
+			? bbp_get_user_forum_subscriptions( $this->user_args( $user->ID ) )
+			: bbp_get_user_topic_subscriptions( $this->user_args( $user->ID ) );
 
 		if ( 'ids' === $formatter->format ) {
 			echo implode( ' ', wp_list_pluck( $objects->posts, 'ID' ) ); // WPCS: XSS ok.

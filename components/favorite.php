@@ -121,8 +121,6 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp favorite list_users --topic=id=354 --format=count
 	 *     2
-	 *
-	 * @subcommand list
 	 */
 	public function list_users( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -181,13 +179,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
-		$topics = bbp_get_user_favorites( array(
-			'meta_query' => array( // WPCS: slow query ok.
-				array(
-					'value'   => $user->ID,
-				),
-			),
-		) );
+		$topics = bbp_get_user_favorites( $this->user_args( $user->ID ) );
 
 		if ( 'ids' === $formatter->format ) {
 			echo implode( ' ', bbp_get_user_favorites_topic_ids( $user->ID ) ); // WPCS: XSS ok.

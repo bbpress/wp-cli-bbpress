@@ -59,6 +59,9 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 	 * --topic-id=<topic-id>
 	 * : Identifier for the topic.
 	 *
+	 * [--yes]
+	 * : Answer yes to the confirmation message.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *    $ wp bbp engagement remove --user-id=5465 --topic-id=65476
@@ -81,6 +84,8 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 		if ( ! bbp_is_topic( $topic_id ) ) {
 			WP_CLI::error( 'No topic found by that ID.' );
 		}
+
+		WP_CLI::confirm( 'Are you sure you want to remove this topic from the user\'s engagement list?', $assoc_args );
 
 		// True if removed.
 		if ( bbp_remove_user_engagement( $user->ID, $topic_id ) ) {

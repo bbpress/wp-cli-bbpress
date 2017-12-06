@@ -47,4 +47,5 @@ Feature: Manage bbPress engagements
       Success: Engagement successfully removed.
       """
 
-
+    When I run `wp bbp engagement remove --user-id={MEMBER_ID} --topic-id={TOPIC_ID} --yes`
+    Then the return code should be 1

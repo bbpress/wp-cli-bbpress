@@ -53,6 +53,9 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	 * --object-id=<object-id>
 	 * : Identifier for the object (forum, topic, or something else).
 	 *
+	 * [--yes]
+	 * : Answer yes to the confirmation message.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *    $ wp bbp subscription remove --user-id=5465 --object-id=65476
@@ -69,6 +72,8 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 		if ( ! $user ) {
 			WP_CLI::error( 'No user found by that username or ID.' );
 		}
+
+		WP_CLI::confirm( 'Are you sure you want to remove this subscription?', $assoc_args );
 
 		// True if added.
 		if ( bbp_remove_user_subscription( $user->ID, $assoc_args['object-id'] ) ) {

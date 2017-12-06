@@ -40,3 +40,6 @@ Feature: Manage bbPress subscriptions
       """
       Success: Favorite successfully removed.
       """
+
+    When I try `wp bbp favorite remove --user-id={MEMBER_ID} --topic-id={TOPIC_ID} --yes`
+    Then the return code should be 1

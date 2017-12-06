@@ -105,7 +105,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp subscription list_users --object-id=334938
-	 *     3 10 25
+	 *     3
 	 *
 	 *     $ wp bbp subscription list_users --object-id=242 --format=ids
 	 *     65 5454 5454 545
@@ -175,7 +175,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 		if ( 'ids' === $formatter->format ) {
 			echo implode( ' ', wp_list_pluck( $objects, 'ID' ) ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
-			$formatter->display_items( $objects );
+			$formatter->display_items( count( $objects ) );
 		} else {
 			$formatter->display_items( $objects );
 		}

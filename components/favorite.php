@@ -123,6 +123,8 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *     2
 	 */
 	public function list_users( $args, $assoc_args ) {
+		$formatter = $this->get_formatter( $assoc_args );
+
 		$topic_id = $assoc_args['topic-id'];
 
 		// Check if topic exists.

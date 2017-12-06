@@ -173,11 +173,11 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 			: bbp_get_user_topic_subscriptions( $this->user_args( $user->ID ) );
 
 		if ( 'ids' === $formatter->format ) {
-			echo implode( ' ', wp_list_pluck( $objects->posts, 'ID' ) ); // WPCS: XSS ok.
+			echo implode( ' ', wp_list_pluck( $objects, 'ID' ) ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
-			$formatter->display_items( $objects->posts );
+			$formatter->display_items( $objects );
 		} else {
-			$formatter->display_items( $objects->posts );
+			$formatter->display_items( $objects );
 		}
 	}
 }

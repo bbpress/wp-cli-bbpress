@@ -123,7 +123,7 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 	 *     54564 465465 65465
 	 */
 	public function list_users( $args, $assoc_args ) {
-		$topic_id = $args[0];
+		$topic_id = $assoc_args['topic-id'];
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {

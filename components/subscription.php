@@ -100,7 +100,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp subscription list_users --object-id=334938
-	 *     3
+	 *     3 10 25
 	 *
 	 *     $ wp bbp subscription list_users --object-id=242 --format=ids
 	 *     65 5454 5454 545

@@ -22,7 +22,7 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 	 *    $ wp bbp engagement add --user-id=5465 --topic-id=65476
 	 *    Success: Engagement successfully added.
 	 *
-	 *    $ wp bbp engagement add --user-id=user_test --topic-id=354354
+	 *    $ wp bbp engagement create --user-id=user_test --topic-id=354354
 	 *    Success: Engagement successfully added.
 	 *
 	 * @alias create
@@ -116,6 +116,8 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp subscription list_users --topic-id=45765 --format=ids
 	 *     54564 465465 65465
+	 *
+	 * @subcommand list
 	 */
 	public function list_users( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -134,7 +136,7 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 		if ( 'ids' === $formatter->format ) {
 			echo implode( ' ', $ids ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
-			$formatter->display_items( count( $ids ) );
+			$formatter->display_items( $ids );
 		}
 	}
 
@@ -177,9 +179,7 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 		$query_args = array(
 			'meta_query' => array( // WPCS: slow query ok.
 				array(
-					'key'     => '_bbp_engagement',
 					'value'   => $user->ID,
-					'compare' => 'NUMERIC',
 				),
 			),
 		);

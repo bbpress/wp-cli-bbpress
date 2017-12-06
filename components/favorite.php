@@ -22,7 +22,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *    $ wp bbp favorite add --user-id=5465 --topic-id=65476
 	 *    Success: Favorite successfully added.
 	 *
-	 *    $ wp bbp favorite add --user-id=user_test --topic-id=354354
+	 *    $ wp bbp favorite create --user-id=user_test --topic-id=354354
 	 *    Success: Favorite successfully added.
 	 *
 	 * @alias create
@@ -116,6 +116,8 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *
 	 *     $ wp bbp favorite list_users --topic=id=354 --format=count
 	 *     2
+	 *
+	 * @subcommand list
 	 */
 	public function list_users( $args, $assoc_args ) {
 		$topic_id = $args[0];
@@ -177,9 +179,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 		$topics = bbp_get_user_favorites( array(
 			'meta_query' => array( // WPCS: slow query ok.
 				array(
-					'key'     => '_bbp_favorite',
 					'value'   => $user->ID,
-					'compare' => 'NUMERIC',
 				),
 			),
 		) );

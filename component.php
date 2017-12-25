@@ -51,4 +51,22 @@ class BBPCLI_Component extends \WP_CLI\CommandWithDBObject {
 	protected function sanitize_string( $type ) {
 		return strtolower( str_replace( '-', '_', $type ) );
 	}
+
+	/**
+	 * User arguments used on the Engagements commands.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  int $user_id User ID.
+	 * @return array
+	 */
+	protected function user_args( $user_id ) {
+		return array(
+			'meta_query' => array( // WPCS: slow query ok.
+				array(
+					'value' => $user_id,
+				),
+			),
+		);
+	}
 }

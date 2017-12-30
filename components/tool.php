@@ -121,6 +121,7 @@ class BBPCLI_Tool extends BBPCLI_Component {
 
 WP_CLI::add_command( 'bbp tool', 'BBPCLI_Tool', array(
 	'before_invoke' => function() {
+		require_once( bbpress()->includes_dir . 'admin/tools/common.php' );
 		require_once( bbpress()->includes_dir . 'admin/tools/repair.php' );
 		require_once( bbpress()->includes_dir . 'admin/tools/upgrade.php' );
 		require_once( bbpress()->includes_dir . 'admin/tools/reset.php' );

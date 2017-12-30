@@ -117,17 +117,6 @@ class BBPCLI_Tool extends BBPCLI_Component {
 
 		WP_CLI::success( 'bbPress reset.' );
 	}
-
-	/**
-	 * List converters.
-	 *
-	 * ## EXAMPLE
-	 *
-	 *    $ wp bbp tool list_converters
-	 */
-	public function list_converters( $_, $assoc_args ) {
-		echo implode( ', ', bbp_get_converters() ); // WPCS: XSS ok.
-	}
 }
 
 WP_CLI::add_command( 'bbp tool', 'BBPCLI_Tool', array(

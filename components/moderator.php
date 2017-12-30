@@ -122,7 +122,6 @@ class BBPCLI_Moderator extends BBPCLI_Component {
 	 */
 	public function _list( $_, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
-
 		$forum_id = $assoc_args['forum-id'];
 
 		// Check if forum exists.

@@ -186,9 +186,13 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 		if ( 'ids' === $formatter->format ) {
 			echo implode( ' ', bbp_get_user_favorites_topic_ids( $user->ID ) ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
-			$formatter->display_items( $topics->posts );
+			$formatter->display_items( $topics->found_posts );
 		} else {
-			$formatter->display_items( $topics->posts );
+			$topics = array_map( function( $post ) {
+				$post->url = get_permalink( $post->ID );
+				return $post;
+			}, $topics->posts );
+			$formatter->display_items( $topics );
 		}
 	}
 }

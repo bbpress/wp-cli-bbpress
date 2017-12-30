@@ -471,9 +471,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 		bbp_spam_topic_replies( $topic_id );
 		bbp_spam_topic_tags( $topic_id );
 
-		$id = bbp_spam_topic( $topic_id );
-
-		if ( is_numeric( $id ) ) {
+		if ( is_numeric( bbp_spam_topic( $topic_id ) ) ) {
 			WP_CLI::success( sprintf( 'Topic %d successfully spammed.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not spam topic %d.', $topic_id ) );
@@ -506,9 +504,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 		bbp_unspam_topic_replies( $topic_id );
 		bbp_unspam_topic_tags( $topic_id );
 
-		$id = bbp_unspam_topic( $topic_id );
-
-		if ( is_numeric( $id ) ) {
+		if ( is_numeric( bbp_unspam_topic( $topic_id ) ) ) {
 			WP_CLI::success( sprintf( 'Topic %d successfully hammed.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not ham topic %d.', $topic_id ) );
@@ -591,9 +587,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 			WP_CLI::error( 'No topic found by that ID.' );
 		}
 
-		$id = bbp_approve_topic( $topic_id );
-
-		if ( is_numeric( $id ) ) {
+		if ( is_numeric( bbp_approve_topic( $topic_id ) ) ) {
 			WP_CLI::success( sprintf( 'Topic %d successfully approved.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not approve topic %d.', $topic_id ) );
@@ -621,9 +615,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 			WP_CLI::error( 'No topic found by that ID.' );
 		}
 
-		$id = bbp_unapprove_topic( $topic_id );
-
-		if ( is_numeric( $id ) ) {
+		if ( is_numeric( bbp_unapprove_topic( $topic_id ) ) ) {
 			WP_CLI::success( sprintf( 'Topic %d successfully unapproved.', $topic_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not unapprove topic %d.', $topic_id ) );
@@ -631,7 +623,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	}
 
 	/**
-	 * List of Topic stati
+	 * List of topic status.
 	 *
 	 * @since 1.0.0
 	 *
@@ -642,7 +634,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	}
 
 	/**
-	 * Gets a randon topic stati.
+	 * Get a randon topic status.
 	 *
 	 * @since 1.0.0
 	 *

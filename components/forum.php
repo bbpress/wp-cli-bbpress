@@ -409,9 +409,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 			WP_CLI::error( 'Forum is already opened.' );
 		}
 
-		$id = bbp_open_forum( $forum_id );
-
-		if ( is_numeric( $id ) ) {
+		if ( is_numeric( bbp_open_forum( $forum_id ) ) ) {
 			WP_CLI::success( sprintf( 'Forum %d successfully opened.', $forum_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not open forum %d.', $forum_id ) );
@@ -443,9 +441,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 			WP_CLI::error( 'Forum is already closed.' );
 		}
 
-		$id = bbp_close_forum( $forum_id );
-
-		if ( is_numeric( $id ) ) {
+		if ( is_numeric( bbp_close_forum( $forum_id ) ) ) {
 			WP_CLI::success( sprintf( 'Forum %d successfully closed.', $forum_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not close the forum %d.', $forum_id ) );
@@ -464,7 +460,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	}
 
 	/**
-	 * Get a random forum status.
+	 * Get a random forum statuses.
 	 *
 	 * @since 1.0.0
 	 *

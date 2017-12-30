@@ -415,9 +415,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 			WP_CLI::error( 'No reply found by that ID.' );
 		}
 
-		$id = bbp_spam_reply( $reply_id );
-
-		if ( is_numeric( $id ) ) {
+		if ( is_numeric( bbp_spam_reply( $reply_id ) ) ) {
 			WP_CLI::success( sprintf( 'Reply %d successfully spammed.', $reply_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not spam reply %d.', $reply_id ) );
@@ -445,9 +443,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 			WP_CLI::error( 'No reply found by that ID.' );
 		}
 
-		$id = bbp_unspam_reply( $reply_id );
-
-		if ( is_numeric( $id ) ) {
+		if ( is_numeric( bbp_unspam_reply( $reply_id ) ) ) {
 			WP_CLI::success( sprintf( 'Reply %d successfully hammed.', $reply_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not ham reply %d.', $reply_id ) );
@@ -475,9 +471,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 			WP_CLI::error( 'No reply found by that ID.' );
 		}
 
-		$id = bbp_approve_reply( $reply_id );
-
-		if ( is_numeric( $id ) ) {
+		if ( is_numeric( bbp_approve_reply( $reply_id ) ) ) {
 			WP_CLI::success( sprintf( 'Reply %d successfully approved.', $reply_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not approve reply %d.', $reply_id ) );
@@ -505,9 +499,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 			WP_CLI::error( 'No reply found by that ID.' );
 		}
 
-		$id = bbp_unapprove_reply( $reply_id );
-
-		if ( is_numeric( $id ) ) {
+		if ( is_numeric( bbp_unapprove_reply( $reply_id ) ) ) {
 			WP_CLI::success( sprintf( 'Reply %d successfully unapproved.', $reply_id ) );
 		} else {
 			WP_CLI::error( sprintf( 'Could not unapprove reply %d.', $reply_id ) );
@@ -526,7 +518,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	}
 
 	/**
-	 * Gets a randon reply status.
+	 * Gets a randon reply statuses.
 	 *
 	 * @since 1.0.0
 	 *

@@ -101,14 +101,13 @@ class BBPCLI_User extends BBPCLI_Component {
 			WP_CLI::error( 'No user found by that username or ID.' );
 		}
 
+		// Role fallback.
 		$role = $assoc_args['role'];
 		if ( ! in_array( $role, $this->forum_roles(), true ) ) {
 			$role = 'participant';
 		}
 
-		$retval = bbp_set_user_role( $user->ID, $role );
-
-		if ( is_string( $retval ) ) {
+		if ( is_string( bbp_set_user_role( $user->ID, $role ) ) ) {
 			WP_CLI::success( 'New role for user set successfully.' );
 		} else {
 			WP_CLI::error( 'Could not set new role for user.' );

@@ -113,7 +113,7 @@ class BBPCLI_Tool extends BBPCLI_Component {
 	public function reset( $_, $assoc_args ) {
 		WP_CLI::confirm( 'Are you sure you want to reset bbPress?', $assoc_args );
 
-		bbp_admin_reset_handler();
+		bbp_admin_reset_database();
 
 		WP_CLI::success( 'bbPress reset.' );
 	}

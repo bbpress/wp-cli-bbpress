@@ -29,18 +29,6 @@ Feature: Manage bbPress subscriptions
       1
       """
 
-    When I run `wp bbp subscription list --user-id={MEMBER_ID} --object=forum --format=count`
-    Then STDOUT should contain:
-      """
-      1
-      """
-
-    When I run `wp bbp subscription list --user-id={MEMBER_ID} --object=forum --format=ids`
-    Then STDOUT should contain:
-      """
-      {FORUM_ID}
-      """
-
     When I run `wp bbp subscription remove --user-id={MEMBER_ID} --object-id={FORUM_ID}`
     Then STDOUT should contain:
       """

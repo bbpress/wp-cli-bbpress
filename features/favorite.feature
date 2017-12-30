@@ -23,18 +23,6 @@ Feature: Manage bbPress subscriptions
       {MEMBER_ID}
       """
 
-    When I run `wp bbp favorite list {MEMBER_ID} --format=ids`
-    Then STDOUT should contain:
-      """
-      {TOPIC_ID}
-      """
-
-    When I run `wp bbp favorite list {MEMBER_ID} --format=count`
-    Then STDOUT should contain:
-      """
-      1
-      """
-
     When I run `wp bbp favorite remove --user-id={MEMBER_ID} --topic-id={TOPIC_ID}`
     Then STDOUT should contain:
       """

@@ -100,7 +100,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * --topic-id=<topic-id>
+	 * <topic-id>
 	 * : Identifier of the topic.
 	 *
 	 * [--format=<format>]
@@ -116,16 +116,16 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp bbp favorite list_users --topic=id=456 --format=ids
+	 *     $ wp bbp favorite list_users 456 --format=ids
 	 *     54564 4564 454 545
 	 *
-	 *     $ wp bbp favorite list_users --topic=id=354
+	 *     $ wp bbp favorite list_users 354
 	 *     2
 	 */
 	public function list_users( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
-		$topic_id = $assoc_args['topic-id'];
+		$topic_id = $args[0];
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
@@ -150,7 +150,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * <user-id>
+	 * <user>
 	 * : Identifier for the user. Accepts either a user_login or a numeric ID.
 	 *
 	 * [--format=<format>]

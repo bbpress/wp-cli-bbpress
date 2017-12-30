@@ -17,7 +17,7 @@ Feature: Manage bbPress subscriptions
       Success: Favorite successfully added.
       """
 
-    When I run `wp bbp favorite list_users --topic-id={TOPIC_ID} --format=ids`
+    When I run `wp bbp favorite list_users {TOPIC_ID} --format=ids`
     Then STDOUT should contain:
       """
       {MEMBER_ID}

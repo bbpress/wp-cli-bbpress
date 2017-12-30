@@ -88,7 +88,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * --object-id=<object-id>
+	 * <object-id>
 	 * : Identifier for the object (forum or topic).
 	 *
 	 * [--format=<format>]
@@ -104,16 +104,16 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp bbp subscription list_users --object-id=334938
+	 *     $ wp bbp subscription list_users 334938
 	 *     3
 	 *
-	 *     $ wp bbp subscription list_users --object-id=242 --format=ids
+	 *     $ wp bbp subscription list_users 242 --format=ids
 	 *     65 5454 5454 545
 	 */
 	public function list_users( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
-		$ids = bbp_get_subscribers( $assoc_args['object-id'] );
+		$ids = bbp_get_subscribers( $args[0] );
 
 		if ( ! $ids ) {
 			WP_CLI::error( 'Could not find any users.' );
@@ -173,11 +173,11 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 			: bbp_get_user_topic_subscriptions( $this->user_args( $user->ID ) );
 
 		if ( 'ids' === $formatter->format ) {
-			echo implode( ' ', wp_list_pluck( $objects, 'ID' ) ); // WPCS: XSS ok.
+			echo implode( ' ', wp_list_pluck( $objects->posts, 'ID' ) ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
-			$formatter->display_items( count( $objects ) );
+			$formatter->display_items( $objects->posts );
 		} else {
-			$formatter->display_items( $objects );
+			$formatter->display_items( $objects->posts );
 		}
 	}
 }

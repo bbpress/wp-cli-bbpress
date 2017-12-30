@@ -17,13 +17,13 @@ Feature: Manage bbPress subscriptions
       Success: Subscription successfully added.
       """
 
-    When I run `wp bbp subscription list_users --object-id={FORUM_ID} --format=ids`
+    When I run `wp bbp subscription list_users {FORUM_ID} --format=ids`
     Then STDOUT should contain:
       """
       {MEMBER_ID}
       """
 
-    When I run `wp bbp subscription list_users --object-id={FORUM_ID}`
+    When I run `wp bbp subscription list_users {FORUM_ID}`
     Then STDOUT should contain:
       """
       1

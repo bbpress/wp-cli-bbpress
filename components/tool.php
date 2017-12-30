@@ -1,6 +1,6 @@
 <?php
 /**
- * Manage bbPress Tools
+ * Manage bbPress Tools.
  *
  * @since 1.0.0
  */

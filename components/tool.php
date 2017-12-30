@@ -135,6 +135,5 @@ WP_CLI::add_command( 'bbp tool', 'BBPCLI_Tool', array(
 		require_once( bbpress()->includes_dir . 'admin/tools/repair.php' );
 		require_once( bbpress()->includes_dir . 'admin/tools/upgrade.php' );
 		require_once( bbpress()->includes_dir . 'admin/tools/reset.php' );
-		require_once( bbpress()->includes_dir . 'admin/tools/converter.php' );
 	},
 ) );

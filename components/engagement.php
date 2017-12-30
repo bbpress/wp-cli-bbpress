@@ -100,7 +100,7 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 	 *
 	 * ## OPTIONS
 	 *
-	 * --topic-id=<topic-id>
+	 * <topic-id>
 	 * : Identifier for the topic.
 	 *
 	 * [--format=<format>]
@@ -116,16 +116,16 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp bbp subscription list_users --topic-id=242
+	 *     $ wp bbp subscription list_users 242
 	 *     3
 	 *
-	 *     $ wp bbp subscription list_users --topic-id=45765 --format=ids
+	 *     $ wp bbp subscription list_users 45765 --format=ids
 	 *     54564 465465 65465
 	 */
 	public function list_users( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
-		$topic_id = $assoc_args['topic-id'];
+		$topic_id = $args[0];
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
@@ -165,7 +165,7 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 	 *   - haml
 	 * ---
 	 *
-	 * ## EXAMPLE
+	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp favorite list 456
 	 *     $ wp bbp favorite list 456546 --format=ids
@@ -176,7 +176,7 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 		$formatter = $this->get_formatter( $assoc_args );
 
 		// Check if user exists.
-		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
+		$user = $this->get_user_id_from_identifier( $args[0] );
 		if ( ! $user ) {
 			WP_CLI::error( 'No user found by that username or ID.' );
 		}
@@ -186,8 +186,12 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 		if ( 'ids' === $formatter->format ) {
 			echo implode( ' ', wp_list_pluck( $topics->posts, 'ID' ) ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
-			$formatter->display_items( $topics->posts );
+			$formatter->display_items( $topics->found_posts );
 		} else {
+			$topics = array_map( function( $post ) {
+				$post->url = get_permalink( $post->ID );
+				return $post;
+			}, $topics->posts );
 			$formatter->display_items( $topics->posts );
 		}
 	}
@@ -198,16 +202,16 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * <topic-id>
-	 * : Identifier for the topic.
+	 * : Identifier of the topic to recalculate.
 	 *
-	 * ## EXAMPLES
+	 * ## EXAMPLE
 	 *
 	 *    $ wp bbp engagement recalculate 132
 	 *    Success: Engagement successfully recalculated.
 	 */
 	public function recalculate( $args, $assoc_args ) {
 		// Check if topic exists.
-		$topic_id = $assoc_args['topic-id'];
+		$topic_id = $args[0];
 		if ( ! bbp_is_topic( $topic_id ) ) {
 			WP_CLI::error( 'No topic found by that ID.' );
 		}

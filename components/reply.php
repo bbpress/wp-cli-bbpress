@@ -7,7 +7,7 @@
 class BBPCLI_Reply extends BBPCLI_Component {
 
 	/**
-	 * Reply Object Default fields
+	 * Object fields
 	 *
 	 * @var array
 	 */
@@ -109,12 +109,12 @@ class BBPCLI_Reply extends BBPCLI_Component {
 
 		$id = bbp_insert_reply( $reply_data, $reply_meta );
 
-		if ( $r['silent'] ) {
-			return;
-		}
-
 		if ( ! is_numeric( $id ) ) {
 			WP_CLI::error( 'Could not create reply.' );
+		}
+
+		if ( $r['silent'] ) {
+			return;
 		}
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {

@@ -7,7 +7,7 @@
 class BBPCLI_Forum extends BBPCLI_Component {
 
 	/**
-	 * Forum Object Default fields
+	 * Object fields.
 	 *
 	 * @var array
 	 */
@@ -107,12 +107,12 @@ class BBPCLI_Forum extends BBPCLI_Component {
 
 		$id = bbp_insert_forum( $forum_data, $forum_meta );
 
-		if ( $r['silent'] ) {
-			return;
-		}
-
 		if ( ! is_numeric( $id ) ) {
 			WP_CLI::error( 'Could not create forum.' );
+		}
+
+		if ( $r['silent'] ) {
+			return;
 		}
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
@@ -144,9 +144,10 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	 *   - yaml
 	 * ---
 	 *
-	 * ## EXAMPLE
+	 * ## EXAMPLES
 	 *
 	 *     $ wp bbp forum get 6654
+	 *     $ wp bbp forum see 53564
 	 *
 	 * @alias see
 	 */

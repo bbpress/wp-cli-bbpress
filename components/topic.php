@@ -7,7 +7,7 @@
 class BBPCLI_Topic extends BBPCLI_Component {
 
 	/**
-	 * Topic Object Default fields
+	 * Object fields
 	 *
 	 * @var array
 	 */
@@ -100,12 +100,12 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		$id = bbp_insert_topic( $topic_data, $topic_meta );
 
-		if ( $r['silent'] ) {
-			return;
-		}
-
 		if ( ! is_numeric( $id ) ) {
 			WP_CLI::error( 'Could not create topic.' );
+		}
+
+		if ( $r['silent'] ) {
+			return;
 		}
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
@@ -121,7 +121,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 * ## OPTIONS
 	 *
 	 * <topic-id>
-	 * : Identifier for the topic to get.
+	 * : Identifier for the topic.
 	 *
 	 * [--fields=<fields>]
 	 * : Limit the output to specific fields. Defaults to all fields.

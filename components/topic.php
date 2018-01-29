@@ -48,14 +48,11 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 * [--status=<status>]
 	 * : Status of the topic (publish, closed, spam, trash, pending).
 	 * ---
-	 * Default: publish
+	 * default: publish
 	 * ---
 	 *
-	 * [--silent=<silent>]
+	 * [--silent]
 	 * : Whether to silent the topic creation.
-	 * ---
-	 * default: false
-	 * ---
 	 *
 	 * [--porcelain]
 	 * : Output only the new topic id.
@@ -74,7 +71,6 @@ class BBPCLI_Topic extends BBPCLI_Component {
 			'user-id'  => 1,
 			'forum-id' => 0,
 			'status'   => 'publish',
-			'silent'   => false,
 		) );
 
 		if ( empty( $r['content'] ) ) {
@@ -102,12 +98,13 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		$id = bbp_insert_topic( $topic_data, $topic_meta );
 
-		if ( ! is_numeric( $id ) ) {
-			WP_CLI::error( 'Could not create topic.' );
+		// Silent it before it errors.
+		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'silent' ) ) {
+			return;
 		}
 
-		if ( $r['silent'] ) {
-			return;
+		if ( ! is_numeric( $id ) ) {
+			WP_CLI::error( 'Could not create topic.' );
 		}
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
@@ -421,7 +418,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	 * [--status=<status>]
 	 * : Topic Status (publish, closed, spam, trash, pending or mixed).
 	 * ---
-	 * Default: publish
+	 * default: publish
 	 * ---
 	 *
 	 * ## EXAMPLES
@@ -438,7 +435,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 				'title'    => sprintf( 'Topic Title "%s"', $i ),
 				'forum-id' => $assoc_args['forum-id'],
 				'status'   => $this->random_topic_status( $assoc_args['status'] ),
-				'silent'   => true,
+				'silent',
 			) );
 
 			$notify->tick();

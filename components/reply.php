@@ -57,11 +57,8 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	 * default: publish
 	 * ---
 	 *
-	 * [--silent=<silent>]
+	 * [--silent]
 	 * : Whether to silent the reply creation.
-	 * ---
-	 * default: false
-	 * ---
 	 *
 	 * [--porcelain]
 	 * : Output only the new reply id.
@@ -82,7 +79,6 @@ class BBPCLI_Reply extends BBPCLI_Component {
 			'topic-id' => 0,
 			'forum-id' => 0,
 			'status'   => 'publish',
-			'silent'   => false,
 		) );
 
 		if ( empty( $r['content'] ) ) {
@@ -111,12 +107,13 @@ class BBPCLI_Reply extends BBPCLI_Component {
 
 		$id = bbp_insert_reply( $reply_data, $reply_meta );
 
-		if ( ! is_numeric( $id ) ) {
-			WP_CLI::error( 'Could not create reply.' );
+		// Silent it before it errors.
+		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'silent' ) ) {
+			return;
 		}
 
-		if ( $r['silent'] ) {
-			return;
+		if ( ! is_numeric( $id ) ) {
+			WP_CLI::error( 'Could not create reply.' );
 		}
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
@@ -387,7 +384,7 @@ class BBPCLI_Reply extends BBPCLI_Component {
 				'title'    => sprintf( 'Reply Title "%s"', $i ),
 				'status'   => $this->random_reply_status( $assoc_args['status'] ),
 				'topic-id' => $assoc_args['topic-id'],
-				'silent'   => true,
+				'silent',
 			) );
 
 			$notify->tick();

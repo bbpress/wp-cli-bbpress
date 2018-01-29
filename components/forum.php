@@ -57,11 +57,8 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	 * default: open
 	 * ---
 	 *
-	 * [--silent=<silent>]
+	 * [--silent]
 	 * : Whether to silent the forum creation.
-	 * ---
-	 * default: false
-	 * ---
 	 *
 	 * [--porcelain]
 	 * : Output only the new forum id.
@@ -81,7 +78,6 @@ class BBPCLI_Forum extends BBPCLI_Component {
 			'forum-id'     => 0,
 			'forum-status' => 'publish',
 			'status'       => 'open',
-			'silent'       => false,
 		) );
 
 		if ( empty( $r['content'] ) ) {
@@ -109,12 +105,13 @@ class BBPCLI_Forum extends BBPCLI_Component {
 
 		$id = bbp_insert_forum( $forum_data, $forum_meta );
 
-		if ( ! is_numeric( $id ) ) {
-			WP_CLI::error( 'Could not create forum.' );
+		// Silent it before it errors.
+		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'silent' ) ) {
+			return;
 		}
 
-		if ( $r['silent'] ) {
-			return;
+		if ( ! is_numeric( $id ) ) {
+			WP_CLI::error( 'Could not create forum.' );
 		}
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
@@ -378,7 +375,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 				'content'      => sprintf( 'Content for the forum - #%d', $i ),
 				'forum-status' => $this->random_forum_status( $assoc_args['forum-status'] ),
 				'status'       => $this->random_status( $assoc_args['status'] ),
-				'silent'       => true,
+				'silent',
 			) );
 
 			$notify->tick();

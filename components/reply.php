@@ -33,8 +33,8 @@ class BBPCLI_Reply extends BBPCLI_Component {
 	 * default: 'Content for reply "[title]"'
 	 * ---
 	 *
-	 * [--user-id=<user-id>]
-	 * : Identifier of the user.
+	 * [--user-id=<user>]
+	 * : Identifier for the user. Accepts either a user_login or a numeric ID.
 	 * ---
 	 * default: 1
 	 * ---
@@ -94,12 +94,14 @@ class BBPCLI_Reply extends BBPCLI_Component {
 			$r['status'] = 'publish';
 		}
 
+		$user = $this->get_user_id_from_identifier( $r['user-id'] );
+
 		$reply_data = array(
 			'post_parent'  => $r['topic-id'],
 			'post_status'  => $r['status'],
 			'post_title'   => $r['title'],
 			'post_content' => $r['content'],
-			'post_author'  => $r['user-id'],
+			'post_author'  => $user->ID,
 		);
 
 		$reply_meta = array(

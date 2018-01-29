@@ -7,7 +7,7 @@
 class BBPCLI_User extends BBPCLI_Component {
 
 	/**
-	 * Mark a user's topics and replies as spam
+	 * Mark a user's topics and replies as spam.
 	 *
 	 * ## OPTIONS
 	 *
@@ -35,7 +35,7 @@ class BBPCLI_User extends BBPCLI_Component {
 	}
 
 	/**
-	 * Mark a user's topics and replies as ham
+	 * Mark a user's topics and replies as ham.
 	 *
 	 * ## OPTIONS
 	 *
@@ -63,7 +63,7 @@ class BBPCLI_User extends BBPCLI_Component {
 	}
 
 	/**
-	 * Set user role
+	 * Set user role.
 	 *
 	 * ## OPTIONS
 	 *
@@ -103,7 +103,7 @@ class BBPCLI_User extends BBPCLI_Component {
 	}
 
 	/**
-	 * Forum Roles
+	 * Forum Roles.
 	 *
 	 * @since 1.0.0
 	 *

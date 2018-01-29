@@ -33,8 +33,8 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	 * default: 'Content for forum "[title]"'
 	 * ---
 	 *
-	 * [--user-id=<user-id>]
-	 * : Identifier of the user.
+	 * [--user-id=<user>]
+	 * : Identifier for the user. Accepts either a user_login or a numeric ID.
 	 * ---
 	 * default: 1
 	 * ---
@@ -93,12 +93,14 @@ class BBPCLI_Forum extends BBPCLI_Component {
 			$r['forum-status'] = 'publish';
 		}
 
+		$user = $this->get_user_id_from_identifier( $r['user-id'] );
+
 		$forum_data = array(
 			'post_parent'  => $r['forum-id'],
 			'post_title'   => $r['title'],
 			'post_content' => $r['content'],
 			'post_status'  => $r['forum-status'],
-			'post_author'  => $r['user-id'],
+			'post_author'  => $user->ID,
 		);
 
 		$forum_meta = array(

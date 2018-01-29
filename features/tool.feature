@@ -8,9 +8,3 @@ Feature: Manage bbPress Tools
       """
       Success: Counting the number of replies in each topic&hellip; Complete!
       """
-
-    When I run `wp bbp tool reset --yes`
-    Then STDOUT should contain:
-      """
-      Success: bbPress reset.
-      """

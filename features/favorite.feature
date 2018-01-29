@@ -23,7 +23,7 @@ Feature: Manage bbPress subscriptions
       {MEMBER_ID}
       """
 
-    When I run `wp bbp favorite remove --user-id={MEMBER_ID} --topic-id={TOPIC_ID}`
+    When I run `wp bbp favorite remove --user-id={MEMBER_ID} --topic-id={TOPIC_ID} --yes`
     Then STDOUT should contain:
       """
       Success: Favorite successfully removed.

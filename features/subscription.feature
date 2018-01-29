@@ -28,12 +28,3 @@ Feature: Manage bbPress subscriptions
       """
       1
       """
-
-    When I run `wp bbp subscription remove --user-id={MEMBER_ID} --object-id={FORUM_ID} --yes`
-    Then STDOUT should contain:
-      """
-      Success: Subscription successfully removed.
-      """
-
-    When I run `wp bbp subscription remove --user-id={MEMBER_ID} --object-id={FORUM_ID} --yes`
-    Then the return code should be 1

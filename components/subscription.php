@@ -28,11 +28,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	 * @alias subscribe
 	 */
 	public function add( $args, $assoc_args ) {
-		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID.' );
-		}
 
 		// True if added.
 		if ( bbp_add_user_subscription( $user->ID, $assoc_args['object-id'] ) ) {
@@ -67,11 +63,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	 * @alias unsubscribe
 	 */
 	public function remove( $args, $assoc_args ) {
-		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID.' );
-		}
 
 		WP_CLI::confirm( 'Are you sure you want to remove this subscription?', $assoc_args );
 
@@ -162,11 +154,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	public function _list( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
-		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID.' );
-		}
 
 		$objects = ( 'forum' === $assoc_args['object'] )
 			? bbp_get_user_forum_subscriptions( $this->user_args( $user->ID ) )

@@ -28,11 +28,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 * @alias create
 	 */
 	public function add( $args, $assoc_args ) {
-		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID.' );
-		}
 
 		// Check if topic exists.
 		$topic_id = $assoc_args['topic-id'];
@@ -73,11 +69,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 * @alias delete
 	 */
 	public function remove( $args, $assoc_args ) {
-		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID.' );
-		}
 
 		// Check if topic exists.
 		$topic_id = $assoc_args['topic-id'];
@@ -174,12 +166,7 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 	 */
 	public function _list( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
-
-		// Check if user exists.
 		$user = $this->get_user_id_from_identifier( $args[0] );
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID.' );
-		}
 
 		$topics = bbp_get_user_favorites( $this->user_args( $user->ID ) );
 

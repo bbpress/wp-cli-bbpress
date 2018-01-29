@@ -27,10 +27,6 @@ class BBPCLI_User extends BBPCLI_Component {
 	public function spam( $args, $assoc_args ) {
 		$user = $this->get_user_id_from_identifier( $args[0] );
 
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID.' );
-		}
-
 		if ( bbp_make_spam_user( $user->ID ) ) {
 			WP_CLI::success( 'User topics and replies marked as spam.' );
 		} else {
@@ -58,10 +54,6 @@ class BBPCLI_User extends BBPCLI_Component {
 	 */
 	public function ham( $args, $assoc_args ) {
 		$user = $this->get_user_id_from_identifier( $args[0] );
-
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID.' );
-		}
 
 		if ( bbp_make_ham_user( $user->ID ) ) {
 			WP_CLI::success( 'User topics and replies marked as ham.' );
@@ -96,10 +88,6 @@ class BBPCLI_User extends BBPCLI_Component {
 	 */
 	public function set_role( $args, $assoc_args ) {
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
-
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID.' );
-		}
 
 		// Role fallback.
 		$role = $assoc_args['role'];

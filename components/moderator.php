@@ -37,10 +37,6 @@ class BBPCLI_Moderator extends BBPCLI_Component {
 
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or id' );
-		}
-
 		if ( bbp_add_moderator( $forum_id, $user->ID ) ) {
 			WP_CLI::success( 'Member added as a moderator.' );
 		} else {
@@ -78,10 +74,6 @@ class BBPCLI_Moderator extends BBPCLI_Component {
 		}
 
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
-
-		if ( ! $user ) {
-			WP_CLI::error( 'No user found by that username or ID.' );
-		}
 
 		if ( bbp_remove_moderator( $forum_id, $user->ID ) ) {
 			WP_CLI::success( 'Member removed as a moderator.' );

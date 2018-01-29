@@ -37,6 +37,10 @@ class BBPCLI_Component extends \WP_CLI\CommandWithDBObject {
 			$user = get_user_by( 'login', $i );
 		}
 
+		if ( ! $user ) {
+			WP_CLI::error( sprintf( 'No user found by that username or ID (%).', $i ) );
+		}
+
 		return $user;
 	}
 

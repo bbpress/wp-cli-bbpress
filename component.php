@@ -1,4 +1,9 @@
 <?php
+namespace bbPress\CLI\Command;
+
+use WP_CLI;
+use WP_CLI\CommandWithDBObject;
+
 /**
  * Base component class.
  *
@@ -6,19 +11,7 @@
  *
  * @since 1.0.0
  */
-class BBPCLI_Component extends \WP_CLI\CommandWithDBObject {
-
-	/**
-	 * Get a random user id.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return int
-	 */
-	protected function get_random_user_id() {
-		global $wpdb;
-		return $wpdb->get_var( "SELECT ID FROM $wpdb->users ORDER BY RAND() LIMIT 1" );
-	}
+abstract class bbPressCommand extends CommandWithDBObject {
 
 	/**
 	 * Verify a user ID by the passed identifier.
@@ -38,7 +31,7 @@ class BBPCLI_Component extends \WP_CLI\CommandWithDBObject {
 		}
 
 		if ( ! $user ) {
-			WP_CLI::error( sprintf( 'No user found by that username or ID (%).', $i ) );
+			\WP_CLI::error( sprintf( 'No user found by that username or ID (%).', $i ) );
 		}
 
 		return $user;

@@ -1,10 +1,14 @@
 <?php
+namespace bbPress\CLI\Command;
+
+use WP_CLI;
+
 /**
  * Manage bbPress Moderators.
  *
  * @since 1.0.0
  */
-class BBPCLI_Moderator extends BBPCLI_Component {
+class Moderator extends bbPressCommand {
 
 	/**
 	 * Add a forum moderator
@@ -32,15 +36,15 @@ class BBPCLI_Moderator extends BBPCLI_Component {
 
 		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
-			WP_CLI::error( 'No forum found by that ID.' );
+			\WP_CLI::error( 'No forum found by that ID.' );
 		}
 
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 
 		if ( bbp_add_moderator( $forum_id, $user->ID ) ) {
-			WP_CLI::success( 'Member added as a moderator.' );
+			\WP_CLI::success( 'Member added as a moderator.' );
 		} else {
-			WP_CLI::error( 'Could not add the moderator.' );
+			\WP_CLI::error( 'Could not add the moderator.' );
 		}
 	}
 
@@ -70,15 +74,15 @@ class BBPCLI_Moderator extends BBPCLI_Component {
 
 		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
-			WP_CLI::error( 'No forum found by that ID.' );
+			\WP_CLI::error( 'No forum found by that ID.' );
 		}
 
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 
 		if ( bbp_remove_moderator( $forum_id, $user->ID ) ) {
-			WP_CLI::success( 'Member removed as a moderator.' );
+			\WP_CLI::success( 'Member removed as a moderator.' );
 		} else {
-			WP_CLI::error( 'Could not add the user as a moderator.' );
+			\WP_CLI::error( 'Could not add the user as a moderator.' );
 		}
 	}
 
@@ -118,7 +122,7 @@ class BBPCLI_Moderator extends BBPCLI_Component {
 
 		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
-			WP_CLI::error( 'No forum found by that ID.' );
+			\WP_CLI::error( 'No forum found by that ID.' );
 		}
 
 		$moderators = bbp_get_moderators( $forum_id );
@@ -132,5 +136,3 @@ class BBPCLI_Moderator extends BBPCLI_Component {
 		}
 	}
 }
-
-WP_CLI::add_command( 'bbp moderator', 'BBPCLI_Moderator' );

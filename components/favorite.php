@@ -1,10 +1,14 @@
 <?php
+namespace bbPress\CLI\Command;
+
+use WP_CLI;
+
 /**
  * Manage bbPress Favorites.
  *
  * @since 1.0.0
  */
-class BBPCLI_Favorite extends BBPCLI_Component {
+class Favorite extends bbPressCommand {
 
 	/**
 	 * Add a topic to user's favorites.
@@ -33,14 +37,14 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 		// Check if topic exists.
 		$topic_id = $assoc_args['topic-id'];
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		// True if added.
 		if ( bbp_add_user_favorite( $user->ID, $topic_id ) ) {
-			WP_CLI::success( 'Favorite successfully added.' );
+			\WP_CLI::success( 'Favorite successfully added.' );
 		} else {
-			WP_CLI::error( 'Could not add favorite.' );
+			\WP_CLI::error( 'Could not add favorite.' );
 		}
 	}
 
@@ -74,16 +78,16 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 		// Check if topic exists.
 		$topic_id = $assoc_args['topic-id'];
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
-		WP_CLI::confirm( 'Are you sure you want to remove this topic from the user\'s favorite list?', $assoc_args );
+		\WP_CLI::confirm( 'Are you sure you want to remove this topic from the user\'s favorite list?', $assoc_args );
 
 		// True if removed.
 		if ( bbp_remove_user_favorite( $user->ID, $topic_id ) ) {
-			WP_CLI::success( 'Favorite successfully removed.' );
+			\WP_CLI::success( 'Favorite successfully removed.' );
 		} else {
-			WP_CLI::error( 'Could not remove favorite.' );
+			\WP_CLI::error( 'Could not remove favorite.' );
 		}
 	}
 
@@ -121,13 +125,13 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		$ids = bbp_get_topic_favoriters( $topic_id );
 
 		if ( ! $ids ) {
-			WP_CLI::error( 'Could not find any users.' );
+			\WP_CLI::error( 'Could not find any users.' );
 		}
 
 		if ( 'ids' === $formatter->format ) {
@@ -183,5 +187,3 @@ class BBPCLI_Favorite extends BBPCLI_Component {
 		}
 	}
 }
-
-WP_CLI::add_command( 'bbp favorite', 'BBPCLI_Favorite' );

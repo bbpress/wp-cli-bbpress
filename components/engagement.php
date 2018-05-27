@@ -1,10 +1,14 @@
 <?php
+namespace bbPress\CLI\Command;
+
+use WP_CLI;
+
 /**
  * Manage bbPress Engagements.
  *
  * @since 1.0.0
  */
-class BBPCLI_Engagement extends BBPCLI_Component {
+class Engagement extends bbPressCommand {
 
 	/**
 	 * Add a topic to user's engagements.
@@ -33,14 +37,14 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 		// Check if topic exists.
 		$topic_id = $assoc_args['topic-id'];
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		// True if added.
 		if ( bbp_add_user_engagement( $user->ID, $topic_id ) ) {
-			WP_CLI::success( 'Engagement successfully added.' );
+			\WP_CLI::success( 'Engagement successfully added.' );
 		} else {
-			WP_CLI::error( 'Could not add the engagement.' );
+			\WP_CLI::error( 'Could not add the engagement.' );
 		}
 	}
 
@@ -74,16 +78,16 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 		// Check if topic exists.
 		$topic_id = $assoc_args['topic-id'];
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
-		WP_CLI::confirm( 'Are you sure you want to remove this topic from the user\'s engagement list?', $assoc_args );
+		\WP_CLI::confirm( 'Are you sure you want to remove this topic from the user\'s engagement list?', $assoc_args );
 
 		// True if removed.
 		if ( bbp_remove_user_engagement( $user->ID, $topic_id ) ) {
-			WP_CLI::success( 'Engagement successfully removed.' );
+			\WP_CLI::success( 'Engagement successfully removed.' );
 		} else {
-			WP_CLI::error( 'Could not remove engagement.' );
+			\WP_CLI::error( 'Could not remove engagement.' );
 		}
 	}
 
@@ -121,13 +125,13 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		$ids = bbp_get_topic_engagements( $topic_id );
 
 		if ( ! $ids ) {
-			WP_CLI::error( 'Could not find any users.' );
+			\WP_CLI::error( 'Could not find any users.' );
 		}
 
 		if ( 'ids' === $formatter->format ) {
@@ -199,15 +203,13 @@ class BBPCLI_Engagement extends BBPCLI_Component {
 		// Check if topic exists.
 		$topic_id = $args[0];
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		if ( bbp_recalculate_topic_engagements( $topic_id, true ) ) {
-			WP_CLI::success( 'Engagements successfully recalculated.' );
+			\WP_CLI::success( 'Engagements successfully recalculated.' );
 		} else {
-			WP_CLI::error( 'Could not recalculate engagements.' );
+			\WP_CLI::error( 'Could not recalculate engagements.' );
 		}
 	}
 }
-
-WP_CLI::add_command( 'bbp engagement', 'BBPCLI_Engagement' );

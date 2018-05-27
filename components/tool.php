@@ -1,10 +1,14 @@
 <?php
+namespace bbPress\CLI\Command;
+
+use WP_CLI;
+
 /**
  * Manage bbPress Tools.
  *
  * @since 1.0.0
  */
-class BBPCLI_Tool extends BBPCLI_Component {
+class Tool extends bbPressCommand {
 
 	/**
 	 * Repair Tools.
@@ -45,15 +49,15 @@ class BBPCLI_Tool extends BBPCLI_Component {
 		$repair = 'bbp_admin_repair_' . $this->sanitize_string( $assoc_args['type'] );
 
 		if ( ! function_exists( $repair ) ) {
-			WP_CLI::error( 'There is no repair tool with that name.' );
+			\WP_CLI::error( 'There is no repair tool with that name.' );
 		}
 
 		$result = $repair();
 
 		if ( 0 === $result[0] ) {
-			WP_CLI::success( $result[1] );
+			\WP_CLI::success( $result[1] );
 		} else {
-			WP_CLI::error( $result[1] );
+			\WP_CLI::error( $result[1] );
 		}
 	}
 
@@ -85,15 +89,15 @@ class BBPCLI_Tool extends BBPCLI_Component {
 		$upgrade = 'bbp_admin_upgrade_' . $this->sanitize_string( $assoc_args['type'] );
 
 		if ( ! function_exists( $upgrade ) ) {
-			WP_CLI::error( 'There is no upgrade tool with that name.' );
+			\WP_CLI::error( 'There is no upgrade tool with that name.' );
 		}
 
 		$result = $upgrade();
 
 		if ( 0 === $result[0] ) {
-			WP_CLI::success( $result[1] );
+			\WP_CLI::success( $result[1] );
 		} else {
-			WP_CLI::error( $result[1] );
+			\WP_CLI::error( $result[1] );
 		}
 	}
 
@@ -111,19 +115,10 @@ class BBPCLI_Tool extends BBPCLI_Component {
 	 *    Success: bbPress reset.
 	 */
 	public function reset( $_, $assoc_args ) {
-		WP_CLI::confirm( 'Are you sure you want to reset bbPress?', $assoc_args );
+		\WP_CLI::confirm( 'Are you sure you want to reset bbPress?', $assoc_args );
 
 		bbp_admin_reset_database();
 
-		WP_CLI::success( 'bbPress reset.' );
+		\WP_CLI::success( 'bbPress reset.' );
 	}
 }
-
-WP_CLI::add_command( 'bbp tool', 'BBPCLI_Tool', array(
-	'before_invoke' => function() {
-		require_once( bbpress()->includes_dir . 'admin/tools/common.php' );
-		require_once( bbpress()->includes_dir . 'admin/tools/repair.php' );
-		require_once( bbpress()->includes_dir . 'admin/tools/upgrade.php' );
-		require_once( bbpress()->includes_dir . 'admin/tools/reset.php' );
-	},
-) );

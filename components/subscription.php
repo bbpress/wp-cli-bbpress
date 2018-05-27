@@ -1,10 +1,14 @@
 <?php
+namespace bbPress\CLI\Command;
+
+use WP_CLI;
+
 /**
  * Manage bbPress Subscriptions.
  *
  * @since 1.0.0
  */
-class BBPCLI_Subscription extends BBPCLI_Component {
+class Subscription extends bbPressCommand {
 
 	/**
 	 * Add a user subscription.
@@ -32,9 +36,9 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 
 		// True if added.
 		if ( bbp_add_user_subscription( $user->ID, $assoc_args['object-id'] ) ) {
-			WP_CLI::success( 'Subscription successfully added.' );
+			\WP_CLI::success( 'Subscription successfully added.' );
 		} else {
-			WP_CLI::error( 'Could not add the subscription.' );
+			\WP_CLI::error( 'Could not add the subscription.' );
 		}
 	}
 
@@ -65,13 +69,13 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 	public function remove( $args, $assoc_args ) {
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );
 
-		WP_CLI::confirm( 'Are you sure you want to remove this subscription?', $assoc_args );
+		\WP_CLI::confirm( 'Are you sure you want to remove this subscription?', $assoc_args );
 
 		// True if added.
 		if ( bbp_remove_user_subscription( $user->ID, $assoc_args['object-id'] ) ) {
-			WP_CLI::success( 'Subscription successfully removed.' );
+			\WP_CLI::success( 'Subscription successfully removed.' );
 		} else {
-			WP_CLI::error( 'Could not remove the subscription.' );
+			\WP_CLI::error( 'Could not remove the subscription.' );
 		}
 	}
 
@@ -108,7 +112,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 		$ids = bbp_get_subscribers( $args[0] );
 
 		if ( ! $ids ) {
-			WP_CLI::error( 'Could not find any users.' );
+			\WP_CLI::error( 'Could not find any users.' );
 		}
 
 		if ( 'ids' === $formatter->format ) {
@@ -161,7 +165,7 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 			: bbp_get_user_topic_subscriptions( $this->user_args( $user->ID ) );
 
 		if ( empty( $objects ) ) {
-			WP_CLI::error( 'There is no posts.' );
+			\WP_CLI::error( 'There is no posts.' );
 		}
 
 		if ( 'ids' === $formatter->format ) {
@@ -173,5 +177,3 @@ class BBPCLI_Subscription extends BBPCLI_Component {
 		}
 	}
 }
-
-WP_CLI::add_command( 'bbp subscription', 'BBPCLI_Subscription' );

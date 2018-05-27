@@ -1,10 +1,14 @@
 <?php
+namespace bbPress\CLI\Command;
+
+use WP_CLI;
+
 /**
  * Manage bbPress Topics.
  *
  * @since 1.0.0
  */
-class BBPCLI_Topic extends BBPCLI_Component {
+class Topic extends bbPressCommand {
 
 	/**
 	 * Object fields
@@ -104,13 +108,13 @@ class BBPCLI_Topic extends BBPCLI_Component {
 		}
 
 		if ( ! is_numeric( $id ) ) {
-			WP_CLI::error( 'Could not create topic.' );
+			\WP_CLI::error( 'Could not create topic.' );
 		}
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
-			WP_CLI::line( $id );
+			\WP_CLI::line( $id );
 		} else {
-			WP_CLI::success( sprintf( 'Topic %d created: %s', $id, bbp_get_topic_permalink( $id ) ) );
+			\WP_CLI::success( sprintf( 'Topic %d created: %s', $id, bbp_get_topic_permalink( $id ) ) );
 		}
 	}
 
@@ -147,7 +151,7 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		$topic = bbp_get_topic( $topic_id, ARRAY_A );
@@ -182,12 +186,12 @@ class BBPCLI_Topic extends BBPCLI_Component {
 	public function delete( $args, $assoc_args ) {
 		$topic_id = $args[0];
 
-		WP_CLI::confirm( 'Are you sure you want to delete this topic?', $assoc_args );
+		\WP_CLI::confirm( 'Are you sure you want to delete this topic?', $assoc_args );
 
 		parent::_delete( array( $topic_id ), $assoc_args, function ( $topic_id ) {
 			// Check if topic exists.
 			if ( ! bbp_is_topic( $topic_id ) ) {
-				WP_CLI::error( 'No topic found by that ID.' );
+				\WP_CLI::error( 'No topic found by that ID.' );
 			}
 
 			wp_delete_post( $topic_id, true );
@@ -218,15 +222,15 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		wp_trash_post( $topic_id );
 
 		if ( ! bbp_trashed_topic( $topic_id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d successfully trashed.', $topic_id ) );
+			\WP_CLI::success( sprintf( 'Topic %d successfully trashed.', $topic_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not trash topic %d.', $topic_id ) );
+			\WP_CLI::error( sprintf( 'Could not trash topic %d.', $topic_id ) );
 		}
 	}
 
@@ -248,15 +252,15 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		wp_untrash_post( $topic_id );
 
 		if ( ! bbp_untrashed_topic( $topic_id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d successfully untrashed.', $topic_id ) );
+			\WP_CLI::success( sprintf( 'Topic %d successfully untrashed.', $topic_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not untrash topic %d.', $topic_id ) );
+			\WP_CLI::error( sprintf( 'Could not untrash topic %d.', $topic_id ) );
 		}
 	}
 
@@ -312,14 +316,14 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		if ( 'ids' === $formatter->format ) {
 			$query_args['fields'] = 'ids';
-			$query = new WP_Query( $query_args );
+			$query = new \WP_Query( $query_args );
 			echo implode( ' ', $query->posts ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
 			$query_args['fields'] = 'ids';
-			$query = new WP_Query( $query_args );
+			$query = new \WP_Query( $query_args );
 			$formatter->display_items( $query->found_posts );
 		} else {
-			$query = new WP_Query( $query_args );
+			$query = new \WP_Query( $query_args );
 			$topics = array_map( function( $post ) {
 				$post->url = get_permalink( $post->ID );
 				return $post;
@@ -346,20 +350,20 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		// Check if topic is already open.
 		if ( bbp_is_topic_open( $topic_id ) ) {
-			WP_CLI::error( 'Topic is already opened.' );
+			\WP_CLI::error( 'Topic is already opened.' );
 		}
 
 		$id = bbp_open_topic( $topic_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d successfully opened.', $topic_id ) );
+			\WP_CLI::success( sprintf( 'Topic %d successfully opened.', $topic_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not open topic %d.', $topic_id ) );
+			\WP_CLI::error( sprintf( 'Could not open topic %d.', $topic_id ) );
 		}
 	}
 
@@ -381,20 +385,20 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		// Check if topic is already closed.
 		if ( bbp_is_topic_closed( $topic_id ) ) {
-			WP_CLI::error( 'Topic is already closed.' );
+			\WP_CLI::error( 'Topic is already closed.' );
 		}
 
 		$id = bbp_close_topic( $topic_id );
 
 		if ( is_numeric( $id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d successfully closed.', $topic_id ) );
+			\WP_CLI::success( sprintf( 'Topic %d successfully closed.', $topic_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not close topic %d.', $topic_id ) );
+			\WP_CLI::error( sprintf( 'Could not close topic %d.', $topic_id ) );
 		}
 	}
 
@@ -464,16 +468,16 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		bbp_spam_topic_replies( $topic_id );
 		bbp_spam_topic_tags( $topic_id );
 
 		if ( is_numeric( bbp_spam_topic( $topic_id ) ) ) {
-			WP_CLI::success( sprintf( 'Topic %d successfully spammed.', $topic_id ) );
+			\WP_CLI::success( sprintf( 'Topic %d successfully spammed.', $topic_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not spam topic %d.', $topic_id ) );
+			\WP_CLI::error( sprintf( 'Could not spam topic %d.', $topic_id ) );
 		}
 	}
 
@@ -497,16 +501,16 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		bbp_unspam_topic_replies( $topic_id );
 		bbp_unspam_topic_tags( $topic_id );
 
 		if ( is_numeric( bbp_unspam_topic( $topic_id ) ) ) {
-			WP_CLI::success( sprintf( 'Topic %d successfully hammed.', $topic_id ) );
+			\WP_CLI::success( sprintf( 'Topic %d successfully hammed.', $topic_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not ham topic %d.', $topic_id ) );
+			\WP_CLI::error( sprintf( 'Could not ham topic %d.', $topic_id ) );
 		}
 	}
 
@@ -528,13 +532,13 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		if ( bbp_stick_topic( $topic_id, true ) ) {
-			WP_CLI::success( sprintf( 'Topic %d successfully sticked.', $topic_id ) );
+			\WP_CLI::success( sprintf( 'Topic %d successfully sticked.', $topic_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not stick topic %d.', $topic_id ) );
+			\WP_CLI::error( sprintf( 'Could not stick topic %d.', $topic_id ) );
 		}
 	}
 
@@ -556,12 +560,12 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		// It always returns true.
 		if ( bbp_unstick_topic( $topic_id ) ) {
-			WP_CLI::success( sprintf( 'Topic %d successfully unsticked.', $topic_id ) );
+			\WP_CLI::success( sprintf( 'Topic %d successfully unsticked.', $topic_id ) );
 		}
 	}
 
@@ -583,13 +587,13 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		if ( is_numeric( bbp_approve_topic( $topic_id ) ) ) {
-			WP_CLI::success( sprintf( 'Topic %d successfully approved.', $topic_id ) );
+			\WP_CLI::success( sprintf( 'Topic %d successfully approved.', $topic_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not approve topic %d.', $topic_id ) );
+			\WP_CLI::error( sprintf( 'Could not approve topic %d.', $topic_id ) );
 		}
 	}
 
@@ -611,13 +615,13 @@ class BBPCLI_Topic extends BBPCLI_Component {
 
 		// Check if topic exists.
 		if ( ! bbp_is_topic( $topic_id ) ) {
-			WP_CLI::error( 'No topic found by that ID.' );
+			\WP_CLI::error( 'No topic found by that ID.' );
 		}
 
 		if ( is_numeric( bbp_unapprove_topic( $topic_id ) ) ) {
-			WP_CLI::success( sprintf( 'Topic %d successfully unapproved.', $topic_id ) );
+			\WP_CLI::success( sprintf( 'Topic %d successfully unapproved.', $topic_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not unapprove topic %d.', $topic_id ) );
+			\WP_CLI::error( sprintf( 'Could not unapprove topic %d.', $topic_id ) );
 		}
 	}
 
@@ -650,5 +654,3 @@ class BBPCLI_Topic extends BBPCLI_Component {
 		return $status;
 	}
 }
-
-WP_CLI::add_command( 'bbp topic', 'BBPCLI_Topic' );

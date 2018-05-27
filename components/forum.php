@@ -1,10 +1,14 @@
 <?php
+namespace bbPress\CLI\Command;
+
+use WP_CLI;
+
 /**
  * Manage bbPress Forums.
  *
  * @since 1.0.0
  */
-class BBPCLI_Forum extends BBPCLI_Component {
+class Forum extends bbPressCommand {
 
 	/**
 	 * Object fields.
@@ -111,13 +115,13 @@ class BBPCLI_Forum extends BBPCLI_Component {
 		}
 
 		if ( ! is_numeric( $id ) ) {
-			WP_CLI::error( 'Could not create forum.' );
+			\WP_CLI::error( 'Could not create forum.' );
 		}
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'porcelain' ) ) {
-			WP_CLI::line( $id );
+			\WP_CLI::line( $id );
 		} else {
-			WP_CLI::success( sprintf( 'Forum %d created: %s', $id, bbp_get_forum_permalink( $id ) ) );
+			\WP_CLI::success( sprintf( 'Forum %d created: %s', $id, bbp_get_forum_permalink( $id ) ) );
 		}
 	}
 
@@ -155,7 +159,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 
 		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
-			WP_CLI::error( 'No forum found by that ID.' );
+			\WP_CLI::error( 'No forum found by that ID.' );
 		}
 
 		$forum = bbp_get_forum( $forum_id, ARRAY_A );
@@ -188,12 +192,12 @@ class BBPCLI_Forum extends BBPCLI_Component {
 	public function delete( $args, $assoc_args ) {
 		$forum_id = $args[0];
 
-		WP_CLI::confirm( 'Are you sure you want to delete this forum and its topics/replies?', $assoc_args );
+		\WP_CLI::confirm( 'Are you sure you want to delete this forum and its topics/replies?', $assoc_args );
 
 		parent::_delete( array( $forum_id ), $assoc_args, function ( $forum_id ) {
 			// Check if forum exists.
 			if ( ! bbp_is_forum( $forum_id ) ) {
-				WP_CLI::error( 'No forum found by that ID.' );
+				\WP_CLI::error( 'No forum found by that ID.' );
 			}
 
 			bbp_delete_forum_topics( $forum_id );
@@ -257,14 +261,14 @@ class BBPCLI_Forum extends BBPCLI_Component {
 
 		if ( 'ids' === $formatter->format ) {
 			$query_args['fields'] = 'ids';
-			$query = new WP_Query( $query_args );
+			$query = new \WP_Query( $query_args );
 			echo implode( ' ', $query->posts ); // WPCS: XSS ok.
 		} elseif ( 'count' === $formatter->format ) {
 			$query_args['fields'] = 'ids';
-			$query = new WP_Query( $query_args );
+			$query = new \WP_Query( $query_args );
 			$formatter->display_items( $query->posts );
 		} else {
-			$query = new WP_Query( $query_args );
+			$query = new \WP_Query( $query_args );
 			$forums = array_map( function( $post ) {
 				$post->url = get_permalink( $post->ID );
 				return $post;
@@ -291,7 +295,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 
 		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
-			WP_CLI::error( 'No forum found by that ID.' );
+			\WP_CLI::error( 'No forum found by that ID.' );
 		}
 
 		bbp_trash_forum_topics( $forum_id );
@@ -299,9 +303,9 @@ class BBPCLI_Forum extends BBPCLI_Component {
 		wp_trash_post( $forum_id );
 
 		if ( ! bbp_trashed_forum( $forum_id ) ) {
-			WP_CLI::success( sprintf( 'Forum %d and its topics trashed.', $forum_id ) );
+			\WP_CLI::success( sprintf( 'Forum %d and its topics trashed.', $forum_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not trash forum %d and its topics.', $forum_id ) );
+			\WP_CLI::error( sprintf( 'Could not trash forum %d and its topics.', $forum_id ) );
 		}
 	}
 
@@ -323,7 +327,7 @@ class BBPCLI_Forum extends BBPCLI_Component {
 
 		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
-			WP_CLI::error( 'No forum found by that ID.' );
+			\WP_CLI::error( 'No forum found by that ID.' );
 		}
 
 		wp_untrash_post( $forum_id );
@@ -331,9 +335,9 @@ class BBPCLI_Forum extends BBPCLI_Component {
 		bbp_untrash_forum_topics( $forum_id );
 
 		if ( ! bbp_untrashed_forum( $forum_id ) ) {
-			WP_CLI::success( sprintf( 'Forum %d and its topics untrashed.', $forum_id ) );
+			\WP_CLI::success( sprintf( 'Forum %d and its topics untrashed.', $forum_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not untrash forum %d and its topics.', $forum_id ) );
+			\WP_CLI::error( sprintf( 'Could not untrash forum %d and its topics.', $forum_id ) );
 		}
 	}
 
@@ -402,17 +406,17 @@ class BBPCLI_Forum extends BBPCLI_Component {
 
 		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
-			WP_CLI::error( 'No forum found by that ID.' );
+			\WP_CLI::error( 'No forum found by that ID.' );
 		}
 
 		if ( bbp_is_forum_open( $forum_id ) ) {
-			WP_CLI::error( 'Forum is already opened.' );
+			\WP_CLI::error( 'Forum is already opened.' );
 		}
 
 		if ( is_numeric( bbp_open_forum( $forum_id ) ) ) {
-			WP_CLI::success( sprintf( 'Forum %d successfully opened.', $forum_id ) );
+			\WP_CLI::success( sprintf( 'Forum %d successfully opened.', $forum_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not open forum %d.', $forum_id ) );
+			\WP_CLI::error( sprintf( 'Could not open forum %d.', $forum_id ) );
 		}
 	}
 
@@ -434,17 +438,17 @@ class BBPCLI_Forum extends BBPCLI_Component {
 
 		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {
-			WP_CLI::error( 'No forum found by that ID.' );
+			\WP_CLI::error( 'No forum found by that ID.' );
 		}
 
 		if ( bbp_is_forum_closed( $forum_id ) ) {
-			WP_CLI::error( 'Forum is already closed.' );
+			\WP_CLI::error( 'Forum is already closed.' );
 		}
 
 		if ( is_numeric( bbp_close_forum( $forum_id ) ) ) {
-			WP_CLI::success( sprintf( 'Forum %d successfully closed.', $forum_id ) );
+			\WP_CLI::success( sprintf( 'Forum %d successfully closed.', $forum_id ) );
 		} else {
-			WP_CLI::error( sprintf( 'Could not close the forum %d.', $forum_id ) );
+			\WP_CLI::error( sprintf( 'Could not close the forum %d.', $forum_id ) );
 		}
 	}
 
@@ -495,5 +499,3 @@ class BBPCLI_Forum extends BBPCLI_Component {
 		return $status;
 	}
 }
-
-WP_CLI::add_command( 'bbp forum', 'BBPCLI_Forum' );

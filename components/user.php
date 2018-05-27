@@ -1,10 +1,14 @@
 <?php
+namespace bbPress\CLI\Command;
+
+use WP_CLI;
+
 /**
  * Manage bbPress Users.
  *
  * @since 1.0.0
  */
-class BBPCLI_User extends BBPCLI_Component {
+class User extends bbPressCommand {
 
 	/**
 	 * Mark a user's topics and replies as spam.
@@ -28,9 +32,9 @@ class BBPCLI_User extends BBPCLI_Component {
 		$user = $this->get_user_id_from_identifier( $args[0] );
 
 		if ( bbp_make_spam_user( $user->ID ) ) {
-			WP_CLI::success( 'User topics and replies marked as spam.' );
+			\WP_CLI::success( 'User topics and replies marked as spam.' );
 		} else {
-			WP_CLI::error( 'Could not mark topics and replies as spam.' );
+			\WP_CLI::error( 'Could not mark topics and replies as spam.' );
 		}
 	}
 
@@ -56,9 +60,9 @@ class BBPCLI_User extends BBPCLI_Component {
 		$user = $this->get_user_id_from_identifier( $args[0] );
 
 		if ( bbp_make_ham_user( $user->ID ) ) {
-			WP_CLI::success( 'User topics and replies marked as ham.' );
+			\WP_CLI::success( 'User topics and replies marked as ham.' );
 		} else {
-			WP_CLI::error( 'Could not mark topics and replies as ham.' );
+			\WP_CLI::error( 'Could not mark topics and replies as ham.' );
 		}
 	}
 
@@ -96,9 +100,9 @@ class BBPCLI_User extends BBPCLI_Component {
 		}
 
 		if ( is_string( bbp_set_user_role( $user->ID, $role ) ) ) {
-			WP_CLI::success( 'New role for user set successfully.' );
+			\WP_CLI::success( 'New role for user set successfully.' );
 		} else {
-			WP_CLI::error( 'Could not set new role for user.' );
+			\WP_CLI::error( 'Could not set new role for user.' );
 		}
 	}
 
@@ -113,5 +117,3 @@ class BBPCLI_User extends BBPCLI_Component {
 		return array( 'keymaster', 'moderator', 'participant', 'spectator', 'blocked' );
 	}
 }
-
-WP_CLI::add_command( 'bbp user', 'BBPCLI_User' );

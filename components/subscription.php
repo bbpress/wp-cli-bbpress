@@ -103,8 +103,10 @@ class Subscription extends bbPressCommand {
 	 *     $ wp bbp subscription list_users 334938
 	 *     3
 	 *
-	 *     $ wp bbp subscription list_users 242 --format=ids
+	 *     $ wp bbp subscription list-users 242 --format=ids
 	 *     65 5454 5454 545
+	 *
+	 * @subcommand list-users
 	 */
 	public function list_users( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );

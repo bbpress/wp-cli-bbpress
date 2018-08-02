@@ -112,11 +112,13 @@ class Favorite extends bbPressCommand {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp bbp favorite list_users 456 --format=ids
+	 *     $ wp bbp favorite list-users 456 --format=ids
 	 *     54564 4564 454 545
 	 *
-	 *     $ wp bbp favorite list_users 354
+	 *     $ wp bbp favorite list-users 354
 	 *     2
+	 *
+	 * @subcommand list-users
 	 */
 	public function list_users( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );

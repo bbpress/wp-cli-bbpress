@@ -17,7 +17,7 @@ Feature: Manage bbPress engagements
       Success: Engagement successfully added.
       """
 
-    When I run `wp bbp engagement list_users {TOPIC_ID} --format=ids`
+    When I run `wp bbp engagement list-users {TOPIC_ID} --format=ids`
     Then STDOUT should contain:
       """
       {MEMBER_ID}

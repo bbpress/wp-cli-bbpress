@@ -12,7 +12,7 @@ Please use and provide feedback!
 
 * PHP >=5.4
 * wp-cli >=0.23.0
-& bbPress trunk (development version).
+* bbPress trunk (development version).
 
 ## Setup
 
@@ -25,6 +25,7 @@ Please use and provide feedback!
 ### 1.1
 
 * `wp-cli-bbpress` requires PHP 5.4
+* Renamed some commands
 
 ### 1.0
 

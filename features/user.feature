@@ -7,7 +7,7 @@ Feature: Manage bbPress Users
     Then STDOUT should be a number
     And save STDOUT as {MEMBER_ID}
 
-    When I run `wp bbp user set_role --user-id={MEMBER_ID} --role=moderator`
+    When I run `wp bbp user set-role --user-id={MEMBER_ID} --role=moderator`
     Then STDOUT should contain:
       """
       Success: New role for user set successfully.

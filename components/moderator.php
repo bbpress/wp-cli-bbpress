@@ -118,7 +118,7 @@ class Moderator extends bbPressCommand {
 	 */
 	public function _list( $_, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
-		$forum_id = $assoc_args['forum-id'];
+		$forum_id  = $assoc_args['forum-id'];
 
 		// Check if forum exists.
 		if ( ! bbp_is_forum( $forum_id ) ) {

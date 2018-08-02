@@ -82,13 +82,13 @@ class User extends bbPressCommand {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *    $ wp bbp user set_role --user-id=465456 --role=moderator
+	 *    $ wp bbp user set-role --user-id=465456 --role=moderator
 	 *    Success: New role for user set successfully.
 	 *
-	 *    $ wp bbp user set_role --user-id=user_login --role=spectator
+	 *    $ wp bbp user set-role --user-id=user_login --role=spectator
 	 *    Success: New role for user set successfully.
 	 *
-	 * @alias update_role
+	 * @subcommand set-role
 	 */
 	public function set_role( $args, $assoc_args ) {
 		$user = $this->get_user_id_from_identifier( $assoc_args['user-id'] );

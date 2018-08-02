@@ -105,8 +105,8 @@ class Reply extends bbPressCommand {
 		);
 
 		$reply_meta = array(
-			'forum_id'  => $r['forum-id'],
-			'topic_id'  => $r['topic-id'],
+			'forum_id' => $r['forum-id'],
+			'topic_id' => $r['topic-id'],
 		);
 
 		$id = bbp_insert_reply( $reply_data, $reply_meta );
@@ -164,7 +164,7 @@ class Reply extends bbPressCommand {
 			\WP_CLI::error( 'No reply found by that ID.' );
 		}
 
-		$reply = bbp_get_reply( $reply_id, ARRAY_A );
+		$reply        = bbp_get_reply( $reply_id, ARRAY_A );
 		$reply['url'] = bbp_get_reply_permalink( $reply_id );
 
 		if ( empty( $assoc_args['fields'] ) ) {
@@ -322,7 +322,7 @@ class Reply extends bbPressCommand {
 		$formatter = $this->get_formatter( $assoc_args );
 
 		$reply_post_type = bbp_get_reply_post_type();
-		$query_args = wp_parse_args( $assoc_args, array(
+		$query_args      = wp_parse_args( $assoc_args, array(
 			'post_type'   => $reply_post_type,
 			'post_status' => 'any',
 		) );

@@ -10,11 +10,22 @@ Please use and provide feedback!
 
 ## System Requirements
 
-* PHP >=5.3
+* PHP >=5.4
 * wp-cli >=0.23.0
+& bbPress trunk (development version).
 
 ## Setup
 
 * Install [wp-cli](https://wp-cli.org)
 * Install wp-cli-bbpress. Manuall installation is recommended, though Composer installation should work too. See https://wp-cli.org/package-index/ for information.
 * Inside of a WP installation, type `wp bbp`. You should see a list of available commands.
+
+## Changelog
+
+### 1.1
+
+* `wp-cli-bbpress` requires PHP 5.4
+
+### 1.0
+
+* Initial release

@@ -117,6 +117,8 @@ class Engagement extends bbPressCommand {
 	 *
 	 *     $ wp bbp subscription list_users 45765 --format=ids
 	 *     54564 465465 65465
+	 *
+	 * @subcommand list-users
 	 */
 	public function list_users( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
